@@ -7,10 +7,18 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, restoreUser } = require('../../utils/auth');
 const { User } = require('../../db/models');
 const router = express.Router();
+const sessionRouter = require('./session.js');
+const usersRouter = require('./users.js');
 
 
 
 
+
+router.use('/users', usersRouter);
+
+router.post('/test', (req, res) => {
+	res.json({ requestBody: req.body });
+});
 
 
 const validateLogin = [ // takes in name of property of req body and performs series of checks on it
@@ -58,9 +66,8 @@ router.post(
 
 		await setTokenCookie(res, safeUser);
 
-		return res.json({
-			user: safeUser
-		});
+
+		return res.json({ user: safeUser });
 	}
 );
 
@@ -79,6 +86,7 @@ router.delete(
 // Restore session user
 router.get(
 	'/',
+	restoreUser,
 	(req, res) => {
 		const { user } = req;
 		if (user) {

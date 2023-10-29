@@ -1,4 +1,5 @@
 const express = require('express');
+
 const router = express.Router();
 const apiRouter = require('./api');
 // router.get('/hello/world', function (req, res) {
@@ -15,7 +16,7 @@ router.get("/api/csrf/restore", (req, res) => {
 	});
 });
 
-router.use('/api', apiRouter); 
+router.use('/api', apiRouter);
 
 
 

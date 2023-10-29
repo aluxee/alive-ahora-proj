@@ -10,9 +10,10 @@ const { ValidationError } = require('sequelize');
 
 const { environment } = require('./config');
 const isProduction = environment === 'production';
-const routes = require('./routes');
 
 const app = express();
+const routes = require('./routes');
+
 
 
 
@@ -49,9 +50,9 @@ app.use(routes); // connects all the routes, needs to pass thru all the middlewa
 
 
 
-
+// Catch unhandled reqs and forwards them to error handler
 app.use((_req, _res, next) => {
-	const err = new Error("The requested resource couldn't be found.");
+	const err = new Error("The requested resource could not be found.");
 	err.title = "Resource Not Found";
 	err.errors = ["The requested resource could not be found."];
 	err.status = 404;
@@ -61,7 +62,9 @@ app.use((_req, _res, next) => {
 app.use((err, _req, _res, next) => {
 	// check if error is a Sequelize error:
 	if (err instanceof ValidationError) {
+
 		let errors = {};
+
 		for (let error of err.errors) {
 			errors[error.path] = error.message;
 		}
@@ -74,10 +77,11 @@ app.use((err, _req, _res, next) => {
 
 app.use((err, _req, res, _next) => {
 	res.status(err.status || 500);
-	console.error(err);
+	console.error(err); // good practice ?
 	res.json({
-		title: err.title || 'Server Error',
+		// title: err.title || 'Server Error',
 		message: err.message,
+		statusCode: err.status,
 		errors: err.errors,
 		stack: isProduction ? null : err.stack // stack in response IF were not in production
 	});
