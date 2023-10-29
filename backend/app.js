@@ -5,7 +5,6 @@ const cors = require('cors');
 const csurf = require('csurf');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
-const { ValidationError } = require('sequelize');
 
 
 const { environment } = require('./config');
@@ -59,6 +58,9 @@ app.use((_req, _res, next) => {
 	next(err);
 }); // if a req gets to this point we make new obj and give it a new title where we catch it and process thru this middleware
 
+const { ValidationError } = require('sequelize');
+
+
 app.use((err, _req, _res, next) => {
 	// check if error is a Sequelize error:
 	if (err instanceof ValidationError) {
@@ -83,7 +85,7 @@ app.use((err, _req, res, _next) => {
 		message: err.message,
 		statusCode: err.status,
 		errors: err.errors,
-		stack: isProduction ? null : err.stack // stack in response IF were not in production
+		// stack: isProduction ? null : err.stack // stack in response IF were not in production
 	});
 });
 
