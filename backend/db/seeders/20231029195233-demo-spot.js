@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === 'production') {
 module.exports = {
   async up (queryInterface, Sequelize) {
 
-   await queryInterface.bulkInsert('Spots', [
+  //  await queryInterface.bulkInsert('Spots', [
     // {
     //   ownerId: 3,
     //    address: "Outside City Hall",
@@ -70,13 +70,13 @@ module.exports = {
     //    description: "Near most secluded beaches of Na Pali Coast",
     //    price: 457
     //  }
-   ], options)
+  //  ], options)
   },
 
   async down (queryInterface, Sequelize) {
-    options.tableName = 'Spots'
-    await queryInterface.bulkDelete(options,  {
-      state: { [Op.in]: ['Hawaii', 'Japan', 'Bahamas'] }
-    }, {});
+    // options.tableName = 'Spots'
+    // await queryInterface.bulkDelete(options,  {
+    //   state: { [Op.in]: ['Hawaii', 'Japan', 'Bahamas'] }
+    // }, {});
   }
 };
