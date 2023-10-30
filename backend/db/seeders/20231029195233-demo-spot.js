@@ -1,6 +1,6 @@
 'use strict';
 
-/** @type {import('sequelize-cli').Migration} */
+
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
@@ -8,9 +8,8 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   async up (queryInterface, Sequelize) {
-
-  //  await queryInterface.bulkInsert('Spots', [
-    // {
+   await queryInterface.bulkInsert('Spots', [
+    {
     //   ownerId: 3,
     //    address: "Outside City Hall",
     //   city: "Paris",
@@ -69,14 +68,14 @@ module.exports = {
     //    name: "Secluded Beachfront Paradise",
     //    description: "Near most secluded beaches of Na Pali Coast",
     //    price: 457
-    //  }
-  //  ], options)
+     }
+   ], options)
   },
 
   async down (queryInterface, Sequelize) {
-    // options.tableName = 'Spots'
-    // await queryInterface.bulkDelete(options,  {
+    options.tableName = 'Spots'
+    await queryInterface.bulkDelete(options,  {
     //   state: { [Op.in]: ['Hawaii', 'Japan', 'Bahamas'] }
-    // }, {});
+    }, {});
   }
 };
