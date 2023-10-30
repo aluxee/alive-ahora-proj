@@ -1,6 +1,11 @@
 'use strict';
 
 /** @type {import('sequelize-cli').Migration} */
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
+
 module.exports = {
   async up (queryInterface, Sequelize) {
 
@@ -65,11 +70,12 @@ module.exports = {
        description: "Near most secluded beaches of Na Pali Coast",
        price: 457
      }
-   ])
+   ], options)
   },
 
   async down (queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('Spots', {
+    options.tableName = 'Spots'
+    await queryInterface.bulkDelete(options,  {
       state: { [Op.in]: ['Hawaii', 'Japan', 'Bahamas'] }
     }, {});
   }

@@ -1,5 +1,9 @@
 'use strict';
 
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;  // define your schema in options object
+}
 
 module.exports = {
   async up (queryInterface, Sequelize) {
@@ -129,12 +133,12 @@ module.exports = {
         url: 'https://i.imgur.com/Ycuuk2G.png',
         preview: true
       }
-    ])
+    ], options)
   },
 
   async down (queryInterface, Sequelize) {
-
-    return queryInterface.bulkDelete('SpotImages', {
+    options.tableName = 'SpotImages'
+    return queryInterface.bulkDelete(options, {
       // spotId: { [Op.in]: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] }
     }, {});
   }
