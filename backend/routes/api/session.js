@@ -7,7 +7,6 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { setTokenCookie, restoreUser } = require('../../utils/auth');
 const { User } = require('../../db/models');
 const router = express.Router();
-const sessionRouter = require('./session.js');
 const usersRouter = require('./users.js');
 
 
