@@ -11,39 +11,33 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      Spot.belongsTo(models.User, { foreignKey: 'ownerId' })
-      Spot.hasMany(models.Review, { foreignKey: 'spotId' })
-      Spot.hasMany(models.Booking, { foreignKey: 'spotId' })
-      Spot.hasMany(models.SpotImage, { foreignKey: 'spotId' })
+      Spot.belongsTo(models.User, {
+        foreignKey: 'ownerId'
+      })
+      Spot.hasMany(models.Review, {
+        foreignKey: 'spotId'
+      })
+      Spot.hasMany(models.Booking, {
+        foreignKey: 'spotId'
+      })
+      Spot.hasMany(models.SpotImage, {
+        foreignKey: 'spotId'
+      })
     }
     static async createSpot({ address, city, state, country, lat, lng, name, description, price }) {
       const spot = await Spot.create({
-        address,
-        city,
-        state,
-        country,
-        lat,
-        lng,
-        name,
-        description,
-        price
+        address, city, state, country, lat, lng, name, description, price
       });
       return await Spot.findByPk(spot.id)
     }
   }
   Spot.init({
-    ownerId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      validate: {
-        len: [1, 255]
-      }
-    },
+    ownerId: DataTypes.INTEGER,
     address: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [1, 30]
+        len: [1, 255]
       }
     },
     city: {
@@ -68,12 +62,10 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     lat: {
-      type: DataTypes.DECIMAL,
-      allowNull: false
+      type: DataTypes.DECIMAL
     },
     lng: {
-      type: DataTypes.DECIMAL,
-      allowNull: false
+      type: DataTypes.DECIMAL
     },
     name: {
       type: DataTypes.STRING,
