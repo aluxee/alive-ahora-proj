@@ -139,7 +139,8 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
-    options.tableName = 'SpotImages'
+    options.tableName = 'SpotImages';
+    const Op = Sequelize.Op;
     await queryInterface.bulkDelete(options, {
       spotId: { [Op.in]: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] }
     }, {});
