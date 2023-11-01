@@ -34,7 +34,7 @@ module.exports = {
       },
       {
         spotId: 2,
-        userId: 4,
+        userId: 2,
         review: 'This is exactly how I pictured it, a few more tweaks and it could have been beyond.',
         stars: 4
       },
@@ -70,7 +70,7 @@ module.exports = {
       },
       {
         spotId: 3,
-        userId: 4,
+        userId: 3,
         review: 'Fair price, beautiful place, could use a bit of maintenance but overall really great!',
         stars: 4
       },
