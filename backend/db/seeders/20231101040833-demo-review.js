@@ -87,43 +87,43 @@ module.exports = {
         stars: 4
       },
       {
-        spotId: 4,
+        spotId: 2,
         userId: 3,
         review: 'Complete and utter trash.',
         stars: 1
       },
       {
-        spotId: 4,
+        spotId: 2,
         userId: 3,
         review: 'This beautiful studio is a shining example of excellence. I`m thoroughly impressed and can`t find a single flaw to point out. Five stars without a doubt!',
         stars: 5
       },
       {
-        spotId: 5,
+        spotId: 1,
         userId: 2,
         review: 'Don`t waste your time.',
         stars: 2
       },
       {
-        spotId: 5,
+        spotId: 2,
         userId: 3,
         review: 'Disappointing experience.  The quality didn`t match the price, and there were several issues that left me dissatisfied.I wouldn`t recommend it, as there are better options available.',
         stars: 2
       },
       {
-        spotId: 5,
+        spotId: 3,
         userId: 3,
         review: 'Definitely room for improvement!',
         stars: 3
       },
       {
-        spotId: 5,
+        spotId: 1,
         userId: 1,
         review: 'This place is perfect and everything I needed after such a stressful month!',
         stars: 5
       },
       {
-        spotId: 5,
+        spotId: 2,
         userId: 2,
         review: 'Just kidding! Pulled your leg with my last review, this place is the definition of perfection!',
         stars: 5
