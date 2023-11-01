@@ -4,7 +4,8 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
 const { setTokenCookie, restoreUser } = require('../../utils/auth');
-const { User, Spot, Review, SpotImage, Sequelize } = require('../../db/models');
+const { User, Spot, Review, SpotImage } = require('../../db/models');
+const { Sequelize, DataTypes } = require('sequelize');
 const router = express.Router();
 
 
@@ -35,70 +36,129 @@ router.get('/',
 				pagination.offset = size * (page - 1);
 			}() : ''
 			const spots = await Spot.findAll({
-				// * upon spot igm iteration: preview prop omit completely or preview img null
+
 				raw: true,
-				attributes: {},
-				include: {
-					model: Review,
-					attributes: ['stars']
-				},
+				attributes: [
+					'id',
+					'ownerId',
+					'address',
+					'city',
+					'state',
+					'country',
+					'lat',
+					'lng',
+					'name',
+					'description',
+					'price',
+					'createdAt',
+					'updatedAt',
+				],
+				order: ['id'],
 				where: {},
 				...pagination,
 			})
 
-			const avgRatings = await Review.findAll({
-				attributes: ['spotId', [Sequelize.fn('AVG', Sequelize.col('stars')), 'avgRating']], //built in sequelize fxn
-				group: ['spotId'] // group the results by Spot.id to get the average rating for each spot separately.
+
+			//lazy loading
+			const allReviews = await Review.findAll({
+				attributes: {}
+			})
+			const reviewsDataValues = allReviews.map((review) => review.dataValues);
+
+			//extract all the spot images of a spot
+			const spotImages = await SpotImage.findAll({
+				attributes: {}
 			})
 
-			for (const spot of spots){
+			const allSpotImages = spotImages.map((spotImage) =>
+				spotImage.dataValues);
 
-				const spotId = spot.id;
-				const avgRating = avgRatings.find(avg => avg.spotId === spotId);
-				if (avgRating) {
-					spot.dataValues.avgRating = avgRating.getDataValue('avgRating');
-				} else {
-					spot.dataValues.avgRating = null;
-				}
-			}
-
-			// });
-			// all the games where we can get the ratings of each
-
-
-			for (let spot of spots) {
-				// console.log('Will this show? ', spot); // this provides every spot's following info by id: dataValues (all dataValues of the spot), _previousDataValues(same info as prior, just not shown when req data), uniqueNo: 1, _changed:, _options:, isNewRecord(boolean))
-
-
-				//define image
-				const spotImage = await SpotImage.findOne({
-					where: {
-						[Op.and]: [
-							{ preview: true },
-							{ spotId: spot.id }
-						]
-					},
-
-				})
-				//what if there is no image? account for there to always be something
-
-				// 		if (! spotImage) {
-				// 			spot.spotImage = 'https://i.imgur.com/OtDlhCI.png'
-				// 		} else {
-				// 			spot.preview = spotImage.url
-				// 		}
+			// * do not delete data variable
+			const data = { // assemble all necessary attributes in one object named data
+				Reviews: reviewsDataValues,
+				Spots: spots,
+				SpotImages: allSpotImages
 			};
 
+			const reviewCountPerSpot = {};
+			const totalStarsPerSpot = {};
+
+			data.Reviews.forEach((review) => { // iterate thru the reviews section of the data object
+				const spotId = review.spotId;
+				const stars = review.stars;
+
+				if (!review) {
+					const err = new Error('The review does not exist.')
+					err.status = 404;
+					res.json({
+						message: err.message,
+						code: err.status
+					})
+				} else { // if the review does exist, we are going to find the total count
+
+					if (reviewCountPerSpot[spotId]) { // if there is a review for that specific spot, count it
+						reviewCountPerSpot[spotId]++
+					} else { // if it's counted, don't add to it
+						reviewCountPerSpot[spotId] = 1
+					}
+					if (!totalStarsPerSpot[spotId]) {
+						totalStarsPerSpot[spotId] = stars; // initialize for the first
+					} else {
+						totalStarsPerSpot[spotId] += stars;
+					}
+				}
+			})
+
+			const img = {};
+			data.SpotImages.forEach(spotImage => {
+				// const spotId = spotImage.spotId;
+				const id = spotImage.id;
+				if (spotImage.preview === true) {
+					img[id] = spotImage.url
+				} else if (spotImage.preview === false || !spotImage.preview) {
+					spotImage.url = null
+				}
+			})
+			data.Spots.forEach(spot => {
+				//account for error
+
+				if (!spot) {
+					const err = new Error('This spot does not exist.')
+					err.status = 404;
+					res.json({
+						message: err.message,
+						code: err.status
+					})
+				} else {
+					//variable for the id of spot
+					const spotId = spot.id;
+					//variable for reviewCount, taking in the reviewCount or 0
+					const reviewCount = reviewCountPerSpot[spotId] || 0;
+					// console.log(`Spot ID ${spotId}: Name = ${spot.name}, Review Count = ${reviewCount}`);
+					if (reviewCount > 0) { // if there are reviews
+						const totalStars = totalStarsPerSpot[spotId] || 0;
+						let avgRating = (totalStars / reviewCount).toFixed(1);
+						//create the added attribute under Spots:
+						spot.avgRating = avgRating;
+					}
+
+					if (img[spotId]) {
+						spot.previewImage = img[spotId];
+					}
+				}
+			})
 
 			return res.json({
-				spots: spots
+				spots: spots,
+				page,
+				size
 			});
+
 		} catch (error) {
 			console.error('Error fetching spots and average ratings: ', error);
 			return res.status(500).json({ error: 'Internal server error' });
 		}
 	}
-
 )
 
 // Check out all the spots owned (created) by the current user
