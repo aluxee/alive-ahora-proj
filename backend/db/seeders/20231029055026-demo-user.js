@@ -30,7 +30,7 @@ module.exports = {
         firstName: 'Chocolate',
         lastName: 'Chips',
         username: 'FakeUser2',
-        hashedPassword: bcrypt.hashSync('password3')
+        hashedPassword: bcrypt.hashSync('c')
       }
     ], options, { validate: true });
   },
