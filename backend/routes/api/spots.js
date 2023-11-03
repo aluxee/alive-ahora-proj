@@ -371,7 +371,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
 	})
 
-	console.log('spots', spots);
+	// console.log('spots', spots);
 
 
 	const spotsPayload = [];
@@ -398,7 +398,7 @@ router.get('/current', requireAuth, async (req, res) => {
 			spot.avgRating = null;
 		}
 
-		console.log(spot)
+		// console.log(spot)
 		const img = await SpotImage.findOne({
 
 			where: {
@@ -412,7 +412,7 @@ router.get('/current', requireAuth, async (req, res) => {
 		img ? spot.previewImage = img.url : ''
 		!img ? spot.previewImage = null : ''
 	}
-	console.log(spotsPayload)
+	// console.log(spotsPayload)
 	res.json({
 		Spots: spotsPayload,
 	})
@@ -666,7 +666,7 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {
 
 
 
-
+//Returns the details of a spot specified by its id
 router.get('/:spotId', async (req, res) => {
 	// * will need to change formatting of created and updated at
 	const { spotId } = req.params;
@@ -691,17 +691,17 @@ router.get('/:spotId', async (req, res) => {
 	})
 
 	const rezSpot = spot.toJSON();
-	// console.log(rezSpot)
-
 	if (!spot) {
 		const err = new Error("Spot couldn't be found")
 		err.status = 404;
 		err.title = 'Couldn’t find a Spot with the specified id';
-		res.json({
+		return res.json({
 			message: err.message,
 			code: err.status
 		})
 	}
+	// console.log(rezSpot)
+
 	let avgRating;
 
 	const reviews = await Review.count(
