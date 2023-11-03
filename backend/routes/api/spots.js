@@ -85,7 +85,17 @@ router.get('/:spotId/reviews', async (req, res) => {
 				}
 			}
 		]
+
 	})
+
+	if (!spot) {
+		return res
+			.status(404)
+			.json({
+				"message": "Spot couldn't be found",
+				statusCode: 404
+			})
+	}
 	const reviewPayload = [];
 
 
@@ -110,8 +120,8 @@ router.get('/:spotId/reviews', async (req, res) => {
 			lastName: user.lastName
 		}
 		// const reviewImage = await ReviewImage.findByPk(review.reviewId);
-		console.log("review", review)
-		console.log("---------------");
+		// console.log("review", review)
+		// console.log("---------------");
 		// console.log(await ReviewImage.findByPk(review.userId))
 		// review.ReviewImages = {
 		// 	id: reviewImage.reviewId,
@@ -126,13 +136,7 @@ router.get('/:spotId/reviews', async (req, res) => {
 		Reviews: reviewPayload
 	})
 
-	if (!spot) {
-		res.status(404)
-		res.json({
-			"message": "Spot couldn't be found",
-			statusCode: 404
-		})
-	}
+
 
 })
 
@@ -651,7 +655,7 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {
 
 	} catch (err) {
 		if (!spot) {
-			 return res
+			return res
 				.status(404)
 				.json({
 					statusCode: 404,
@@ -695,11 +699,11 @@ router.get('/:spotId', async (req, res) => {
 		err.status = 404;
 		err.title = 'Couldn’t find a Spot with the specified id';
 		return res
-		.status(404)
-		.json({
-			message: err.message,
-			code: err.status
-		})
+			.status(404)
+			.json({
+				message: err.message,
+				code: err.status
+			})
 	}
 	const rezSpot = spot.toJSON();
 	// console.log(rezSpot)
