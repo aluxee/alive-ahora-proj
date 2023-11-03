@@ -87,13 +87,7 @@ router.get('/current', handleValidationErrors, requireAuth, async (req, res) => 
 				attributes: {
 					exclude: ['createdAt', 'updatedAt', 'description']
 				},
-				// include: {
-				// 	model: SpotImage,
-				// 	where:
-				// 		{ preview: true },
-				// 	attributes: ['url']
-
-				// }
+	
 			},
 			{
 				model: ReviewImage,
@@ -103,7 +97,7 @@ router.get('/current', handleValidationErrors, requireAuth, async (req, res) => 
 			}
 		]
 	});
-	console.log("REVIEWS: ", reviews)
+	// console.log("REVIEWS: ", reviews)
 	const reviewPayload = [];
 
 

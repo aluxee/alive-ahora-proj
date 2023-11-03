@@ -89,7 +89,7 @@ module.exports = {
         reviewId: 20,
         url: 'https://i.imgur.com/Ycuuk2G.png'
       }
-    ])
+    ], options, {validate: true});
   },
 
   async down(queryInterface, Sequelize) {

@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const bookingsRouter = require('./bookings');
 const reviewsRouter = require('./reviews');
 const spotsRouter = require('./spots');
 const sessionRouter = require('./session.js');
@@ -17,6 +18,8 @@ router.use('/users', usersRouter);
 router.use('/spots', spotsRouter);
 
 router.use('/reviews', reviewsRouter);
+
+router.use('/bookings', bookingsRouter);
 
 router.post('/test', (req, res) => { // * don't touch, leave this in place until at least after mod 5, could be handy
 	res.json({ requestBody: req.body });
