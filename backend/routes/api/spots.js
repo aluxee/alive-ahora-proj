@@ -699,7 +699,7 @@ router.get('/:spotId', async (req, res) => {
 			code: err.status
 		})
 	}
-			const rezSpot = spot.toJSON();
+	const rezSpot = spot.toJSON();
 	// console.log(rezSpot)
 
 	let avgRating;
