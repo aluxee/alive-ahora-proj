@@ -5,6 +5,7 @@ const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
 const { User, Spot, Review, SpotImage, ReviewImage, Booking, sequelize } = require('../../db/models');
 const { Sequelize, DataTypes } = require('sequelize');
+const review = require('../../db/models/review');
 
 const router = express.Router();
 
@@ -56,49 +57,73 @@ const validateBody = [
 
 
 
+// return all reviews that belong to a spot by id
+router.get('/:spotId/reviews', async (req, res) => {
+	const { spotId } = req.params
+	const spot = await Spot.findByPk(spotId);
 
-// router.get('/:spotId/reviews', async (req, res) => {
-// 	const spotId = req.params.spotId;
-// 	const spot = await Spot.findByPk(spotId)
-// 	try {
-// 		const reviews = await Review.findAll({
-// 			attributes: [
-// 				'id', 'userId', 'spotId', 'review', 'stars'
-// 			],
-// 			include: [
-// 				{
-// 					model: User,
-// 					attributes: ['id', 'firstName', 'lastName']
-// 				},
-// 			]
-// 		})
+	const reviews = await Review.findAll({
+		where: {
+			spotId: spotId
+		},
+		include: [
+			{
+				model: ReviewImage,
+				attributes: {
+					exclude: ['createdAt', 'updatedAt', 'reviewId']
+				}
+			}
+		]
+	})
+	const reviewPayload = [];
 
-// 		//add category called "review images" to reviews
-// 		const reviewImages = await ReviewImage.findAll({
-// 			where: {
-// 				reviewId: 'id',
-// 				url
-// 			}
 
-// 		})
-// 		if(spot){
+	// const allReviews = await Review.findAll({
+	// 	attributes: {}
+	// })
+	// const reviewsDataValues = allReviews.map((review) => review.dataValues);
 
-// 		}
 
-// 		res.json({
-// 			Reviews: reviews
-// 		})
-// 	} catch (err) {
+	// console.log("spot-pot", spot);
+	//add category called "review images" to reviews
 
-// 		if (!spot) {
-// 			res.status(404)
-// 			res.json({
-// 				"message": "Spot couldn't be found",
-// 				statusCode: 404
-// 			})
-// 		}
-// 	}
-// })
+	for (let review of reviews) {
+		review = review.toJSON();
+		const user = await User.findByPk(review.userId);
+		const img = await ReviewImage.findByPk(review.id)
+		// const image = reviewImages.toJSON()
+		console.log("CONSOLE: ", review.id, img)
+		review.User = {
+			id: user.id,
+			firstName: user.firstName,
+			lastName: user.lastName
+		}
+	// const reviewImage = await ReviewImage.findByPk(review.reviewId);
+	console.log(review)
+	console.log("---------------");
+	// console.log(await ReviewImage.findByPk(review.userId))
+	// review.ReviewImages = {
+	// 	id: reviewImage.reviewId,
+	// 	url: reviewImage.url
+	}
+	// console.log(review.id)
+	// reviewPayload.push(review)
+	// }
+
+
+	res.json({
+		// Reviews: reviewPayload
+	})
+
+	if (!spot) {
+		res.status(404)
+		res.json({
+			"message": "Spot couldn't be found",
+			statusCode: 404
+		})
+	}
+
+})
 
 
 
@@ -167,7 +192,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
 	console.log('spots', spots);
 
-	let avgRating;
+
 	const spotsPayload = [];
 	for (let spot of spots) {
 		spot = spot.toJSON()
@@ -453,9 +478,6 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {
 					message: "Spot couldn't be found"
 				})
 		}
-		res
-			.status(400)
-			.message("Body validation error")
 		next(err)
 	}
 })
