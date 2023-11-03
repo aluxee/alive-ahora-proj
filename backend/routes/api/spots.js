@@ -98,21 +98,21 @@ router.get('/:spotId/reviews', async (req, res) => {
 			firstName: user.firstName,
 			lastName: user.lastName
 		}
-	// const reviewImage = await ReviewImage.findByPk(review.reviewId);
-	console.log(review)
-	console.log("---------------");
-	// console.log(await ReviewImage.findByPk(review.userId))
-	// review.ReviewImages = {
-	// 	id: reviewImage.reviewId,
-	// 	url: reviewImage.url
+		// const reviewImage = await ReviewImage.findByPk(review.reviewId);
+		console.log("review", review)
+		console.log("---------------");
+		// console.log(await ReviewImage.findByPk(review.userId))
+		// review.ReviewImages = {
+		// 	id: reviewImage.reviewId,
+		// 	url: reviewImage.url
+		reviewPayload.push(review)
 	}
 	// console.log(review.id)
-	// reviewPayload.push(review)
-	// }
+
 
 
 	res.json({
-		// Reviews: reviewPayload
+		Reviews: reviewPayload
 	})
 
 	if (!spot) {
@@ -126,9 +126,53 @@ router.get('/:spotId/reviews', async (req, res) => {
 })
 
 
+//Create and return a new review for a spot specified by id
+router.post('/:spotId/reviews', handleValidationErrors, requireAuth, async (req, res) => {
+	const { spotId } = req.params;
+	// const spot = await Spot.findByPk(spotId)
+	// const { review, stars } = req.body;
+
+	const reviews = await Review.findAll({
+		where: {
+			spotId: spotId,
+
+		},
+
+	})
 
 
+	if (!spotId) {
+		res
+			.status(404)
+			.json({
+				"message": "Spot couldn't be found",
+				statusCode: 404
+			})
+	}
+	if (reviews) {
+		res
+			.status(500)
+			.json({
+				"message": "User already has a review for this spot",
+				statusCode: 500
 
+			})
+	}
+	const reviewPayload = [];
+	for(let review of reviews) {
+		review = review.toJSON();
+		const user = await User.findByPk(review.userId);
+		// console.log(review.stars, review.review)
+		reviewPayload.push(review)
+		// console.log("REVIEW: ", review)
+	}
+
+	res.json({
+		reviewPayload
+	})
+
+
+})
 
 
 
