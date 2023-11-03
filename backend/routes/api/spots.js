@@ -651,7 +651,7 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {
 
 	} catch (err) {
 		if (!spot) {
-			res
+			 return res
 				.status(404)
 				.json({
 					statusCode: 404,
@@ -694,7 +694,9 @@ router.get('/:spotId', async (req, res) => {
 		const err = new Error("Spot couldn't be found")
 		err.status = 404;
 		err.title = 'Couldn’t find a Spot with the specified id';
-		return res.json({
+		return res
+		.status(404)
+		.json({
 			message: err.message,
 			code: err.status
 		})
