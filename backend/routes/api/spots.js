@@ -368,7 +368,7 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 router.get('/current', requireAuth, async (req, res) => {
 	const { user } = req
 	const ownerId = user.id;
-	console.log('currentRoute');
+	// console.log('currentRoute');
 	const spots = await Spot.findAll({
 
 		attributes: [

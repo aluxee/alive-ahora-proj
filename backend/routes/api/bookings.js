@@ -1,7 +1,9 @@
 const express = require('express');
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth } = require('../../utils/auth');
 const { Spot, SpotImage, Booking } = require('../../db/models');
-const { response } = require('../../app');
+
 
 
 
@@ -10,11 +12,16 @@ const router = express.Router();
 
 
 
-router.get('/current', async (req, res) => {
+router.get('/current', requireAuth, async (req, res) => {
 	// no body
 	// req authentication
-
-	const bookings = await Booking.findAll()
+	const { user} = req;
+	// const userId = user.id;
+	const bookings = await Booking.findAll({
+		where: {
+			userId: user.id
+		}
+	})
 	const bookingsPayload = [];
 	for (let booking of bookings) {
 
