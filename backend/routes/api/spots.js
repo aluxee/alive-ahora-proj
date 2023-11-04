@@ -199,7 +199,7 @@ router.post('/:spotId/reviews', handleValidationErrors, requireAuth, async (req,
 				"errors": {
 					"review": "Review text is required",
 					"stars": "Stars must be an integer from 1 to 5",
-				"statusCode": 400
+					"statusCode": 400
 				}
 			})
 	}
@@ -713,14 +713,12 @@ router.get('/:spotId', async (req, res) => {
 	})
 
 	if (!spot) {
-		const err = new Error("Spot couldn't be found")
-		err.status = 404;
-		err.title = 'Couldn’t find a Spot with the specified id';
+
 		return res
 			.status(404)
 			.json({
-				message: err.message,
-				code: err.status
+				"message": "Spot couldn't be found",
+				// "error": "Couldn’t find a Spot with the specified id",
 			})
 	}
 	const rezSpot = spot.toJSON();
