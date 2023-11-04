@@ -639,11 +639,11 @@ router.post('/:spotId/images', handleValidationErrors, requireAuth, async (req, 
 
 	} catch (err) {
 		if (!spot) {
-			res
+			return res
 				.status(404)
 				.json({
-					statusCode: 404,
-					message: "Spot couldn't be found"
+					"message": "Spot couldn't be found",
+					// "error": " Couldn’t find a Spot with the specified id"
 				})
 		}
 	}
@@ -676,9 +676,9 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {
 			return res
 				.status(404)
 				.json({
-					statusCode: 404,
+					// statusCode: 404,
 					message: "Spot couldn't be found",
-					"error": "Couldn’t find a Spot with the specified id"
+					// "error": "Couldn’t find a Spot with the specified id"
 				})
 		}
 		next(err)
