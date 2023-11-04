@@ -146,26 +146,29 @@ router.post('/:spotId/reviews', handleValidationErrors, requireAuth, async (req,
 	const { spotId } = req.params;
 	// const spot = await Spot.findByPk(spotId)
 	// const { review, stars } = req.body;
-
-	const reviews = await Review.findAll({
+	const spot = await Spot.findByPk(spotId);
+	console.log("spot", spot)
+	const { review, stars } = req.body
+	const reviewPost = await Review.findOne({
 		where: {
-			spotId: spotId,
+			spotId: req.params.spotId,
+			userId: req.user.id
 
 		},
 
 	})
 
 
-	if (!spotId) {
-		res
+	if (!spot) {
+		return res
 			.status(404)
 			.json({
 				"message": "Spot couldn't be found",
 				statusCode: 404
 			})
 	}
-	if (reviews) {
-		res
+	if (reviewPost) {
+		return res
 			.status(500)
 			.json({
 				"message": "User already has a review for this spot",
@@ -173,25 +176,40 @@ router.post('/:spotId/reviews', handleValidationErrors, requireAuth, async (req,
 
 			})
 	}
-	const reviewPayload = [];
-	for (let review of reviews) {
-		review = review.toJSON();
-		const user = await User.findByPk(review.userId);
-		// console.log(review.stars, review.review)
-		reviewPayload.push(review)
-		// console.log("REVIEW: ", review)
+	try {
+		const reviewCreated = await Review.create({
+			userId: req.user.id,
+			spotId: req.params.spotId,
+			review,
+			stars
+		})
+
+		return res
+			.status(201)
+			.json({
+				reviewCreated,
+				"statusCode": 201
+			})
+
+	} catch (error) {
+		res
+			.status(400)
+			.json({
+				"message": "Bad Request",
+				"errors": {
+					"review": "Review text is required",
+					"stars": "Stars must be an integer from 1 to 5",
+				"statusCode": 400
+				}
+			})
 	}
 
-	res.json({
-		reviewPayload
-	})
 
 
 })
 
 
-//! ________________________________________
-// ! start here:
+
 //Return all the bookings for a spot specified by id.
 router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 
@@ -201,7 +219,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 	// spot = spot.toJSON();
 
 	if (!spot) {
-		res
+		return res
 			.status(404)
 			.json({
 				"message": "Spot couldn't be found",
