@@ -443,150 +443,78 @@ router.get('/current', requireAuth, async (req, res) => {
 //Get all the spots
 router.get('/',
 	async (req, res) => {
-		try {
-
-			// show all results of spots ; use pagination
-			//	-	utilizing query instead of simple body, thus use let and refer to all variables(page, size + all agg variables)
-			// list requests of queries
-			let { page, size, } = req.query; // adding page, size, etc. as keys to req.query
-
-			// change page and size to numbers
-			page = parseInt(page);
-			size = parseInt(size);
-
-			!page ? page = 1 : '';
-			!size ? size = 20 : '';
-			page > 10 ? page = 10 : '';
-			size > 20 ? size = 20 : '';
-
-			let pagination = {};
-
-			page >= 1 && size >= 1 ? function () {
-				pagination.limit = size;
-				pagination.offset = size * (page - 1);
-			}() : ''
-			const spots = await Spot.findAll({
-
-				attributes: [
-					'id',
-					'ownerId',
-					'address',
-					'city',
-					'state',
-					'country',
-					'lat',
-					'lng',
-					'name',
-					'description',
-					'price',
-					'createdAt',
-					'updatedAt',
-				],
-				order: ['id'],
-				where: {},
-				...pagination,
-			})
 
 
-			//lazy loading
-			const allReviews = await Review.findAll({
-				attributes: {}
-			})
-			const reviewsDataValues = allReviews.map((review) => review.dataValues);
+		// show all results of spots ; use pagination
+		//	-	utilizing query instead of simple body, thus use let and refer to all variables(page, size + all agg variables)
+		// list requests of queries
+		let { page, size, } = req.query; // adding page, size, etc. as keys to req.query
 
-			//extract all the spot images of a spot
-			const spotImages = await SpotImage.findAll({
-				attributes: {}
-			})
+		// change page and size to numbers
+		page = parseInt(page);
+		size = parseInt(size);
 
-			const allSpotImages = spotImages.map((spotImage) =>
-				spotImage.dataValues);
+		!page ? page = 1 : '';
+		!size ? size = 20 : '';
+		page > 10 ? page = 10 : '';
+		size > 20 ? size = 20 : '';
 
-			// * do not delete data variable
-			const data = { // assemble all necessary attributes in one object named data
-				Reviews: reviewsDataValues,
-				Spots: spots,
-				SpotImages: allSpotImages
-			};
+		let pagination = {};
 
-			const reviewCountPerSpot = {};
-			const totalStarsPerSpot = {};
+		page >= 1 && size >= 1 ? function () {
+			pagination.limit = size;
+			pagination.offset = size * (page - 1);
+		}() : ''
+		const spots = await Spot.findAll({
 
-			data.Reviews.forEach((review) => { // iterate thru the reviews section of the data object
-				const spotId = review.spotId;
-				const stars = review.stars;
+			attributes: [
+				'id',
+				'ownerId',
+				'address',
+				'city',
+				'state',
+				'country',
+				'lat',
+				'lng',
+				'name',
+				'description',
+				'price',
+				'createdAt',
+				'updatedAt',
+			],
+			order: ['id'],
+			where: {},
+			...pagination,
+		})
 
-				if (!review) {
-					const err = new Error('The review does not exist.')
-					err.status = 404;
-					res.json({
-						message: err.message,
-						code: err.status
-					})
-				} else { // if the review does exist, we are going to find the total count
+		const spotPayload = []
+		for (let spot of spots) {
 
-					if (reviewCountPerSpot[spotId]) { // if there is a review for that specific spot, count it
-						reviewCountPerSpot[spotId]++
-					} else { // if it's counted, don't add to it
-						reviewCountPerSpot[spotId] = 1
-					}
-					if (!totalStarsPerSpot[spotId]) {
-						totalStarsPerSpot[spotId] = stars; // initialize for the first
-					} else {
-						totalStarsPerSpot[spotId] += stars;
-					}
+			const spotId = spot.id;
+			spot = spot.toJSON();
+
+			let img = await SpotImage.findByPk(spotId, {
+				where: {
+					preview: true
 				}
 			})
+			if(img !== null){
+				img = img.toJSON()
+				// console.log("img", img)
 
-			const img = {};
-			data.SpotImages.forEach(spotImage => {
-				// const spotId = spotImage.spotId;
-				const id = spotImage.id;
-				if (spotImage.preview === true) {
-					img[id] = spotImage.url
-				} else if (spotImage.preview === false || !spotImage.preview) {
-					spotImage.url = null
-				}
-			})
-			data.Spots.forEach(spot => {
-				//account for error
+				spot.previewImage = img.url
+			}
 
-				if (!spot) {
-					const err = new Error('This spot does not exist.')
-					err.status = 404;
-					res.json({
-						message: err.message,
-						code: err.status
-					})
-				} else {
-					//variable for the id of spot
-					const spotId = spot.id;
-					//variable for reviewCount, taking in the reviewCount or 0
-					const reviewCount = reviewCountPerSpot[spotId];
-					// console.log(`Spot ID ${spotId}: Name = ${spot.name}, Review Count = ${reviewCount}`);
-					if (reviewCount > 0) { // if there are reviews
-						const totalStars = totalStarsPerSpot[spotId];
-						let avgRating = (totalStars / reviewCount).toFixed(1);
-						//create the added attribute under Spots:
-						spot.avgRating = avgRating;
-					}
-
-					if (img[spotId]) {
-						spot.previewImage = img[spotId];
-					}
-				}
-			})
-
-			return res.json({
-				Spots: spots,
-				page,
-				size
-			});
-
-		} catch (err) {
-			console.err('Error fetching spots and average ratings: ', err);
-			return res.status(500).json({ error: 'Internal server error' });
+			spotPayload.push(spot)
 		}
+
+		return res.json({
+			Spots: spotPayload,
+			page,
+			size
+		});
+
+
 	}
 )
 
