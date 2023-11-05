@@ -1,4 +1,5 @@
 const express = require('express');
+const { Op } = require('sequelize');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { requireAuth, authorization } = require('../../utils/auth');
@@ -11,15 +12,15 @@ const router = express.Router();
 
 
 
-
+//Return all the bookings that the current user has made
 router.get('/current', requireAuth, async (req, res) => {
 	// no body
 	// req authentication
-	const { user} = req;
+	const { user } = req;
 	// const userId = user.id;
 	const bookings = await Booking.findAll({
 		where: {
-			userId: user.id
+			userId: req.user.id
 		}
 	})
 	const bookingsPayload = [];
@@ -41,17 +42,29 @@ router.get('/current', requireAuth, async (req, res) => {
 		spot = spot.toJSON();
 
 		// define img thru pk
-		let img = await SpotImage.findByPk(spotId)
-		img = img.toJSON();
+		const img = await SpotImage.findByPk(spotId, {
+			where: {
+				[Op.and]: [
+					{ spotId: spot.id },
+					{ preview: true }
+				]
+			}
+		})
+		if (img) {
+
+			spot.previewImage = img.url;
+		} else {
+			spot.previewImage = null;
+		}
+		// (bang) img ? spot.previewImage = null : '';
+		// console.log("IMAGE: ", img)
 
 
-		// create key called previewImage in the spot w/ img
-		spot.previewImage = img.url
+
 		booking.Spot = spot;
 		bookingsPayload.push(booking)
 
 	}
-
 
 
 	res.json({

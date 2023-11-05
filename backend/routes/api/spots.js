@@ -131,7 +131,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
 	})
 
-	console.log('spots', spots);
+	// console.log('spots', spots);
 
 
 	const spotsPayload = [];
@@ -155,7 +155,7 @@ router.get('/current', requireAuth, async (req, res) => {
 			}
 		})
 
-		console.log(reviews, totalStars, spot.id);
+		// console.log(reviews, totalStars, spot.id);
 
 		if (reviews && totalStars) {
 
@@ -164,7 +164,8 @@ router.get('/current', requireAuth, async (req, res) => {
 			spot.avgRating = null;
 		}
 
-		console.log(spot)
+		// console.log(spot)
+
 		const img = await SpotImage.findAll( {
 
 			where: {
@@ -182,6 +183,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
 	}
 	// console.log(spotsPayload)
+	
 	res.json({
 		Spots: spotsPayload
 	})
@@ -339,6 +341,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 				statusCode: 404
 			})
 	}
+	// if the user requesting the booking is NOT the owner
 	if (req.user.id !== spot.ownerId) {
 		const bookings = await Booking.findAll({
 			where: {
@@ -371,7 +374,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 })
 
 
-router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req, res) => {
+router.post('/:spotId/bookings', requireAuth, authorization, validateCreateBooking, async (req, res) => {
 	const { user } = req;
 	const { spotId } = req.params;
 	const spot = await Spot.findByPk(spotId);
