@@ -122,7 +122,7 @@ router.get('/current', handleValidationErrors, requireAuth, async (req, res) => 
 			}
 		]
 	});
-	console.log("REVIEWS: ", reviews)
+	// console.log("REVIEWS: ", reviews)
 	const reviewPayload = [];
 
 

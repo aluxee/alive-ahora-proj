@@ -32,8 +32,7 @@ router.delete('/:imageId', requireAuth, authorization, async (req, res) => {
 		return res
 			.status(403)
 			.json({
-				"message": "Permission denied",
-				"statusCode": 403
+				"message": "Permission denied"
 			});
 	}
 

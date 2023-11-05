@@ -105,8 +105,7 @@ router.delete('/:spotId', requireAuth, authorization, async (req, res) => {
 
 // Check out all the spots owned (created) by the current user
 router.get('/current', requireAuth, async (req, res) => {
-	const { user } = req
-	const ownerId = user.id;
+
 	// console.log('currentRoute');
 	const spots = await Spot.findAll({
 
@@ -127,7 +126,7 @@ router.get('/current', requireAuth, async (req, res) => {
 		],
 		order: ['id'],
 		where: {
-			ownerId: ownerId
+			ownerId: req.user.id
 		},
 
 	})
@@ -136,18 +135,23 @@ router.get('/current', requireAuth, async (req, res) => {
 
 
 	const spotsPayload = [];
+
 	for (let spot of spots) {
-		spot = spot.toJSON()
-		spotsPayload.push(spot);
+
+		spot = spot.toJSON();
+
+
 		const reviews = await Review.count(
 			{
 				where: {
-					spotId: spot.id
+					[Op.and]:
+					{spotId: spot.id}
 				}
 			});
 		const totalStars = await Review.sum('stars', {
 			where: {
-				spotId: spot.id
+				[Op.and]:
+				{spotId: spot.id}
 			}
 		})
 
@@ -161,7 +165,7 @@ router.get('/current', requireAuth, async (req, res) => {
 		}
 
 		// console.log(spot)
-		const img = await SpotImage.findOne({
+		const img = await SpotImage.findByPk(req.user.id, {
 
 			where: {
 				[Op.and]: [
@@ -171,12 +175,15 @@ router.get('/current', requireAuth, async (req, res) => {
 			}
 
 		})
-		img ? spot.previewImage = img.url : ''
-		!img ? spot.previewImage = null : ''
+		img ? spot.previewImage = img.url : '';
+		!img ? spot.previewImage = null : '';
+		
+		spotsPayload.push(spot);
+
 	}
 	// console.log(spotsPayload)
 	res.json({
-		Spots: spotsPayload,
+		Spots: spotsPayload
 	})
 })
 
@@ -273,16 +280,14 @@ router.post('/:spotId/reviews', handleValidationErrors, requireAuth, async (req,
 		return res
 			.status(404)
 			.json({
-				"message": "Spot couldn't be found",
-				statusCode: 404
+				"message": "Spot couldn't be found"
 			})
 	}
 	if (reviewPost) {
 		return res
 			.status(500)
 			.json({
-				"message": "User already has a review for this spot",
-				statusCode: 500
+				"message": "User already has a review for this spot"
 
 			})
 	}
@@ -297,8 +302,7 @@ router.post('/:spotId/reviews', handleValidationErrors, requireAuth, async (req,
 		return res
 			.status(201)
 			.json({
-				reviewCreated,
-				"statusCode": 201
+				reviewCreated
 			})
 
 	} catch (error) {
@@ -308,8 +312,7 @@ router.post('/:spotId/reviews', handleValidationErrors, requireAuth, async (req,
 				"message": "Bad Request",
 				"errors": {
 					"review": "Review text is required",
-					"stars": "Stars must be an integer from 1 to 5",
-					"statusCode": 400
+					"stars": "Stars must be an integer from 1 to 5"
 				}
 			})
 	}
