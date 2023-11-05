@@ -24,27 +24,40 @@ const validateReview = [
 ]
 
 //Create and return a new image for a review specified by id
-router.post('/:reviewId/images', requireAuth, handleValidationErrors, async (req, res) => {
-
+router.post('/:reviewId/images', requireAuth, async (req, res) => {
 	const { url } = req.body;
+	const { user } = req;
 
 	const { reviewId } = req.params;
-	const review = await Review.findByPk(reviewId, {
-		attributes: {
-			exclude: ['spotId', 'userId', 'stars', 'review', 'createdAt', 'updatedAt']
-		}
-	})
+	const userReview = await Review.findByPk(reviewId);
 
-	if (!reviewId) {
-		res
+	if (!userReview) {
+		return res
 			.status(404)
 			.json({
 				"message": "Review couldn't be found",
 				statusCode: 404
 			})
 	}
-	if (review.length >= 10) {
-		res
+
+	if(userReview.userId !== user.id){
+		return res.status(403).json({
+			"message": "Permission denied",
+			statusCode: 403
+		});
+	}
+
+
+
+	const existingImages = await ReviewImage.findAll({
+		attributes: ['id', 'url'],
+		where: {
+			reviewId
+		}
+	})
+
+	if (existingImages.length >= 10) {
+		return res
 			.status(403)
 			.json({
 				"message": "Maximum number of images for this resource was reached",
@@ -52,13 +65,19 @@ router.post('/:reviewId/images', requireAuth, handleValidationErrors, async (req
 			})
 	}
 
-	let createdReview = review.toJSON();
-	createdReview.url = url;
 
-
-	res.json({
-		createdReview
+	const createImage = await ReviewImage.create({
+		reviewId,
+		url
 	})
+
+	const imageRes = {
+		id: createImage.id,
+		url: createImage.url
+	}
+existingImages.push(imageRes)
+
+	res.json(imageRes)
 })
 
 
@@ -87,7 +106,13 @@ router.get('/current', handleValidationErrors, requireAuth, async (req, res) => 
 				attributes: {
 					exclude: ['createdAt', 'updatedAt', 'description']
 				},
-	
+				// include: {
+				// 	model: SpotImage,
+				// 	where:
+				// 		{ preview: true },
+				// 	attributes: ['url']
+
+				// }
 			},
 			{
 				model: ReviewImage,
@@ -97,7 +122,7 @@ router.get('/current', handleValidationErrors, requireAuth, async (req, res) => 
 			}
 		]
 	});
-	// console.log("REVIEWS: ", reviews)
+	console.log("REVIEWS: ", reviews)
 	const reviewPayload = [];
 
 
