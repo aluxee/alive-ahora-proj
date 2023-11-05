@@ -1,7 +1,7 @@
 const express = require('express');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { requireAuth } = require('../../utils/auth');
+const { requireAuth, authorization } = require('../../utils/auth');
 const { Spot, SpotImage, Booking } = require('../../db/models');
 
 

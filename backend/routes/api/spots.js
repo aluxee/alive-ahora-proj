@@ -2,7 +2,7 @@ const express = require('express');
 const { Op } = require('sequelize');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
-const { requireAuth } = require('../../utils/auth');
+const { requireAuth, authorization } = require('../../utils/auth');
 const { User, Spot, Review, SpotImage, ReviewImage, Booking, sequelize } = require('../../db/models');
 const { Sequelize, DataTypes } = require('sequelize');
 const review = require('../../db/models/review');
@@ -69,8 +69,8 @@ const validateCreateBooking = [
 
 
 //Deletes an existing spot
-router.delete('/:spotId', requireAuth, async (req, res) => {
-	const { user } = req;
+router.delete('/:spotId', requireAuth, authorization, async (req, res) => {
+
 	const { spotId } = req.params;
 	const userId = req.user.id;
 
@@ -89,21 +89,11 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 				message: "Spot couldn't be found"
 			})
 	}
-	// delete the spot that belongs to the user
-	console.log(userId, spot)
+	// destroy the spot that belongs to the user
+	// console.log(userId, spot)
 
-	if (spot.ownerId !== userId) {
-		return res
-			.status(403)
-			.json({
-				"message": "Permission denied",
-				"statusCode": 403
-			});
-	}
+	await spot.destroy();
 
-	//destroy
-	await spot.destroy()
-	//res.json
 
 	res
 		.status(200)
@@ -254,13 +244,9 @@ router.get('/:spotId/reviews', async (req, res) => {
 	}
 	// console.log(review.id)
 
-
-
 	res.json({
 		Reviews: reviewPayload
 	})
-
-
 
 })
 
@@ -497,12 +483,10 @@ router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req,
 })
 
 //Create and return a new image for a spot specified by id
-router.post('/:spotId/images', requireAuth, async (req, res) => {
+router.post('/:spotId/images', requireAuth, authorization, async (req, res) => {
 
 	const { url, preview } = req.body;
 	const { spotId } = req.params;
-	const { user } = req;
-
 
 	const spot = await Spot.findByPk(spotId);
 
@@ -512,14 +496,6 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
 			.json({
 				"message": "Spot couldn't be found"
 			})
-	}
-
-	if (spot.ownerId !== user.id) {
-		return res
-			.status(403)
-			.json({
-				"message": "Permission denied"
-			});
 	}
 
 	const spotImage = await SpotImage.create({
@@ -613,10 +589,9 @@ router.get('/:spotId', async (req, res) => {
 })
 
 
-router.put('/:spotId', requireAuth, async (req, res) => {
+router.put('/:spotId', requireAuth, authorization, async (req, res) => {
 
 	const { address, city, state, country, lat, lng, name, description, price } = req.body
-	const { user } = req;
 	const { spotId } = req.params
 	const spot = await Spot.findByPk(spotId)
 
@@ -630,15 +605,6 @@ router.put('/:spotId', requireAuth, async (req, res) => {
 			})
 	}
 
-	if (user.id !== spot.ownerId) {
-		return res
-			.status(403)
-			.json(
-				{
-					"message": "Forbidden request"
-				}
-			)
-	}
 
 	try {
 		spot.address = address,

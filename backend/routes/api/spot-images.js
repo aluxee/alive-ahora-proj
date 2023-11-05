@@ -1,5 +1,5 @@
 const express = require('express');
-const { requireAuth } = require('../../utils/auth');
+const { requireAuth, authorization } = require('../../utils/auth');
 const { SpotImage, Spot, User } = require('../../db/models');
 
 const router = express.Router();
@@ -7,7 +7,7 @@ const router = express.Router();
 
 
 
-router.delete('/:imageId', requireAuth, async (req, res) => {
+router.delete('/:imageId', requireAuth, authorization, async (req, res) => {
 
 	const { user } = req;
 	const { imageId } = req.params;

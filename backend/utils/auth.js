@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { jwtConfig } = require('../config');
-const { User } = require('../db/models');
+const { User, Spot, SpotImage, Review, ReviewImage, Booking } = require('../db/models');
 
 const { secret, expiresIn } = jwtConfig;
 
@@ -42,11 +42,11 @@ const restoreUser = (req, res, next) => { // global middleware
 		if (err) { // means user has not logged in/user is logged out
 			return next();
 		}
-	// however, if we do have a token ...
+		// however, if we do have a token ...
 		try {
 			const { id } = jwtPayload.data;
 			req.user = await User.findByPk(id, { // we are querying for that user and what were doing with that response of the query is assigning object to our request object; creating a property called user on the request object and setting that property to the return value of our query
-			// * anytime we want access to log in user info, key into req.user
+				// * anytime we want access to log in user info, key into req.user
 				attributes: {
 					include: ['email', 'createdAt', 'updatedAt'] // overriding the properties in the user.js query so that all that is actually excluded is the hashedPassword
 				}
@@ -73,5 +73,74 @@ const requireAuth = function (req, _res, next) { // middleware that is not globa
 	return next(err);
 }
 
+// if there is a current user but they are not authorized
+const authorization = async function (req, res, next) {
 
-module.exports = { setTokenCookie, restoreUser, requireAuth };
+	const { user } = req;
+	const { spotId, spotImageId, reviewId, reviewImageId, bookingId } = req.params;
+
+	if (spotId) {
+		const spot = await Spot.findByPk(spotId);
+		if (!spot || user.id !== spot.ownerId) return handleUnauthorized(res);
+	}
+	if (spotImageId) {
+		const spot = await Spot.findByPk(spotId);
+		const spotImage = await SpotImage.findByPk(spotId);
+
+		if (!spotImage || !spot || user.id !== spot.ownerId) return handleUnauthorized(res);
+	}
+
+	if (reviewId) {
+		const review = await Review.findByPk(reviewId);
+		if (!review){
+			return res
+				.status(404)
+				.json({
+					message: "Review couldn't be found"
+				})
+		}
+			if(user.id !== review.userId) return handleUnauthorized(res);
+	}
+	if (reviewImageId) {
+		const review = await Review.findByPk(reviewId);
+		const reviewImage = await ReviewImage.findByPk(reviewId);
+
+		if (!reviewImage || !review || user.id !== review.userId) return handleUnauthorized(res);
+
+	};
+
+	if (bookingId) {
+		const booking = await Booking.findByPk(bookingId);
+		if (!booking || user.id !== booking.userId) return handleUnauthorized(res);
+	}
+
+	// const err = new Error('Forbidden');
+	// if(process.env.NODE_ENV !== "production"){
+	// 	err.title = 'Authentication required'
+	// 	err.errors = {
+	// 		message: 'Authentication required'
+	// 	}
+	// }
+
+	// If the user is authorized, continue to the next middleware or route handler
+	next();
+
+}
+
+function handleUnauthorized(res) {
+	const err = new Error('Forbidden');
+	if (process.env.NODE_ENV !== "production") {
+		err.title = 'Authentication required';
+		err.errors = {
+			message: 'Authentication required',
+		};
+	}
+	err.status = 403;
+	return res
+		.status(403)
+		.json({
+			message: 'Permission denied',
+		});
+}
+
+module.exports = { setTokenCookie, restoreUser, requireAuth, authorization };
