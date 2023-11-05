@@ -131,7 +131,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
 	})
 
-	// console.log('spots', spots);
+	console.log('spots', spots);
 
 
 	const spotsPayload = [];
@@ -155,7 +155,7 @@ router.get('/current', requireAuth, async (req, res) => {
 			}
 		})
 
-		// console.log(reviews, totalStars, spot.id);
+		console.log(reviews, totalStars, spot.id);
 
 		if (reviews && totalStars) {
 
@@ -164,8 +164,8 @@ router.get('/current', requireAuth, async (req, res) => {
 			spot.avgRating = null;
 		}
 
-		// console.log(spot)
-		const img = await SpotImage.findByPk(req.user.id, {
+		console.log(spot)
+		const img = await SpotImage.findAll( {
 
 			where: {
 				[Op.and]: [
@@ -177,7 +177,7 @@ router.get('/current', requireAuth, async (req, res) => {
 		})
 		img ? spot.previewImage = img.url : '';
 		!img ? spot.previewImage = null : '';
-		
+
 		spotsPayload.push(spot);
 
 	}
