@@ -494,66 +494,51 @@ router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req,
 
 	// })
 	res.json(createBooking)
+})
 
-	//Create and return a new image for a spot specified by id
-	router.post('/:spotId/images', requireAuth, async (req, res) => {
+//Create and return a new image for a spot specified by id
+router.post('/:spotId/images', requireAuth, async (req, res) => {
 
-		const { url } = req.body;
-		const spot = await Spot.findByPk(req.params.spotId)
+	const { url, preview } = req.body;
+	const { spotId } = req.params;
+	const { user } = req;
 
-		if (!spot) {
-			return res
-				.status(404)
-				.json({
-					"message": "Spot couldn't be found"
-				})
-		}
 
-		const spotImage = await SpotImage.create({
-			spotId: parseInt(req.params.spotId),
-			url: url,
-			preview: true
-		})
+	const spot = await Spot.findByPk(spotId);
 
-		res.json({
+	if (!spot) {
+		return res
+			.status(404)
+			.json({
+				"message": "Spot couldn't be found"
+			})
+	}
+
+	if (spot.ownerId !== user.id) {
+		return res
+			.status(403)
+			.json({
+				"message": "Permission denied"
+			});
+	}
+
+	const spotImage = await SpotImage.create({
+		spotId: parseInt(spotId),
+		url,
+		preview: preview
+	})
+
+	res
+		.status(200)
+		.json({
 			id: spotImage.id,
 			url: spotImage.url,
 			preview: spotImage.preview
 		})
 
-	})
+})
 
 
-
-	//Create and return a new image for a spot specified by id
-	router.post('/:spotId/images', requireAuth, async (req, res) => {
-
-		const { url } = req.body;
-		const spot = await Spot.findByPk(req.params.spotId)
-
-		if (!spot) {
-			return res
-				.status(404)
-				.json({
-					"message": "Spot couldn't be found"
-				})
-		}
-
-		const spotImage = await SpotImage.create({
-			spotId: parseInt(req.params.spotId),
-			url: url,
-			preview: true
-		})
-
-		res.json({
-			id: spotImage.id,
-			url: spotImage.url,
-			preview: spotImage.preview
-		})
-
-	})
-
-});
 
 
 
@@ -647,12 +632,12 @@ router.put('/:spotId', requireAuth, async (req, res) => {
 
 	if (user.id !== spot.ownerId) {
 		return res
-		.status(403)
-		.json(
-			{
-				"message": "Forbidden request"
-			}
-		)
+			.status(403)
+			.json(
+				{
+					"message": "Forbidden request"
+				}
+			)
 	}
 
 	try {
