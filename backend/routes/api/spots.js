@@ -328,7 +328,7 @@ router.post('/:spotId/reviews', handleValidationErrors, requireAuth, async (req,
 //Return all the bookings for a spot specified by id.
 router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 
-
+	const { user } = req;
 	const { spotId } = req.params;
 	let spot = await Spot.findByPk(spotId)
 	// spot = spot.toJSON();
@@ -342,7 +342,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 			})
 	}
 	// if the user requesting the booking is NOT the owner
-	if (req.user.id !== spot.ownerId) {
+	if (user.id !== spot.ownerId) {
 		const bookings = await Booking.findAll({
 			where: {
 				spotId: spot.id
@@ -352,12 +352,15 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 		return res.json({
 			Bookings: bookings
 		})
-	} else if (req.user.id === spot.ownerId) {
+	} else if (user.id === spot.ownerId) {
 
 
 		const bookings = await Booking.findAll({
 			where: {
-				spotId: spot.id
+				[Op.and]: [
+					{ spotId: spot.id },
+					{ userId: user.id }
+				]
 			},
 			include: {
 				model: User,
