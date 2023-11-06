@@ -433,9 +433,9 @@ router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req,
 		// if there are start and end dates that conflict with existing ones
 		if (
 
-			(bookStartCreated >= bookingStartExists && bookStartCreated < bookingEndExists)
-			||
-			(bookEndCreated > bookingStartExists && bookEndCreated <= bookingEndExists)
+			(bookStartCreated >= bookingStartExists && bookStartCreated < bookingEndExists) ||
+			(bookEndCreated > bookingStartExists && bookEndCreated <= bookingEndExists) ||
+			(bookStartCreated <= bookingStartExists && bookEndCreated >= bookingEndExists)
 
 		) {
 			return res
