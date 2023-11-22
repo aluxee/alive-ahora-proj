@@ -75,18 +75,60 @@ router.get('/current', requireAuth, async (req, res) => {
 
 router.put('/:bookingId', requireAuth, authorization, async (req, res) => {
 
+	// same idea as line 380 of spots/booking in spots
+	const { user } = req;
 	const { bookingId } = req.params
 	const booking = await Booking.findByPk(bookingId)
 	const { startDate, endDate } = req.body;
+	const bookStartCreated = new Date(startDate);
+	const bookEndCreated = new Date(endDate);
 
 
-	try {
-		booking.startDate = startDate
-		booking.endDate = endDate
-		await booking.save()
-		res.json(booking)
+	const existingBookingsOfUser = await Booking.findAll({
+		where: {
+			userId: user.id
+		}
+	})
 
-	} catch (error) {
+	// * begin double checking here
+	if (!booking) {
+		res
+			.status(404)
+			.json({
+				"message": "Booking couldn't be found",
+				"statusCode": 404
+			})
+	}
+
+	if (startDate >= endDate) {
+		res
+			.status(400)
+			.json({
+				"message": "Bad Request",
+				"errors": {
+					"endDate": "endDate cannot come before startDate"
+				}
+			})
+	}
+
+	if (booking.startDate > booking.endDate) {
+		res
+			.status(403)
+			.json({
+				"message": "Past bookings can't be modified",
+				"statusCode": 403
+			})
+	}
+	for (let booking of existingBookingsOfUser) {
+
+		const bookingStartExists = new Date(booking.startDate);
+		const bookingEndExists = new Date(booking.endDate);
+
+	if (
+		(bookStartCreated >= bookingStartExists && bookStartCreated < bookingEndExists) ||
+		(bookEndCreated > bookingStartExists && bookEndCreated <= bookingEndExists) ||
+		(bookStartCreated <= bookingStartExists && bookEndCreated >= bookingEndExists)
+	) {
 		res
 			.status(403)
 			.json({
@@ -97,33 +139,18 @@ router.put('/:bookingId', requireAuth, authorization, async (req, res) => {
 				},
 				"statusCode": 403
 			})
-		if (startDate >= endDate) {
-			res
-				.status(400)
-				.json({
-					"message": "Bad Request",
-					"errors": {
-						"endDate": "endDate cannot come before startDate"
-					}
-				})
-		}
-		if (!booking) {
-			res
-				.status(404)
-				.json({
-					"message": "Booking couldn't be found",
-					"statusCode": 404
-				})
-		}
-		if (booking.startDate > booking.endDate) {
-			res
-				.status(403)
-				.json({
-					"message": "Past bookings can't be modified",
-					"statusCode": 403
-				})
 		}
 	}
+
+
+
+
+
+	booking.startDate = startDate
+	booking.endDate = endDate
+	await booking.save()
+	res.json(booking)
+
 })
 
 //Delete an existing booking
