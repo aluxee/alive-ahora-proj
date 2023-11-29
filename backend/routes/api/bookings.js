@@ -20,7 +20,7 @@ router.get('/current', requireAuth, async (req, res) => {
 	// const userId = user.id;
 	const bookings = await Booking.findAll({
 		where: {
-			userId: req.user.id
+			userId: user.id
 		}
 	})
 	const bookingsPayload = [];
@@ -115,6 +115,7 @@ router.put('/:bookingId', requireAuth, authorization, async (req, res) => {
 
 	for (let booking of existingBookingsOfUser) {
 
+		//* refactor this to not be n + 1
 		const bookingStartExists = new Date(booking.startDate);
 		const bookingEndExists = new Date(booking.endDate);
 
@@ -150,41 +151,66 @@ router.put('/:bookingId', requireAuth, authorization, async (req, res) => {
 //Delete an existing booking
 router.delete('/:bookingId', requireAuth, async (req, res) => {
 
-	const { bookingId } = req.params
-	let booking = await Booking.findByPk(bookingId)
-	booking = booking.toJSON();
-	const start = Date.now()
-	const bookedDate = booking.startDate.toString()
+	const { user } = req;
+	const { bookingId } = req.params;
+
+	const spot = await Spot.findOne({
+		where: {
+			ownerId: user.id
+		}
+	})
+
+	const booking = await Booking.findByPk(bookingId, {
+		where: {
+			[Op.or]: [
+				{ spotId: spot.ownerId },
+				{ userId: user.id }
+			]
+		}
+	})
+
 	// console.log(booking)
-	// console.log("the", booking, "vs", (booking.startDate).toString().toDateString())
-	const bookedCreation = new Date(bookedDate);
-	const bookedTimed = bookedCreation.getTime()
-	// console.log(bookedDate, bookedCreation, bookedTimed)
-	// console.log(bookedTimed, "versus", start)
+
+
 	if (!booking) {
-		res
+		return res
 			.status(404)
 			.json({
-				"message": "Booking couldn't be found",
-				"statusCode": 404
+				"message": "Booking couldn't be found"
 			})
 	}
 
-	if (bookedTimed < start) {
-		res
+	// console.log("booking here: ", booking)
+
+	const startDate = booking.startDate
+
+	// console.log("startDate:", booking.startDate)
+
+	const bookingStartExists = new Date(startDate);
+	const booked = bookingStartExists.getTime();
+
+	// console.log(startDate, bookingStartExists, booked)
+
+	const current = Date.now();
+
+	// console.log(booked < current)
+
+	if (booked < current) {
+		return res
 			.status(403)
 			.json({
-				"message": "Bookings that have been started can't be deleted",
-				"statusCode": 403
+				"message": "Bookings that have been started can't be deleted"
 			})
 	}
 
-	await booking.destroy()
-	res.json({
-		"message": "Successfully deleted",
-		"statusCode": 200
+	// console.log("booking as JSON: ", booking)
 
+	await booking.destroy();
+
+	res.json({
+		"message": "Successfully deleted"
 	})
+	
 })
 
 
