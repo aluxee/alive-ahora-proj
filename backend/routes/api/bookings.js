@@ -82,7 +82,8 @@ router.put('/:bookingId', requireAuth, authorization, async (req, res) => {
 	const { startDate, endDate } = req.body;
 	const bookStartCreated = new Date(startDate);
 	const bookEndCreated = new Date(endDate);
-
+	const start = Date.now();
+	const currentDate = new Date(start);
 
 	const existingBookingsOfUser = await Booking.findAll({
 		where: {
@@ -92,7 +93,7 @@ router.put('/:bookingId', requireAuth, authorization, async (req, res) => {
 
 	// * begin double checking here
 
-	if (startDate >= endDate) {
+	if (bookStartCreated >= bookEndCreated) {
 		res
 			.status(400)
 			.json({
@@ -103,13 +104,14 @@ router.put('/:bookingId', requireAuth, authorization, async (req, res) => {
 			})
 	}
 
-	// if (booking.startDate > booking.endDate) {
-	// 	res
-	// 		.status(403)
-	// 		.json({
-	// 			"message": "Past bookings can't be modified"
-	// 		})
-	// }
+	if (currentDate > booking.endDate) { // comparing against the user provided end date instead of the requested booking's current end date
+		res
+			.status(403)
+			.json({
+				"message": "Past bookings can't be modified"
+			})
+	}
+
 
 	for (let booking of existingBookingsOfUser) {
 
@@ -132,14 +134,7 @@ router.put('/:bookingId', requireAuth, authorization, async (req, res) => {
 					}
 				})
 		}
-		// cant edit a booking that is past/ greater than the existing end date (?)
-		if (bookingStartExists && bookingEndExists < bookStartCreated && bookEndCreated) {
-			res
-				.status(403)
-				.json({
-					"message": "Past bookings can't be modified"
-				})
-		}
+
 	}
 
 
