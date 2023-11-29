@@ -347,7 +347,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 			where: {
 				spotId: spot.id
 			},
-			attributes: ['spotId', 'startDate', 'endDate']
+			attributes: ['startDate', 'endDate']
 		})
 		return res.json({
 			Bookings: bookings
