@@ -94,7 +94,6 @@ router.delete('/:spotId', requireAuth, authorization, async (req, res) => {
 
 	await spot.destroy();
 
-
 	res
 		.status(200)
 		.json({
@@ -134,12 +133,9 @@ router.get('/current', requireAuth, async (req, res) => {
 	// console.log('spots', spots);
 
 
-	const spotsPayload = [];
-
-	for (let spot of spots) {
-
-		spot = spot.toJSON();
-
+	const spotsPayload = await Promise.all(spots.map(async (spot) => {
+		const spotData = spot.toJSON()
+		spotData.previewImage = null;
 
 		const reviews = await Review.count(
 			{
@@ -155,38 +151,33 @@ router.get('/current', requireAuth, async (req, res) => {
 			}
 		})
 
-		// console.log(reviews, totalStars, spot.id);
-
 		if (reviews && totalStars) {
 
-			spot.avgRating = Number((totalStars / reviews).toFixed(1));
+			spotData.avgRating = Number((totalStars / reviews).toFixed(1));
 		} else {
-			spot.avgRating = null;
+			spotData.avgRating = null;
 		}
 
-		// console.log(spot)
-
-		const img = await SpotImage.findAll({
-
+		const spotImages = await spot.getSpotImages({
 			where: {
 				[Op.and]: [
 					{ spotId: spot.id },
 					{ preview: true }
 				]
-			}
-
+			},
+			attributes: ['url'],
+			limit: 1
 		})
-		img ? spot.previewImage = img.url : '';
-		!img ? spot.previewImage = null : '';
+		spotImages.length > 0 ? spotData.previewImage = spotImages[0].url : ''
 
-		spotsPayload.push(spot);
+		return spotData
 
-	}
-	// console.log(spotsPayload)
+	}))
 
 	res.json({
 		Spots: spotsPayload
 	})
+
 })
 
 
@@ -222,14 +213,6 @@ router.get('/:spotId/reviews', async (req, res) => {
 	const reviewPayload = [];
 
 
-	// const allReviews = await Review.findAll({
-	// 	attributes: {}
-	// })
-	// const reviewsDataValues = allReviews.map((review) => review.dataValues);
-
-
-	// console.log("spot-pot", spot);
-	//add category called "review images" to reviews
 
 	for (let review of reviews) {
 		review = review.toJSON();
@@ -262,19 +245,17 @@ router.get('/:spotId/reviews', async (req, res) => {
 
 //Create and return a new review for a spot specified by id
 router.post('/:spotId/reviews', handleValidationErrors, requireAuth, async (req, res) => {
+
 	const { spotId } = req.params;
-	// const spot = await Spot.findByPk(spotId)
-	// const { review, stars } = req.body;
+	const { user } = req;
 	const spot = await Spot.findByPk(spotId);
-	console.log("spot", spot)
 	const { review, stars } = req.body
+
 	const reviewPost = await Review.findOne({
 		where: {
-			spotId: req.params.spotId,
-			userId: req.user.id
-
+			spotId: spotId,
+			userId: user.id
 		},
-
 	})
 
 
@@ -285,6 +266,7 @@ router.post('/:spotId/reviews', handleValidationErrors, requireAuth, async (req,
 				"message": "Spot couldn't be found"
 			})
 	}
+
 	if (reviewPost) {
 		return res
 			.status(500)
@@ -293,19 +275,18 @@ router.post('/:spotId/reviews', handleValidationErrors, requireAuth, async (req,
 
 			})
 	}
+
 	try {
 		const reviewCreated = await Review.create({
-			userId: req.user.id,
-			spotId: req.params.spotId,
+			userId: user.id,
+			spotId: spot.id,
 			review,
 			stars
 		})
 
 		return res
 			.status(201)
-			.json({
-				reviewCreated
-			})
+			.json(reviewCreated)
 
 	} catch (error) {
 		res
@@ -318,8 +299,6 @@ router.post('/:spotId/reviews', handleValidationErrors, requireAuth, async (req,
 				}
 			})
 	}
-
-
 
 })
 
@@ -367,7 +346,6 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 				attributes: ['id', 'firstName', 'lastName']
 			}
 		})
-
 
 		return res.json({
 			Bookings: bookings
@@ -451,7 +429,6 @@ router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req,
 						endDate: "End date conflicts with an existing booking"
 					}
 				});
-
 		}
 	}
 
@@ -497,7 +474,6 @@ router.post('/:spotId/images', requireAuth, authorization, async (req, res) => {
 			url: spotImage.url,
 			preview: spotImage.preview
 		})
-
 })
 
 
@@ -640,6 +616,13 @@ router.get('/',
 		try {
 			const { minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query; // extracting keywords of query from request
 
+			const parsedMinLat = minLat ? parseFloat(minLat) : undefined;
+			const parsedMaxLat = maxLat ? parseFloat(maxLat) : undefined;
+			const parsedMinLng = minLng ? parseFloat(minLng) : undefined;
+			const parsedMaxLng = maxLng ? parseFloat(maxLng) : undefined;
+			const parsedMinPrice = minPrice ? parseFloat(minPrice) : undefined;
+			const parsedMaxPrice = maxPrice ? parseFloat(maxPrice) : undefined;
+
 			// defining initialization of query object
 			let query = {
 				where: {},
@@ -667,12 +650,12 @@ router.get('/',
 			// Validate query parameters
 			if (Object.keys(req.query).length > 0) { // returns an array containing the keys of the requested property names
 				if (
-					(minLat && (isNaN(minLat) || minLat < -90 || minLat > 90)) ||
-					(maxLat && (isNaN(maxLat) || maxLat < -90 || maxLat > 90)) ||
-					(minLng && (isNaN(minLng) || minLng < -180 || minLng > 180)) ||
-					(maxLng && (isNaN(maxLng) || maxLng < -180 || maxLng > 180)) ||
-					(minPrice && (isNaN(minPrice) || minPrice < 0)) ||
-					(maxPrice && (isNaN(maxPrice) || maxPrice < 0))
+					(parsedMinLat && (isNaN(parsedMinLat) || parsedMinLat < -90 || parsedMinLat > 90)) ||
+					(parsedMaxLat && (isNaN(parsedMaxLat) || parsedMaxLat < -90 || parsedMaxLat > 90)) ||
+					(parsedMinLng && (isNaN(parsedMinLng) || parsedMinLng < -180 || parsedMinLng > 180)) ||
+					(parsedMaxLng && (isNaN(parsedMaxLng) || parsedMaxLng < -180 || parsedMaxLng > 180)) ||
+					(parsedMinPrice && (isNaN(parsedMinPrice) || parsedMinPrice < 0)) ||
+					(parsedMaxPrice && (isNaN(parsedMaxPrice) || parsedMaxPrice < 0))
 				) {
 					return res
 						.status(400)
@@ -690,34 +673,34 @@ router.get('/',
 				}
 			}
 
-			if (minLat) {
+			if (parsedMinLat) {
 				query.where.lat = {
-					[Op.gte]: parseInt(minLat)
+					[Op.gte]: parsedMinLat
 				}
 			}
-			if (maxLat) {
+			if (parsedMaxLat) {
 				query.where.lat = {
-					[Op.lte]: parseInt(maxLat)
+					[Op.lte]: parsedMaxLat
 				}
 			}
-			if (minLng) {
+			if (parsedMinLng) {
 				query.where.lng = {
-					[Op.gte]: parseInt(minLng)
+					[Op.gte]: parsedMinLng
 				}
 			}
-			if (maxLng) {
+			if (parsedMaxLng) {
 				query.where.lng = {
-					[Op.lte]: parseInt(maxLng)
+					[Op.lte]: parsedMaxLng
 				}
 			}
-			if (minPrice) {
+			if (parsedMinPrice) {
 				query.where.price = {
-					[Op.gte]: parseInt(minPrice)
+					[Op.gte]: parsedMinPrice
 				}
 			}
-			if (maxPrice) {
+			if (parsedMaxPrice) {
 				query.where.price = {
-					[Op.lte]: parseInt(maxPrice)
+					[Op.lte]: parsedMaxPrice
 				}
 			}
 

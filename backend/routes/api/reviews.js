@@ -40,14 +40,6 @@ router.post('/:reviewId/images', requireAuth, authorization, async (req, res) =>
 			})
 	}
 
-	// if(review.userId !== user.id){
-	// 	return res.status(403).json({
-	// 		"message": "Permission denied",
-	// 		statusCode: 403
-	// 	});
-	// }
-
-
 
 	const existingImages = await ReviewImage.findAll({
 		attributes: ['id', 'url'],
@@ -106,13 +98,15 @@ router.get('/current', handleValidationErrors, requireAuth, async (req, res) => 
 				attributes: {
 					exclude: ['createdAt', 'updatedAt', 'description']
 				},
-				// include: {
-				// 	model: SpotImage,
-				// 	where:
-				// 		{ preview: true },
-				// 	attributes: ['url']
+				include: {
+					model: SpotImage,
+					where:
+						{ preview: true },
+					attributes: ['url'],
+					limit: 1,
+					separate: true // forces Sequelize to use separate query
 
-				// }
+				}
 			},
 			{
 				model: ReviewImage,
@@ -120,43 +114,24 @@ router.get('/current', handleValidationErrors, requireAuth, async (req, res) => 
 					exclude: ['createdAt', 'updatedAt', 'reviewId']
 				}
 			}
-		]
+		],
+		subQuery: false
 	});
-	// console.log("REVIEWS: ", reviews)
-	const reviewPayload = [];
 
 
-	let spot = await Spot.findByPk(req.user.id, {
-		attributes: {
-			exclude: ['createdAt', 'updatedAt', 'description']
-		}
-	})
-	spot = spot.toJSON();
+	const reviewPayload = await Promise.all(reviews.map(async (review) => {
+		const spotData = review.Spot.toJSON();
+		const reviewData = review.toJSON();
+		reviewData.Spot = spotData;
 
-	for (let review of reviews) {
-		review = review.toJSON();
+		return reviewData;
+
+	}))
 
 
-		const img = await SpotImage.findByPk(req.user.id, {
-			where: {
-				[Op.and]: [
-					{ spotId: review.id },
-					{ preview: true }
-				],
-				attributes: {
-					exclude: 'url'
-				}
-			}
-		})
-		img ? spot.previewImage = img.url : '';
-		!img ? spot.previewImage = null : '';
-		review.Spot = spot;
-		reviewPayload.push(review)
-
-	}
 	res.json({
 		Reviews: reviewPayload
-	})
+	});
 
 })
 
@@ -228,10 +203,10 @@ router.delete('/:reviewId', requireAuth, authorization, async (req, res) => {
 	await review.destroy()
 
 	res
-	.status(200)
-	.json({
-		"message": "Successfully deleted"
-	})
+		.status(200)
+		.json({
+			"message": "Successfully deleted"
+		})
 
 })
 
