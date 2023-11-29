@@ -353,7 +353,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 			Bookings: bookings
 		})
 	} else if (user.id === spot.ownerId) {
-
+//	 if the user requesting the booking IS the owner
 
 		const bookings = await Booking.findAll({
 			where: {
@@ -373,18 +373,20 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 			Bookings: bookings
 		})
 	}
-
 })
 
 
+// ! POST: BOOKINGS
 router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req, res) => {
 	// will not pass authorization middleware here as wires can get crossed
 
-	const { user } = req;
-	const { spotId } = req.params;
-	const { startDate, endDate } = req.body;
-	const spot = await Spot.findByPk(spotId);
+	const { user } = req; // extract the user from the request
+	const { spotId } = req.params; // extract spotId from the params
+	const { startDate, endDate } = req.body; // extract the user startDate and endDate from the request body
+	const spot = await Spot.findByPk(spotId); // create spot variable for specific spotId
 
+
+	// take care of the errors
 	if (!spot) {
 		return res
 			.status(404)
@@ -422,7 +424,7 @@ router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req,
 
 	const existingBookings = await Booking.findAll({
 		where: {
-			spotId: spotId
+			spotId: spot.id
 		}
 	})
 
@@ -462,7 +464,7 @@ router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req,
 		endDate: endDate
 	})
 
-	res
+	return res
 		.status(200)
 		.json(createBooking);
 });

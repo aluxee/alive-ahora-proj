@@ -77,8 +77,8 @@ router.put('/:bookingId', requireAuth, authorization, async (req, res) => {
 
 	// same idea as line 380 of spots/booking in spots
 	const { user } = req;
-	const { bookingId } = req.params
-	const booking = await Booking.findByPk(bookingId)
+	const { bookingId } = req.params;
+	const booking = await Booking.findByPk(bookingId);
 	const { startDate, endDate } = req.body;
 	const bookStartCreated = new Date(startDate);
 	const bookEndCreated = new Date(endDate);
@@ -91,14 +91,6 @@ router.put('/:bookingId', requireAuth, authorization, async (req, res) => {
 	})
 
 	// * begin double checking here
-	if (!booking) {
-		res
-			.status(404)
-			.json({
-				"message": "Booking couldn't be found",
-				"statusCode": 404
-			})
-	}
 
 	if (startDate >= endDate) {
 		res
@@ -111,44 +103,51 @@ router.put('/:bookingId', requireAuth, authorization, async (req, res) => {
 			})
 	}
 
-	if (booking.startDate > booking.endDate) {
-		res
-			.status(403)
-			.json({
-				"message": "Past bookings can't be modified",
-				"statusCode": 403
-			})
-	}
+	// if (booking.startDate > booking.endDate) {
+	// 	res
+	// 		.status(403)
+	// 		.json({
+	// 			"message": "Past bookings can't be modified"
+	// 		})
+	// }
+
 	for (let booking of existingBookingsOfUser) {
 
 		const bookingStartExists = new Date(booking.startDate);
 		const bookingEndExists = new Date(booking.endDate);
 
-	if (
-		(bookStartCreated >= bookingStartExists && bookStartCreated < bookingEndExists) ||
-		(bookEndCreated > bookingStartExists && bookEndCreated <= bookingEndExists) ||
-		(bookStartCreated <= bookingStartExists && bookEndCreated >= bookingEndExists)
-	) {
-		res
-			.status(403)
-			.json({
-				"message": "Sorry, this spot is already booked for the specified dates",
-				"errors": {
-					"startDate": "Start date conflicts with an existing booking",
-					"endDate": "End date conflicts with an existing booking"
-				},
-				"statusCode": 403
-			})
+		if (
+			(bookStartCreated >= bookingStartExists && bookStartCreated <= bookingEndExists) ||
+			(bookEndCreated > bookingStartExists && bookEndCreated <= bookingEndExists) ||
+			(bookStartCreated <= bookingStartExists && bookEndCreated >= bookingEndExists)
+
+		) {
+			return res
+				.status(403)
+				.json({
+					"message": "Sorry, this spot is already booked for the specified dates",
+					"errors": {
+						"startDate": "Start date conflicts with an existing booking",
+						"endDate": "End date conflicts with an existing booking"
+					}
+				})
+		}
+		// cant edit a booking that is past/ greater than the existing end date (?)
+		if (bookingStartExists && bookingEndExists < bookStartCreated && bookEndCreated) {
+			res
+				.status(403)
+				.json({
+					"message": "Past bookings can't be modified"
+				})
 		}
 	}
 
 
-
-
-
 	booking.startDate = startDate
 	booking.endDate = endDate
+
 	await booking.save()
+
 	res.json(booking)
 
 })
@@ -161,12 +160,12 @@ router.delete('/:bookingId', requireAuth, async (req, res) => {
 	booking = booking.toJSON();
 	const start = Date.now()
 	const bookedDate = booking.startDate.toString()
-	console.log(booking)
+	// console.log(booking)
 	// console.log("the", booking, "vs", (booking.startDate).toString().toDateString())
 	const bookedCreation = new Date(bookedDate);
 	const bookedTimed = bookedCreation.getTime()
-	console.log(bookedDate, bookedCreation, bookedTimed)
-	console.log(bookedTimed, "versus", start)
+	// console.log(bookedDate, bookedCreation, bookedTimed)
+	// console.log(bookedTimed, "versus", start)
 	if (!booking) {
 		res
 			.status(404)

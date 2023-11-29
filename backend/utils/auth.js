@@ -111,7 +111,16 @@ const authorization = async function (req, res, next) {
 
 	if (bookingId) {
 		const booking = await Booking.findByPk(bookingId);
-		if (!booking || user.id !== booking.userId) return handleUnauthorized(res);
+
+		if (!booking) {
+			res
+				.status(404)
+				.json({
+					"message": "Booking couldn't be found"
+				})
+		}
+
+		if (booking.userId !== null && user.id !== booking.userId) return handleUnauthorized(res);
 	}
 
 	// const err = new Error('Forbidden');
