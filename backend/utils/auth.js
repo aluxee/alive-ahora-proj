@@ -99,13 +99,14 @@ const authorization = async function (req, res, next) {
 					message: "Review couldn't be found"
 				})
 		}
-			if(user.id !== review.userId) return handleUnauthorized(res);
+			if(user.id !== review.userId) return handleNotAuthenticated(res);
 	}
 	if (reviewImageId) {
 		const review = await Review.findByPk(reviewId);
 		const reviewImage = await ReviewImage.findByPk(reviewId);
 
-		if (!reviewImage || !review || user.id !== review.userId) return handleUnauthorized(res);
+		if (!reviewImage || !review ) return handleUnauthorized(res);
+		if (user.id !== review.userId) return handleNotAuthenticated(res)
 
 	};
 
@@ -139,14 +140,30 @@ const authorization = async function (req, res, next) {
 function handleUnauthorized(res) {
 	const err = new Error('Forbidden');
 	if (process.env.NODE_ENV !== "production") {
-		err.title = 'Authentication required';
+		err.title = 'Authorization required';
 		err.errors = {
-			message: 'Authentication required',
+			message: 'Authorization required',
 		};
 	}
 	err.status = 404;
 	return res
 		.status(404)
+		.json({
+			message: 'Permission denied',
+		});
+}
+
+function handleNotAuthenticated(res){
+	const err = new Error('Forbidden');
+	if (process.env.NODE_ENV !== "production") {
+		err.title = 'Authentication required';
+		err.errors = {
+			message: 'Authentication required',
+		};
+	}
+	err.status = 403;
+	return res
+		.status(403)
 		.json({
 			message: 'Permission denied',
 		});

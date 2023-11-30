@@ -26,7 +26,6 @@ const validateReview = [
 //Create and return a new image for a review specified by id
 router.post('/:reviewId/images', requireAuth, authorization, async (req, res) => {
 	const { url } = req.body;
-	const { user } = req;
 
 	const { reviewId } = req.params;
 	const review = await Review.findByPk(reviewId);

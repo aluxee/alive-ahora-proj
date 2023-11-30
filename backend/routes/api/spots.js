@@ -184,6 +184,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
 // return all reviews that belong to a spot by id
 router.get('/:spotId/reviews', async (req, res) => {
+
 	const { spotId } = req.params
 	const spot = await Spot.findByPk(spotId);
 
@@ -192,6 +193,10 @@ router.get('/:spotId/reviews', async (req, res) => {
 			spotId: spotId
 		},
 		include: [
+			{
+				model: User,
+				attributes: ['id', 'firstName', 'lastName']
+			},
 			{
 				model: ReviewImage,
 				attributes: {
@@ -210,31 +215,19 @@ router.get('/:spotId/reviews', async (req, res) => {
 				statusCode: 404
 			})
 	}
-	const reviewPayload = [];
+	const reviewPayload = reviews.map((review) => {
+		const user = review.User.toJSON();
+		const reviewData = review.toJSON();
 
-
-
-	for (let review of reviews) {
-		review = review.toJSON();
-		const user = await User.findByPk(review.userId);
-		const img = await ReviewImage.findByPk(review.id)
-		// const image = reviewImages.toJSON()
-		console.log("CONSOLE: ", review.id, img)
-		review.User = {
+		reviewData.User = {
 			id: user.id,
 			firstName: user.firstName,
 			lastName: user.lastName
 		}
-		// const reviewImage = await ReviewImage.findByPk(review.reviewId);
-		// console.log("review", review)
-		// console.log("---------------");
-		// console.log(await ReviewImage.findByPk(review.userId))
-		// review.ReviewImages = {
-		// 	id: reviewImage.reviewId,
-		// 	url: reviewImage.url
-		reviewPayload.push(review)
-	}
-	// console.log(review.id)
+
+		return reviewData
+	})
+
 
 	res.json({
 		Reviews: reviewPayload
@@ -402,7 +395,13 @@ router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req,
 	const existingBookings = await Booking.findAll({
 		where: {
 			spotId: spot.id
-		}
+		},
+		include: [
+			{
+				model: User,
+				attributes: ['id']
+			}
+		]
 	})
 
 
