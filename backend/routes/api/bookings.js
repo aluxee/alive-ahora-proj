@@ -21,55 +21,49 @@ router.get('/current', requireAuth, async (req, res) => {
 	const bookings = await Booking.findAll({
 		where: {
 			userId: user.id
-		}
+		},
+		include: [
+			{
+				model: Spot,
+				attributes: {
+					exclude: ['createdAt', 'updatedAt', 'description']
+				}
+			}
+		]
 	})
-	const bookingsPayload = [];
-	for (let booking of bookings) {
+
+
+	const bookingsPayload = await Promise.all(bookings.map(async (booking) => {
 
 		const spotId = booking.spotId;
+		const bookingData = booking.toJSON();
+		const spot = await Spot.findByPk(spotId)
+		const spotData = booking.Spot.toJSON();
+		spotData.previewImage = null;
 
-		booking = booking.toJSON();
-		console.log("booking", booking)
 
-
-
-		// define spot thru pk
-		let spot = await Spot.findByPk(spotId, {
-			attributes: {
-				exclude: ['createdAt', 'updatedAt', 'description']
-			}
-		})
-		spot = spot.toJSON();
-
-		// define img thru pk
-		const img = await SpotImage.findByPk(spotId, {
+		// lazy loading the images
+		const spotImages = await spot.getSpotImages({ // lazy loading using built-in association methods for current spot; w/ specified conditions, it only fetches one image
 			where: {
 				[Op.and]: [
-					{ spotId: spot.id },
+					{ spotId: spotId },
 					{ preview: true }
 				]
-			}
+			},
+			attributes: ['url'],
+			limit: 1
 		})
-		if (img) {
+		spotImages.length > 0 ? spotData.previewImage = spotImages[0].url : '';
 
-			spot.previewImage = img.url;
-		} else {
-			spot.previewImage = null;
-		}
-		// (bang) img ? spot.previewImage = null : '';
-		// console.log("IMAGE: ", img)
+		bookingData.Spot = spotData;
 
-
-
-		booking.Spot = spot;
-		bookingsPayload.push(booking)
-
-	}
-
+		return bookingData
+	}))
 
 	res.json({
 		Bookings: bookingsPayload
 	})
+	
 })
 
 
@@ -210,7 +204,7 @@ router.delete('/:bookingId', requireAuth, async (req, res) => {
 	res.json({
 		"message": "Successfully deleted"
 	})
-	
+
 })
 
 
