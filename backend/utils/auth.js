@@ -81,13 +81,29 @@ const authorization = async function (req, res, next) {
 
 	if (spotId) {
 		const spot = await Spot.findByPk(spotId);
-		if (!spot || user.id !== spot.ownerId) return handleUnauthorized(res);
+		if (!spot){
+			return res
+				.status(404)
+				.json({
+					// statusCode: 404,
+					message: "Spot couldn't be found",
+					// "error": "Couldn’t find a Spot with the specified id"
+				})
+		}
+		if (user.id !== spot.ownerId) return handleNotAuthenticated(res);
 	}
 	if (spotImageId) {
 		const spot = await Spot.findByPk(spotId);
 		const spotImage = await SpotImage.findByPk(spotId);
 
-		if (!spotImage || !spot || user.id !== spot.ownerId) return handleUnauthorized(res);
+		if(!spot){
+				return res
+					.status(404)
+					.json({
+						"message": "Spot couldn't be found"
+					})
+		}
+		if (!spotImage || user.id !== spot.ownerId) return handleUnauthorized(res);
 	}
 
 	if (reviewId) {

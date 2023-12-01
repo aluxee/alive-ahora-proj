@@ -580,23 +580,12 @@ router.get('/:spotId', async (req, res) => {
 	})
 })
 
-
+// edit a spot
 router.put('/:spotId', requireAuth, authorization, async (req, res) => {
 
 	const { address, city, state, country, lat, lng, name, description, price } = req.body
 	const { spotId } = req.params
 	const spot = await Spot.findByPk(spotId)
-
-	if (!spot) {
-		return res
-			.status(404)
-			.json({
-				// statusCode: 404,
-				message: "Spot couldn't be found",
-				// "error": "Couldn’t find a Spot with the specified id"
-			})
-	}
-
 
 	try {
 		spot.address = address,
@@ -610,9 +599,7 @@ router.put('/:spotId', requireAuth, authorization, async (req, res) => {
 			spot.price = price
 		await spot.save()
 
-		res.json({
-			spot
-		})
+		res.json(spot)
 
 	} catch (err) {
 
