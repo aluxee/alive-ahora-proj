@@ -74,8 +74,10 @@ router.put('/:bookingId', requireAuth, authorization, async (req, res) => {
 	const { bookingId } = req.params;
 	const booking = await Booking.findByPk(bookingId);
 	const { startDate, endDate } = req.body;
-	const bookStartCreated = new Date(startDate);
-	const bookEndCreated = new Date(endDate);
+	const bookStart = new Date(startDate);
+	const bookStartCreated = bookStart.getTime(); // user request to create a booking start date
+	const bookEnd = new Date(endDate);
+	const bookEndCreated = bookEnd.getTime(); // user request to create a booking end date
 	const start = Date.now();
 	const currentDate = new Date(start);
 
@@ -85,7 +87,6 @@ router.put('/:bookingId', requireAuth, authorization, async (req, res) => {
 		}
 	})
 
-	// * begin double checking here
 
 	if (bookStartCreated >= bookEndCreated) {
 		res
@@ -109,13 +110,15 @@ router.put('/:bookingId', requireAuth, authorization, async (req, res) => {
 
 	for (let booking of existingBookingsOfUser) {
 
-		const bookingStartExists = new Date(booking.startDate);
-		const bookingEndExists = new Date(booking.endDate);
-
+		const bookingStart = new Date(booking.startDate);
+		const bookingStartExists = bookingStart.getTime(); // existing/already booked booking start date
+		const bookingEnd = new Date(booking.endDate);
+		const bookingEndExists = bookingEnd.getTime(); // existing/already booked booking end date
 		if (
-			(bookStartCreated >= bookingStartExists && bookStartCreated <= bookingEndExists) ||
-			(bookEndCreated > bookingStartExists && bookEndCreated <= bookingEndExists) ||
-			(bookStartCreated <= bookingStartExists && bookEndCreated >= bookingEndExists)
+		
+			(bookStartCreated < bookingEndExists && bookEndCreated > bookingStartExists) ||
+			(bookStartCreated === bookingStartExists || bookEndCreated === bookingEndExists) ||
+			(bookStartCreated === bookingEndExists || bookEndCreated === bookingStartExists)
 
 		) {
 			return res
@@ -124,7 +127,8 @@ router.put('/:bookingId', requireAuth, authorization, async (req, res) => {
 					"message": "Sorry, this spot is already booked for the specified dates",
 					"errors": {
 						"startDate": "Start date conflicts with an existing booking",
-						"endDate": "End date conflicts with an existing booking"
+						"endDate": "End date conflicts with an existing booking",
+
 					}
 				})
 		}

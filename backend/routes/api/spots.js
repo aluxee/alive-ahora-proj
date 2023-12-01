@@ -304,15 +304,15 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 	const { spotId } = req.params;
 	const spot = await Spot.findByPk(spotId)
 	// spot = spot.toJSON();
-	if (spotId) {
-		if (!spot) {
-			return res
-				.status(404)
-				.json({
-					"message": "Spot couldn't be found"
-				})
-		}
+
+	if (!spot) {
+		return res
+			.status(404)
+			.json({
+				"message": "Spot couldn't be found"
+			})
 	}
+
 	// if the user requesting the booking is NOT the owner
 	if (user.id !== spot.ownerId) {
 		const bookings = await Booking.findAll({
@@ -346,7 +346,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 	}
 })
 
-
+//create a booking
 router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req, res) => {
 	// will not pass authorization middleware here as wires can get crossed
 
@@ -418,37 +418,10 @@ router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req,
 
 		// if there are start and end dates that conflict with existing ones
 		if (
-			//				11/30					11/29
-			// 			(bookStartCreated >= bookingStartExists &&
-			// //				11/30						12/1
-			// 			bookStartCreated < bookingEndExists) ||
 
-			// 			(bookEndCreated > bookingStartExists && bookEndCreated <= bookingEndExists) ||
-
-			// 			(bookStartCreated <= bookingStartExists && bookEndCreated >= bookingEndExists) ||
-
-			// (bookStartCreated === bookingEndExists || bookEndCreated === bookingStartExists) ||
-
-			// // existing; 12/3 - 12/5, created: 12/1-12/6
-			// (bookStartCreated < bookingStartExists && bookEndCreated > bookingEndExists) ||
-
-			// // existing: 12/3 - 12/5, created: 12/1-12/4
-			// (bookStartCreated < bookingStartExists && bookEndCreated < bookingEndExists) ||
-			// // existing: 12/3 - 12/5, created: 12/4-12/9
-			// (bookStartCreated > bookingStartExists && bookEndCreated > bookingEndExists) ||
-			// // same dates
-			// (bookStartCreated === bookingStartExists || bookEndCreated === bookingEndExists) ||
-			// // existing: 12/3 - 12/6, created: 12/4 - 12/5
-			// (bookStartCreated > bookingStartExists && bookEndCreated < bookingEndExists)
-
-			(bookStartCreated >= bookingStartExists && bookStartCreated < bookingEndExists) ||
-			(bookEndCreated > bookingStartExists && bookEndCreated <= bookingEndExists) ||
-			(bookStartCreated < bookingStartExists && bookEndCreated > bookingEndExists) ||
-			(bookStartCreated < bookingStartExists && bookEndCreated < bookingEndExists) ||
-			(bookStartCreated > bookingStartExists && bookEndCreated > bookingEndExists) ||
+			(bookStartCreated < bookingEndExists && bookEndCreated > bookingStartExists) ||
 			(bookStartCreated === bookingStartExists || bookEndCreated === bookingEndExists) ||
 			(bookStartCreated === bookingEndExists || bookEndCreated === bookingStartExists)
-
 		) {
 			return res
 				.status(403)
@@ -456,7 +429,8 @@ router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req,
 					message: "Sorry, this spot is already booked for the specified dates",
 					errors: {
 						startDate: "Start date conflicts with an existing booking",
-						endDate: "End date conflicts with an existing booking"
+						endDate: "End date conflicts with an existing booking",
+						booking
 					}
 				});
 		}
