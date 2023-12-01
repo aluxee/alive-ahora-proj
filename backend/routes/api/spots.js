@@ -302,22 +302,22 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 
 	const { user } = req;
 	const { spotId } = req.params;
-	let spot = await Spot.findByPk(spotId)
+	const spot = await Spot.findByPk(spotId)
 	// spot = spot.toJSON();
-
-	if (!spot) {
-		return res
-			.status(404)
-			.json({
-				"message": "Spot couldn't be found",
-				statusCode: 404
-			})
+	if (spotId) {
+		if (!spot) {
+			return res
+				.status(404)
+				.json({
+					"message": "Spot couldn't be found"
+				})
+		}
 	}
 	// if the user requesting the booking is NOT the owner
 	if (user.id !== spot.ownerId) {
 		const bookings = await Booking.findAll({
 			where: {
-				spotId: spot.id
+				spotId: spotId
 			},
 			attributes: ['startDate', 'endDate']
 		})
@@ -330,7 +330,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 		const bookings = await Booking.findAll({
 			where: {
 				[Op.and]: [
-					{ spotId: spot.id },
+					{ spotId: spotId },
 					{ userId: user.id }
 				]
 			},
@@ -354,7 +354,7 @@ router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req,
 	const { spotId } = req.params; // extract spotId from the params
 	const { startDate, endDate } = req.body; // extract the user startDate and endDate from the request body
 	const spot = await Spot.findByPk(spotId); // create spot variable for specific spotId
-	const currentDate = Date.now
+	const currentDate = Date.now()
 
 	// take care of the errors
 	if (!spot) {
@@ -377,7 +377,7 @@ router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req,
 	const bookStart = new Date(startDate);
 	const bookStartCreated = bookStart.getTime(); // user request to create a booking start date
 	const bookEnd = new Date(endDate);
-	const bookEndCreated = bookEnd.getTime() ; // user request to create a booking end date
+	const bookEndCreated = bookEnd.getTime(); // user request to create a booking end date
 
 
 	// console.log("start created:bookStartCreated)
@@ -418,14 +418,14 @@ router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req,
 
 		// if there are start and end dates that conflict with existing ones
 		if (
-//				11/30					11/29
-// 			(bookStartCreated >= bookingStartExists &&
-// //				11/30						12/1
-// 			bookStartCreated < bookingEndExists) ||
+			//				11/30					11/29
+			// 			(bookStartCreated >= bookingStartExists &&
+			// //				11/30						12/1
+			// 			bookStartCreated < bookingEndExists) ||
 
-// 			(bookEndCreated > bookingStartExists && bookEndCreated <= bookingEndExists) ||
+			// 			(bookEndCreated > bookingStartExists && bookEndCreated <= bookingEndExists) ||
 
-// 			(bookStartCreated <= bookingStartExists && bookEndCreated >= bookingEndExists) ||
+			// 			(bookStartCreated <= bookingStartExists && bookEndCreated >= bookingEndExists) ||
 
 			// (bookStartCreated === bookingEndExists || bookEndCreated === bookingStartExists) ||
 
@@ -462,7 +462,6 @@ router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req,
 		}
 	}
 
-
 	const createBooking = await Booking.create({
 		spotId: spot.id,
 		userId: user.id,
@@ -474,6 +473,7 @@ router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req,
 		.status(200)
 		.json(createBooking);
 });
+
 
 //Create and return a new image for a spot specified by id
 router.post('/:spotId/images', requireAuth, authorization, async (req, res) => {
