@@ -63,7 +63,7 @@ router.get('/current', requireAuth, async (req, res) => {
 	res.json({
 		Bookings: bookingsPayload
 	})
-	
+
 })
 
 
@@ -109,7 +109,6 @@ router.put('/:bookingId', requireAuth, authorization, async (req, res) => {
 
 	for (let booking of existingBookingsOfUser) {
 
-		//* refactor this to not be n + 1
 		const bookingStartExists = new Date(booking.startDate);
 		const bookingEndExists = new Date(booking.endDate);
 

@@ -354,7 +354,7 @@ router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req,
 	const { spotId } = req.params; // extract spotId from the params
 	const { startDate, endDate } = req.body; // extract the user startDate and endDate from the request body
 	const spot = await Spot.findByPk(spotId); // create spot variable for specific spotId
-
+	const currentDate = Date.now
 
 	// take care of the errors
 	if (!spot) {
@@ -374,10 +374,13 @@ router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req,
 			)
 	}
 
-	const bookStartCreated = new Date(startDate);
-	const bookEndCreated = new Date(endDate);
+	const bookStart = new Date(startDate);
+	const bookStartCreated = bookStart.getTime(); // user request to create a booking start date
+	const bookEnd = new Date(endDate);
+	const bookEndCreated = bookEnd.getTime() ; // user request to create a booking end date
 
 
+	// console.log("start created:bookStartCreated)
 	// if the startDate is past the endDate of booking
 	if (bookStartCreated >= bookEndCreated) {
 		return res
@@ -408,15 +411,43 @@ router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req,
 
 	for (let booking of existingBookings) {
 
-		const bookingStartExists = new Date(booking.startDate);
-		const bookingEndExists = new Date(booking.endDate);
+		const bookingStart = new Date(booking.startDate);
+		const bookingStartExists = bookingStart.getTime(); // existing/already booked booking start date
+		const bookingEnd = new Date(booking.endDate);
+		const bookingEndExists = bookingEnd.getTime(); // existing/already booked booking end date
 
 		// if there are start and end dates that conflict with existing ones
 		if (
+//				11/30					11/29
+// 			(bookStartCreated >= bookingStartExists &&
+// //				11/30						12/1
+// 			bookStartCreated < bookingEndExists) ||
+
+// 			(bookEndCreated > bookingStartExists && bookEndCreated <= bookingEndExists) ||
+
+// 			(bookStartCreated <= bookingStartExists && bookEndCreated >= bookingEndExists) ||
+
+			// (bookStartCreated === bookingEndExists || bookEndCreated === bookingStartExists) ||
+
+			// // existing; 12/3 - 12/5, created: 12/1-12/6
+			// (bookStartCreated < bookingStartExists && bookEndCreated > bookingEndExists) ||
+
+			// // existing: 12/3 - 12/5, created: 12/1-12/4
+			// (bookStartCreated < bookingStartExists && bookEndCreated < bookingEndExists) ||
+			// // existing: 12/3 - 12/5, created: 12/4-12/9
+			// (bookStartCreated > bookingStartExists && bookEndCreated > bookingEndExists) ||
+			// // same dates
+			// (bookStartCreated === bookingStartExists || bookEndCreated === bookingEndExists) ||
+			// // existing: 12/3 - 12/6, created: 12/4 - 12/5
+			// (bookStartCreated > bookingStartExists && bookEndCreated < bookingEndExists)
 
 			(bookStartCreated >= bookingStartExists && bookStartCreated < bookingEndExists) ||
 			(bookEndCreated > bookingStartExists && bookEndCreated <= bookingEndExists) ||
-			(bookStartCreated <= bookingStartExists && bookEndCreated >= bookingEndExists)
+			(bookStartCreated < bookingStartExists && bookEndCreated > bookingEndExists) ||
+			(bookStartCreated < bookingStartExists && bookEndCreated < bookingEndExists) ||
+			(bookStartCreated > bookingStartExists && bookEndCreated > bookingEndExists) ||
+			(bookStartCreated === bookingStartExists || bookEndCreated === bookingEndExists) ||
+			(bookStartCreated === bookingEndExists || bookEndCreated === bookingStartExists)
 
 		) {
 			return res
@@ -632,23 +663,10 @@ router.get('/',
 			const page = req.query.page === undefined ? 1 : parseInt(req.query.page); // defined page, set as an integer, setting default
 			const size = req.query.size === undefined ? 20 : parseInt(req.query.size); // defined size, set aas an integer, setting default
 
-			// Validating query parameters part 1, just page and size alone
-			if (isNaN(page) || isNaN(size) || page < 1 || page > 10 || size < 1 || size > 20) {
-
-				return res
-					.status(400)
-					.json({
-						"message": "Bad Request",
-						"errors": {
-							"page": "Page must be greater than or equal to 1",
-							"size": "Size must be greater than or equal to 1"
-						}
-					})
-			}
-
 			// Validate query parameters
 			if (Object.keys(req.query).length > 0) { // returns an array containing the keys of the requested property names
 				if (
+					isNaN(page) || isNaN(size) || page < 1 || page > 10 || size < 1 || size > 20 ||
 					(parsedMinLat && (isNaN(parsedMinLat) || parsedMinLat < -90 || parsedMinLat > 90)) ||
 					(parsedMaxLat && (isNaN(parsedMaxLat) || parsedMaxLat < -90 || parsedMaxLat > 90)) ||
 					(parsedMinLng && (isNaN(parsedMinLng) || parsedMinLng < -180 || parsedMinLng > 180)) ||
@@ -661,6 +679,8 @@ router.get('/',
 						.json({
 							"message": "Bad Request",
 							"errors": {
+								"page": "Page must be greater than or equal to 1",
+								"size": "Size must be greater than or equal to 1",
 								"maxLat": "Maximum latitude is invalid",
 								"minLat": "Minimum latitude is invalid",
 								"minLng": "Maximum longitude is invalid",
@@ -737,6 +757,29 @@ router.get('/',
 			const spotPayload = await Promise.all(spots.map(async (spot) => { // iterate thru array/mapping thru using promise to asynchronously fetch spots to load the images
 				const spotData = spot.toJSON(); // change spot toJSON to make more changes as a plain JS object
 				spotData.previewImage = null; // initializing the spotData.previewImages to null
+
+				const reviews = await Review.count(
+					{
+						where: {
+							[Op.and]:
+								{ spotId: spot.id }
+						}
+					});
+				const totalStars = await Review.sum('stars', {
+					where: {
+						[Op.and]:
+							{ spotId: spot.id }
+					}
+				})
+
+				// console.log(reviews, totalStars, spot.id);
+
+				if (reviews && totalStars) {
+
+					spotData.avgRating = Number((totalStars / reviews).toFixed(1));
+				} else {
+					spotData.avgRating = null;
+				}
 
 				// lazy loading the images
 				const spotImages = await spot.getSpotImages({ // lazy loading using built-in association methods for current spot; w/ specified conditions, it only fetches one image
