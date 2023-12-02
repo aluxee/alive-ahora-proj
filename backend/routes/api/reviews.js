@@ -135,8 +135,6 @@ router.get('/current', handleValidationErrors, requireAuth, async (req, res) => 
 })
 
 
-
-
 router.put('/:reviewId', requireAuth, validateReview, authorization, async (req, res, next) => {
 
 	const { review, stars } = req.body;
@@ -161,9 +159,7 @@ router.put('/:reviewId', requireAuth, validateReview, authorization, async (req,
 
 		await reviewUpdate.save();
 
-		res.json({
-			reviewUpdate
-		})
+		res.json(reviewUpdate)
 
 	} catch (error) {
 		if (!Number(reviewUpdate.stars) || !reviewUpdate.review) {
@@ -195,8 +191,7 @@ router.delete('/:reviewId', requireAuth, authorization, async (req, res) => {
 		return res
 			.status(404)
 			.json({
-				"message": "Review couldn't be found",
-				statusCode: 404
+				"message": "Review couldn't be found"
 			})
 	}
 	await review.destroy()

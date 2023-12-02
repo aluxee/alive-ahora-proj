@@ -115,7 +115,7 @@ router.put('/:bookingId', requireAuth, authorization, async (req, res) => {
 		const bookingEnd = new Date(booking.endDate);
 		const bookingEndExists = bookingEnd.getTime(); // existing/already booked booking end date
 		if (
-		
+
 			(bookStartCreated < bookingEndExists && bookEndCreated > bookingStartExists) ||
 			(bookStartCreated === bookingStartExists || bookEndCreated === bookingEndExists) ||
 			(bookStartCreated === bookingEndExists || bookEndCreated === bookingStartExists)
@@ -146,28 +146,12 @@ router.put('/:bookingId', requireAuth, authorization, async (req, res) => {
 })
 
 //Delete an existing booking
-router.delete('/:bookingId', requireAuth, authorization, async (req, res) => {
+router.delete('/:bookingId', requireAuth, async (req, res) => {
 
 	const { user } = req;
 	const { bookingId } = req.params;
 
-	const spot = await Spot.findOne({
-		where: {
-			ownerId: user.id
-		}
-	})
-
-	const booking = await Booking.findByPk(bookingId, {
-		where: {
-			[Op.or]: [
-				{ spotId: spot.ownerId },
-				{ userId: user.id }
-			]
-		}
-	})
-
-	// console.log(booking)
-
+	const booking = await Booking.findByPk(bookingId)
 
 	if (!booking) {
 		return res
@@ -177,20 +161,25 @@ router.delete('/:bookingId', requireAuth, authorization, async (req, res) => {
 			})
 	}
 
-	// console.log("booking here: ", booking)
+
+	const spot = await Spot.findByPk(booking.spotId)
+
+
+	if (spot.ownerId !== user.id && booking.userId !== user.id ) {
+		return res
+			.status(403)
+			.json({
+				message: 'Permission denied',
+			});
+	}
+
 
 	const startDate = booking.startDate
-
-	// console.log("startDate:", booking.startDate)
 
 	const bookingStartExists = new Date(startDate);
 	const booked = bookingStartExists.getTime();
 
-	// console.log(startDate, bookingStartExists, booked)
-
 	const current = Date.now();
-
-	// console.log(booked < current)
 
 	if (booked < current) {
 		return res
@@ -200,7 +189,6 @@ router.delete('/:bookingId', requireAuth, authorization, async (req, res) => {
 			})
 	}
 
-	// console.log("booking as JSON: ", booking)
 
 	await booking.destroy();
 

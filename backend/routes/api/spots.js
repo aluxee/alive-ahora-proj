@@ -315,35 +315,54 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 
 	// if the user requesting the booking is NOT the owner
 	if (user.id !== spot.ownerId) {
+
 		const bookings = await Booking.findAll({
 			where: {
-				spotId: spotId
+				spotId
 			},
 			attributes: ['startDate', 'endDate']
 		})
-		return res.json({
-			Bookings: bookings
-		})
-	} else if (user.id === spot.ownerId) {
-		//	 if the user requesting the booking IS the owner
 
+		const allUserBookings = bookings.map((booking) => {
+			console.log("the booking single:", booking)
+			const bookData = booking.toJSON();
+			const modifiedSpotId = parseInt(spotId)
+			console.log("WE STILL ON? ", bookData)
+
+			bookData.spotId = modifiedSpotId;
+
+			return bookData
+
+		})
+		return res.json({
+			Bookings: allUserBookings
+		})
+
+	}
+
+		//	 if the user requesting the booking IS the owner
 		const bookings = await Booking.findAll({
 			where: {
-				[Op.and]: [
-					{ spotId: spotId },
-					{ userId: user.id }
-				]
+					spotId
 			},
-			include: {
+			include: [
+				{
 				model: User,
 				attributes: ['id', 'firstName', 'lastName']
-			}
+				}
+			]
+		})
+
+		const allOwnerBookings = bookings.map((booking) => {
+
+			const bookData = booking.toJSON();
+			return bookData
 		})
 
 		return res.json({
-			Bookings: bookings
+			Bookings: allOwnerBookings
 		})
-	}
+	// }
 })
 
 //create a booking
@@ -354,7 +373,7 @@ router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req,
 	const { spotId } = req.params; // extract spotId from the params
 	const { startDate, endDate } = req.body; // extract the user startDate and endDate from the request body
 	const spot = await Spot.findByPk(spotId); // create spot variable for specific spotId
-	const currentDate = Date.now()
+
 
 	// take care of the errors
 	if (!spot) {
