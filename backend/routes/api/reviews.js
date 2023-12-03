@@ -34,8 +34,7 @@ router.post('/:reviewId/images', requireAuth, authorization, async (req, res) =>
 		return res
 			.status(404)
 			.json({
-				"message": "Review couldn't be found",
-				statusCode: 404
+				"message": "Review couldn't be found"
 			})
 	}
 
@@ -51,8 +50,7 @@ router.post('/:reviewId/images', requireAuth, authorization, async (req, res) =>
 		return res
 			.status(403)
 			.json({
-				"message": "Maximum number of images for this resource was reached",
-				statusCode: 403
+				"message": "Maximum number of images for this resource was reached"
 			})
 	}
 
