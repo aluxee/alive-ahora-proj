@@ -62,10 +62,10 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     lat: {
-      type: DataTypes.DECIMAL
+      type: DataTypes.DOUBLE
     },
     lng: {
-      type: DataTypes.DECIMAL
+      type: DataTypes.DOUBLE
     },
     name: {
       type: DataTypes.STRING,
@@ -82,7 +82,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     price: {
-      type: DataTypes.DECIMAL,
+      type: DataTypes.DOUBLE,
       allowNull: false
     }
   }, {
