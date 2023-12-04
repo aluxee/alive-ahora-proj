@@ -324,19 +324,19 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 		})
 
 		const allUserBookings = bookings.map((booking) => {
-			console.log("the booking single:", booking)
+
 			const bookData = booking.toJSON();
 			const modifiedSpotId = parseInt(spotId)
-			console.log("WE STILL ON? ", bookData)
+
 
 			bookData.spotId = modifiedSpotId;
 
 			return bookData
 
 		})
-		return res.json({
-			Bookings: allUserBookings
-		})
+		return res.json(
+		 allUserBookings
+		)
 
 	}
 
@@ -435,24 +435,46 @@ router.post('/:spotId/bookings', requireAuth, validateCreateBooking, async (req,
 		const bookingEnd = new Date(booking.endDate);
 		const bookingEndExists = bookingEnd.getTime(); // existing/already booked booking end date
 
-		// if there are start and end dates that conflict with existing ones
-		if (
 
-			(bookStartCreated < bookingEndExists && bookEndCreated > bookingStartExists) ||
-			(bookStartCreated === bookingStartExists || bookEndCreated === bookingEndExists) ||
-			(bookStartCreated === bookingEndExists || bookEndCreated === bookingStartExists)
+		if (
+			(bookStartCreated >= bookingStartExists && bookStartCreated <= bookingEndExists)
 		) {
 			return res
 				.status(403)
 				.json({
-					message: "Sorry, this spot is already booked for the specified dates",
-					errors: {
-						startDate: "Start date conflicts with an existing booking",
-						endDate: "End date conflicts with an existing booking",
-						booking
+					"message": "Sorry, this spot is already booked for the specified dates",
+					"errors": {
+						"startDate": "Start date conflicts with an existing booking"
 					}
-				});
+				}
+				)
 		}
+		else if (
+			(bookEndCreated >= bookingStartExists && bookEndCreated <= bookingEndExists)
+		) {
+			return res
+				.status(403)
+				.json({
+					"message": "Sorry, this spot is already booked for the specified dates",
+					"errors": {
+						"endDate": "End date conflicts with an existing booking",
+
+					}
+				})
+		} else if ((bookStartCreated < bookingStartExists && bookEndCreated > bookingEndExists)) {
+
+			return res
+				.status(403)
+				.json({
+					"message": "Sorry, this spot is already booked for the specified dates",
+					"errors": {
+						"startDate": "Start date conflicts with an existing booking",
+						"endDate": "End date conflicts with an existing booking",
+
+					}
+				})
+		}
+
 	}
 
 	const createBooking = await Booking.create({

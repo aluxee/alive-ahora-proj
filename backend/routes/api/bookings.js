@@ -81,10 +81,14 @@ router.put('/:bookingId', requireAuth, authorization, async (req, res) => {
 	const start = Date.now();
 	const currentDate = new Date(start);
 
-	const existingBookingsOfUser = await Booking.findAll({
+	const existingBookingsOfUser = await Booking.findAll({ // except for the one trying edit
 		where: {
-			userId: user.id
-		}
+			userId: user.id,
+			id: {
+				[Op.not]: bookingId
+			}
+
+		},
 	})
 
 
@@ -114,13 +118,39 @@ router.put('/:bookingId', requireAuth, authorization, async (req, res) => {
 		const bookingStartExists = bookingStart.getTime(); // existing/already booked booking start date
 		const bookingEnd = new Date(booking.endDate);
 		const bookingEndExists = bookingEnd.getTime(); // existing/already booked booking end date
+
+
+		// start date conflicts: if start date is in the middle of a booking,
+		// end date conflicts: " "
+		// whether or not start and date are surrounding booking (edge cases)
+
 		if (
-
-			(bookStartCreated < bookingEndExists && bookEndCreated > bookingStartExists) ||
-			(bookStartCreated === bookingStartExists || bookEndCreated === bookingEndExists) ||
-			(bookStartCreated === bookingEndExists || bookEndCreated === bookingStartExists)
-
+			(bookStartCreated >= bookingStartExists && bookStartCreated <= bookingEndExists)
 		) {
+			return res
+				.status(403)
+				.json({
+					"message": "Sorry, this spot is already booked for the specified dates",
+					"errors": {
+						"startDate": "Start date conflicts with an existing booking"
+					}
+				}
+				)
+		}
+		else if (
+			(bookEndCreated >= bookingStartExists && bookEndCreated <= bookingEndExists)
+		) {
+			return res
+				.status(403)
+				.json({
+					"message": "Sorry, this spot is already booked for the specified dates",
+					"errors": {
+						"endDate": "End date conflicts with an existing booking",
+
+					}
+				})
+		} else if ((bookStartCreated < bookingStartExists && bookEndCreated > bookingEndExists)) {
+
 			return res
 				.status(403)
 				.json({
