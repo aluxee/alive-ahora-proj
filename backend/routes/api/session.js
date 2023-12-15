@@ -82,7 +82,7 @@ router.delete(
 );
 
 
-// Restore session user
+// Restore session user/Get the Current User
 router.get(
 	'/',
 	restoreUser,
