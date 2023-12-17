@@ -51,7 +51,7 @@ function SignupFormPage() {
 
 			<form onSubmit={handleSubmit}>
 				<div className='signup_container'>
-					<label class='signup_username'>
+					<label className='signup_username'>
 						Username
 						<input
 							type="text"
