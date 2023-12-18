@@ -1,1 +1,33 @@
 /* TODO: Add sitewide styles */
+#root {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-content: stretch;
+	justify-content: space-around;
+}
+
+h1 {
+	font-size: 28px;
+}
+
+.h2_welcome {
+	align-self: center;
+}
+
+h2 {
+	font-size: 24px;
+}
+
+h3 {
+	font-size: 20px;
+}
+
+li {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: baseline;
+
+}

@@ -29,7 +29,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <h2>Welcome back!</h2>
+        element: <h2>Welcome!</h2>
       },
 
     ]
@@ -39,7 +39,6 @@ const router = createBrowserRouter([
 function App() {
   return (
     <>
-      <h1>Airbnb</h1>
       <RouterProvider router={router} />
     </>
   )
