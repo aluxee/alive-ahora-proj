@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
-import SignupFormPage from "./components/SignupFormPage";
 import Navigation from './components/Navigation';
 import * as sessionActions from './store/session';
 
@@ -18,7 +17,7 @@ function Layout() {
 
   return (
     <>
-    <Navigation isLoaded={isLoaded} />
+      <Navigation isLoaded={isLoaded} />
       {isLoaded && <Outlet />}
     </>
   );
@@ -32,10 +31,7 @@ const router = createBrowserRouter([
         path: '/',
         element: <h2>Welcome back!</h2>
       },
-      {
-        path: '/signup',
-        element: <SignupFormPage />
-      }
+
     ]
   }
 ])

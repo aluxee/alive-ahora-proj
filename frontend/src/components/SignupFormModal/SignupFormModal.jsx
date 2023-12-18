@@ -1,14 +1,13 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useModal } from '../../context/Modal';
 import * as sessionActions from '../../store/session';
 import './SignupForm.css';
 
 
 
-function SignupFormPage() {
+function SignupFormModal() {
 	const dispatch = useDispatch();
-	const sessionUser = useSelector((state) => state.session.user);
 
 	const [username, setUsername] = useState('');
 	const [email, setEmail] = useState('');
@@ -17,6 +16,7 @@ function SignupFormPage() {
 	const [password, setPassword] = useState('');
 	const [confirmedPassword, setConfirmedPassword] = useState('');
 	const [errors, setErrors] = useState('');
+	const { closeModal } = useModal();
 
 	const defUser = {
 		email,
@@ -26,8 +26,6 @@ function SignupFormPage() {
 		password
 	}
 
-	if (sessionUser) return <Navigate to={'/'} replace={true} />
-
 	const handleSubmit = (e) => {
 		e.preventDefault();
 
@@ -35,10 +33,11 @@ function SignupFormPage() {
 			setErrors({});
 			return dispatch(
 				sessionActions.signup(defUser)
-			).catch(async (response) => {
-				const data = await response.json();
-				if (data?.errors) { setErrors(data.errors) }
-			})
+			).then(closeModal)
+				.catch(async (response) => {
+					const data = await response.json();
+					if (data?.errors) { setErrors(data.errors) }
+				})
 		}
 		return setErrors({
 			confirmedPassword: "Confirm Password field must be the same as the Password field"
@@ -124,4 +123,4 @@ function SignupFormPage() {
 }
 
 
-export default SignupFormPage;
+export default SignupFormModal;
