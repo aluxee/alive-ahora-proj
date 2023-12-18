@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import * as sessionActions from "../../store/session";
+import OpenModalButton from '../OpenModalButton';
+import LoginFormModal from '../LoginFormModal';
+import SignupFormModal from '../SignupFormModal';
 
 function ProfileButton({ user }) {
 	const dispatch = useDispatch();
@@ -21,7 +24,7 @@ function ProfileButton({ user }) {
 		if (!showMenu) return;
 
 		const closeMenu = (e) => {
-			if (ulRef.current && !ulRef.current.contains(e.target)) {
+			if (!ulRef.current.contains(e.target)) {
 				setShowMenu(false);
 			}
 		}
@@ -48,15 +51,34 @@ function ProfileButton({ user }) {
 				< i className="fa-solid fa-user" />
 			</button>
 			<ul className={ulClassName} ref={ulRef}>
-				<li className="profile_dropdown_username">{user.username}</li>
-				<li className="profile_dropdown_name">{user.firstName}{user.lastName}</li>
-				<li className="profile_dropdown_email">{user.email}</li>
-				<li className="profile_dropdown_logout">
-					<button onClick={logout} className="user_logout_button">Log Out</button>
-				</li>
+				{user ? (
+					<>
+						<li className="profile_dropdown_username">{user.username}</li>
+						<li className="profile_dropdown_name">{user.firstName}{user.lastName}</li>
+						<li className="profile_dropdown_email">{user.email}</li>
+						<li className="profile_dropdown_logout">
+							<button onClick={logout} className="user_logout_button">Log Out</button>
+						</li>
+					</>
+				) : (
+					<>
+						<li className="no-session_login">
+							<OpenModalButton buttonText="Log In"
+								modalComponent={<LoginFormModal />}
+							/>
+						</li>
+						<li className="no-session_signup">
+							<OpenModalButton
+							buttonText="Sign Up"
+							modalComponent={<SignupFormModal />}
+							/>
+						</li>
+					</>
+				)}
 			</ul>
 		</>
-	)
+
+	);
 }
 
 
