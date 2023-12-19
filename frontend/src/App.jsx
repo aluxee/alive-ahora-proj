@@ -36,6 +36,10 @@ const router = createBrowserRouter([
           </div>
         )
       },
+      {
+        path: 'spots',
+        element: (< />)
+      }
 
     ]
   }

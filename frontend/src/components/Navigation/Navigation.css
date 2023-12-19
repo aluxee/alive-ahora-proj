@@ -5,7 +5,7 @@
 	padding: 17px 40px;
 	display: flex;
 	position: absolute;
-	z-index 1;
+	z-index: 1;
 	top: 1rem;
 	left: 0;
 	border-block-start: solid 1px #dddddd;
@@ -51,11 +51,6 @@
 	left: 0.5rem;
 }
 
-.nav_list {}
-
-#nav_house {}
-
-#nav_profile {}
 
 .fa-solid {
 

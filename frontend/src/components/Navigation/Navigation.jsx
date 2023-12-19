@@ -17,7 +17,7 @@ function Navigation({ isLoaded }) {
 			<div className='nav_options'>
 				<div className='content_nav_options'>
 					<li className='nav_list' id='nav_house'>
-						<NavLink exact to='/' className="house-icon">
+						<NavLink to='/' className="house-icon">
 							<i className="fa-solid fa-house" ></i>
 						</NavLink>
 					</li>
