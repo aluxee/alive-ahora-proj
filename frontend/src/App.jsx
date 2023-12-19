@@ -19,6 +19,7 @@ function Layout() {
     <>
       <Navigation isLoaded={isLoaded} />
       {isLoaded && <Outlet />}
+
     </>
   );
 }
@@ -29,7 +30,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <h2>Welcome!</h2>
+        element: (
+          <div>
+            <h2 className="home_title">airbnb home</h2>
+          </div>
+        )
       },
 
     ]

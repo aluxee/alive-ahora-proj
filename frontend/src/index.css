@@ -1,20 +1,38 @@
 /* TODO: Add sitewide styles */
+body {
+	margin: 0 auto;
+	overflow-x: hidden;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	position: absolute;
+	display: flex;
+	align-items: center;
+}
+
 #root {
+	margin: 0 auto;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
 	display: flex;
 	align-items: center;
 	flex-direction: column;
 	flex-wrap: wrap;
-	align-content: stretch;
-	justify-content: space-around;
+	align-items: center;
+	justify-content: center;
 }
 
 h1 {
 	font-size: 28px;
 }
 
-.h2_welcome {
+/* .h2_welcome {
 	align-self: center;
-}
+} */
 
 h2 {
 	font-size: 24px;
@@ -29,5 +47,6 @@ li {
 	flex-direction: column;
 	flex-wrap: wrap;
 	align-items: baseline;
-
+	height: min-content;
+	width: min-content;
 }
