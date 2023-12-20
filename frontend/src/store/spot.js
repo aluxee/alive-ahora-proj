@@ -3,7 +3,7 @@
 export const LOAD_SPOTS = 'spots/LOAD_SPOTS';
 // export const RECEIVE_SPOTS = 'spots/RECEIVE_SPOTS';
 // export const UPDATE_SPOTS = 'spots/UPDATE_SPOTS';
-// export const REMOVE_SPOTS = 'spots/REMOVE_SPOTS';
+export const REMOVE_SPOTS = 'spots/REMOVE_SPOTS';
 
 // /**  Action Creators: */
 export const loadSpots = (spots) => ({
@@ -22,10 +22,10 @@ export const loadSpots = (spots) => ({
 // 	spot
 // });
 
-// export const removeSpot = (spotId) => ({
-// 	type: REMOVE_SPOTS,
-// 	spotId
-// });
+export const removeSpot = (spotId) => ({
+	type: REMOVE_SPOTS,
+	spotId
+});
 
 // /** Thunk Action Creators: */
 
@@ -43,7 +43,7 @@ export const thunkLoadSpots = () => async dispatch => {
 	// response display spots to be useable in below dispatch
 
 	//note:  .then for throw res; for error handling use either then or await async
-	console.log("thunkLoadSpots response: ", response);
+	console.log("(spot.js) thunkLoadSpots response: ", response);
 	if (response.ok) {
 		const spots = await response.json()
 
@@ -57,18 +57,22 @@ export const thunkLoadSpots = () => async dispatch => {
 
 const initialState = {};
 const spotsReducer = (state = initialState, action) => {
+
 	// spots are an object of array of objects
-	const cpSpotId = action.id;
+	// const cpSpotId = action.id;
 	switch (action.type) {
 		case LOAD_SPOTS: {
 			const allSpotsState = {...state};
-			allSpotsState[cpSpotId] = { id: cpSpotId, spot: action.spots.id}
-			return;
+			action.spots.Spots.forEach(spot => {
+				allSpotsState[spot.id] = spot
+			})
+			return allSpotsState;
 		}
 		default:
 			return state;
 	}
 
 }
+
 
 export default spotsReducer;

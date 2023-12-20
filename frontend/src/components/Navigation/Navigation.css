@@ -1,12 +1,13 @@
 .nav_bar {
 	width: 100%;
 	height: 2em;
-	margin-top: 4%;
+	margin-top: 5%;
+	margin-bottom: 5%;
 	padding: 17px 40px;
 	display: flex;
 	position: absolute;
 	z-index: 1;
-	top: 1rem;
+	top: 0;
 	left: 0;
 	border-block-start: solid 1px #dddddd;
 	border-block-end: solid 1px #dddddd;
@@ -15,9 +16,24 @@
 	align-items: flex-start;
 }
 
+.nav_name {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	bottom: 0.5rem;
+}
+
 .airbnb {
-	margin-top: -5px;
+	margin: 0;
 	color: red;
+}
+
+#alive-ahora {
+	margin: 0;
+	font-size: 16px;
+
 }
 
 .nav_options {
