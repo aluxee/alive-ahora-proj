@@ -7,6 +7,7 @@ import Spots from './components/AllSpots/Spots'
 // import * as spotActions from './store/spot';
 
 
+
 function Layout() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
@@ -35,7 +36,9 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
+
         element: <Spots />
+
 
       },
       // {
