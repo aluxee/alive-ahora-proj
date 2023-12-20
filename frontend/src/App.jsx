@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import * as sessionActions from './store/session';
+import Spots from './components/AllSpots/Spots'
 // import * as spotActions from './store/spot';
+
 
 
 function Layout() {
@@ -18,9 +20,12 @@ function Layout() {
 
   return (
     <>
-      <Navigation isLoaded={isLoaded} />
-      {isLoaded && <Outlet />}
-
+      <div className='nav-wrapper'>
+        <Navigation isLoaded={isLoaded} />
+      </div>
+      <div className='outlet-wrapper'>
+        {isLoaded && <Outlet />}
+      </div>
     </>
   );
 }
@@ -31,24 +36,21 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: (
-          <div>
-            <h2 className="home_title">airbnb home</h2>
-          </div>
-        )
+        element: <Spots />
       },
-      {
-        path: 'spots',
-        element:
-        <>
-
-        </>,
-        children: [
-          {
-
-          }
-        ]
-      }
+      // {
+      //   path: '/spots',
+      //   element:
+      //     <>
+      //       <SpotsIndex />
+      //       {/* <Outlet /> */}
+      //     </>,
+      //   children: [
+      //     {
+      //       path: '/:spotId'
+      //     }
+      //   ]
+      // }
 
     ]
   }

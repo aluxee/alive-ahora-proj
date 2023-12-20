@@ -128,6 +128,54 @@ module.exports = {
         review: 'Just kidding! Pulled your leg with my last review, this place is the definition of perfection!',
         stars: 5
       },
+      {
+        spotId: 5,
+        userId: 3,
+        review: 'Exactly what perfection should look like!',
+        stars: 5
+      },
+      {
+        spotId: 5,
+        userId: 1,
+        review: 'For the most part, in awe, but they could have made it a bit more comfortable in the living room!',
+        stars: 4
+      },
+      {
+        spotId: 6,
+        userId: 3,
+        review: 'Super chill spot!',
+        stars: 5
+      },
+      {
+        spotId: 6,
+        userId: 1,
+        review: 'I love this place and I would definitely bring friends and family to come join the next time around!',
+        stars: 5
+      },
+      {
+        spotId: 7,
+        userId: 3,
+        review: 'I like it, very spacious and like a dream!',
+        stars: 5
+      },
+      {
+        spotId: 7,
+        userId: 1,
+        review: 'Far too much open space for my liking...',
+        stars: 3
+      },
+      {
+        spotId: 8,
+        userId: 3,
+        review: 'There`s a perfect spot by the pool where you can see the sunset!',
+        stars: 5
+      },
+      {
+        spotId: 6,
+        userId: 3,
+        review: 'A truly marvellous spot!',
+        stars: 5
+      },
     ], { validate: true })
   },
 
@@ -135,7 +183,7 @@ module.exports = {
     options.tableName = 'Reviews';
     const Op = Sequelize.Op;
     await queryInterface.bulkDelete(options, {
-      spotId: { [Op.in]: [1, 2, 3, 4, 5] }
+      spotId: { [Op.in]: [1, 2, 3, 4, 5, 6, 7, 8] }
     }, {})
   }
 };

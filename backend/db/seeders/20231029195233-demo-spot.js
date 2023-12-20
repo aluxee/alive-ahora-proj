@@ -68,7 +68,45 @@ module.exports = {
         name: "Secluded Beachfront Paradise",
         description: "Near most secluded beaches of Na Pali Coast",
         price: 457
-      }
+      },
+
+
+      {
+        ownerId: 2,
+        address: "By the Lakeside of Oaks",
+        city: "Clearlake Oaks",
+        state: "California",
+        country: "United States",
+        lat: 39.121680,
+        lng: -122.642680,
+        name: "Loveshack Lake",
+        description: "Feel close at home, ahora, by the waters",
+        price: 562
+      },
+      {
+        ownerId: 2,
+        address: "Right by Laguna Beach",
+        city: "Laguna Beach",
+        state: "California",
+        country: "United States",
+        lat: 33.545841,
+        lng: -117.781731,
+        name: "Laguna Comfort Lofts",
+        description: "Soak in the sun from the porch",
+        price: 255
+      },
+      {
+        ownerId: 2,
+        address: "Palm Trees of Orlando",
+        city: "Orlando",
+        state: "Florida",
+        country: "United States",
+        lat: 28.538336,
+        lng: -81.379234,
+        name: "Waterlight Palmtrees",
+        description: "Surround yourself to the calls of nature and the breeze singing by your ears",
+        price: 102
+      },
     ], { validate: true })
   },
 
@@ -76,7 +114,7 @@ module.exports = {
     options.tableName = 'Spots';
     const Op = Sequelize.Op;
     await queryInterface.bulkDelete(options, {
-      state: { [Op.in]: ['France', 'Bahamas', 'Italy', 'Japan', 'Hawaii'] }
+      state: { [Op.in]: ['France', 'Bahamas', 'Italy', 'Japan', 'Hawaii', 'California', 'Florida'] }
     }, {});
   }
 };

@@ -1,0 +1,23 @@
+#spots-section {
+	top: 0;
+	position: absolute;
+	padding: 10px;
+	margin: 10px;
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	align-content: stretch;
+	align-items: stretch;
+}
+
+.spots-list {
+	display: grid;
+	grid-template-columns:
+		repeat(4, 12rem);
+	grid-template-rows: repeat(4, 200px);
+	align-content: space-between;
+	justify-content: space-around;
+	align-items: end;
+	justify-items: end;
+}
