@@ -13,7 +13,13 @@ function Navigation({ isLoaded }) {
 	return (
 
 		<ul className='nav_bar'>
-			<h1 className='airbnb'>airbnb</h1>
+			<div className='nav_name'>
+				<h1 className='airbnb'>
+					<i className="fa-brands fa-airbnb" style={{ color: "red" }}></i> ahorabnb
+				</h1>
+				<h3 id='alive-ahora'>alive-ahora</h3>
+
+			</div>
 			<div className='nav_options'>
 				<div className='content_nav_options'>
 					<li className='nav_list' id='nav_house'>
