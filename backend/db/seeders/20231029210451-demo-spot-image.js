@@ -134,7 +134,39 @@ module.exports = {
         spotId: 5,
         url: 'https://i.imgur.com/Ycuuk2G.png',
         preview: true
+      },
+
+      {
+        spotId: 6,
+        url: 'https://imgur.com/igpIFvq.png',
+        preview: true
+      },
+      {
+        spotId: 6,
+        url: 'https://imgur.com/ox0Lszh.png',
+        preview: true
+      },
+      {
+        spotId: 7,
+        url: 'https://imgur.com/buFOFNY.png',
+        preview: true
+      },
+      {
+        spotId: 7,
+        url: 'https://imgur.com/4JgGgwJ.png',
+        preview: true
+      },
+      {
+        spotId: 8,
+        url: 'https://imgur.com/70w5MbG.png',
+        preview: true
+      },
+      {
+        spotId: 8,
+        url: 'https://imgur.com/7PTrs9t.png',
+        preview: true
       }
+
     ], {validate: true})
   },
 
@@ -142,7 +174,7 @@ module.exports = {
     options.tableName = 'SpotImages';
     const Op = Sequelize.Op;
     await queryInterface.bulkDelete(options, {
-      spotId: { [Op.in]: [1, 2, 3, 4, 5] }
+      spotId: { [Op.in]: [1, 2, 3, 4, 5, 6, 7, 8] }
     }, {});
   }
 };
