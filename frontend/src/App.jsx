@@ -36,10 +36,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-
         element: <Spots />
-
-
       },
       // {
       //   path: '/spots',

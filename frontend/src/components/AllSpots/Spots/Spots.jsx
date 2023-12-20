@@ -7,10 +7,10 @@ function Spots() {
 	const dispatch = useDispatch();
 	const spot = useSelector(state => state.spots);
 
-	console.log("%c spot (before):", "font-size: 25px; color: red", spot)
+	// console.log("%c spot (before):", "font-size: 25px; color: red", spot)
 
 	const spots = Object.values(spot)
-	console.log("%c spot (after):", "font-size: 25px; color: blue", spots)
+	// console.log("%c spot (after):", "font-size: 25px; color: blue", spots)
 
 	useEffect(() => {
 

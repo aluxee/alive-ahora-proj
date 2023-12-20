@@ -31,7 +31,6 @@ body {
 /* gen-app/outlet */
 
 .outlet-wrapper {
-	width: 100%;
 	display: flex;
 	justify-content: space-evenly;
 	align-items: center;
