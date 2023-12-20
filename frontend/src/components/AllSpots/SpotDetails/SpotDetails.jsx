@@ -9,14 +9,15 @@ function SpotDetails({ spot }) {
 
 	const dispatch = useDispatch();
 	console.log("%c testing for spot id: ", "color: orange; font-size: 25px", spot.id)
-
+	const spotId = spot.id;
+	const displayImage = spot.previewImage;
 	const [img, setImg] = useState();
 
 	useEffect(() => {
-		setImg(spot.previewImage)
-		dispatch(thunkLoadSpotImages(spot.id))
+		setImg(displayImage)
+		dispatch(thunkLoadSpotImages(spotId))
 
-	}, [dispatch, img])
+	}, [dispatch, img, displayImage, spotId])
 
 
 	return (
