@@ -19,7 +19,7 @@ module.exports = {
         lng: 2.3414,
         name: "The Hot Spot de la Piscine",
         description: "Relax like you're at a french resort!",
-        price: 155
+        price: 255
       },
       {
         ownerId: 3,
@@ -31,7 +31,7 @@ module.exports = {
         lng: -64.75528,
         name: "Waterfront Villa",
         description: "Soak the sun directly by the ocean on patio or deck.",
-        price: 689
+        price: 789
       },
       {
         ownerId: 3,
@@ -43,7 +43,7 @@ module.exports = {
         lng: 9.25891,
         name: "Vintage Luxury Villa Condo",
         description: "Private perfect haven with a 180 panoramic majestic lake view!",
-        price: 2154
+        price: 654
       },
       {
         ownerId: 3,
@@ -67,7 +67,7 @@ module.exports = {
         lng: -159.49575,
         name: "Secluded Beachfront Paradise",
         description: "Near most secluded beaches of Na Pali Coast",
-        price: 457
+        price: 2457
       },
 
 
@@ -93,7 +93,7 @@ module.exports = {
         lng: -117.781731,
         name: "Laguna Comfort Lofts",
         description: "Soak in the sun from the porch",
-        price: 255
+        price: 1124
       },
       {
         ownerId: 2,
@@ -105,7 +105,7 @@ module.exports = {
         lng: -81.379234,
         name: "Waterlight Palmtrees",
         description: "Surround yourself to the calls of nature and the breeze singing by your ears",
-        price: 102
+        price: 337
       },
     ], { validate: true })
   },
