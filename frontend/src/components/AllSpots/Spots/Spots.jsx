@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import * as spotActions from "../../../store/spot";
-import SpotDetails from "../SpotDetails";
+import SpotDetails from "../SpotImages";
 import './Spots.css';
 function Spots() {
 	const dispatch = useDispatch();
@@ -21,12 +21,25 @@ function Spots() {
 			<section id="spots-section">
 				<ul className="spots-list">
 					{spots.map(spot => (
-
-						<SpotDetails
-							spot={spot}
-							key={spot.id}
-						/>
-
+						<>
+							<div className="spot-item-div">
+								<SpotDetails
+									spot={spot}
+									key={spot.id}
+								/>
+								<div className="spot-name-rate">
+									<span id="spot-state-city">{spot.state}, {spot.city}</span>
+									<span id="spot-rating">
+										<i className="fa-solid fa-star"></i>
+										{spot.avgRating}
+									</span>
+								</div>
+								<div className="spot-price">
+									<span>${spot.price} night</span>
+									<span></span>
+								</div>
+							</div>
+						</>
 					))
 					}
 				</ul>

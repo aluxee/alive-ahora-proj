@@ -45,14 +45,14 @@ export const removeSpot = (spotId) => ({
 // /** Thunk Action Creators: */
 
 //* load images
-export const thunkLoadSpotImages = (spot) => async dispatch => {
+export const thunkLoadSpotImages = (spotId) => async dispatch => {
 	// console.log("🚀 ~ file: spot.js:39 ~ thunkLoadSpotImages ~ spot's id:", spotId)
 
 	// const imageUrl = spot.previewImage;
 	// console.log("🚀 ~ file: spot.js:42 ~ thunkLoadSpotImages ~ imageUrl:", imageUrl)
 
 
-	const response = await fetch(`/api/spots/${spot.id}`, {
+	const response = await fetch(`/api/spots/${spotId}`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json'
@@ -107,7 +107,8 @@ export const thunkLoadSpots = () => async dispatch => {
 // custom
 
 //* receive a spot
-export const thunkReceiveSpot = (spot, spotId) => async (dispatch) => {
+export const thunkReceiveSpot = (spotId) => async (dispatch) => {
+	// ! renders the spotId on the backend as undefined
 	const res = await fetch(`/api/spots/${spotId}`, {
 		method: 'GET',
 		headers: {
@@ -208,9 +209,9 @@ const spotsReducer = (state = initialState, action) => {
 			return allSpotsState;
 		}
 		case RECEIVE_SPOT: {
-			console.log("🚀 ~ file: spot.js:221 ~ spotsReducer ~ action:", action)
+			console.log("🚀 %c ~ file: spot.js:221 ~ spotsReducer ~ ACTION: (receive_spot)", "color: orange; font-size: 25px", action, "action spot in spot id: ", action.spot.Spot.id, "action.spot.Spot: ", action.spot.Spot );
 
-			return { ...state, [action.spot.id]: action.spot };
+			return { ...state, [action.spot.Spot.id]: action.spot.Spot };
 		}
 		default:
 			return state;
