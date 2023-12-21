@@ -20,6 +20,13 @@ function Navigation({ isLoaded }) {
 				<h3 id='alive-ahora'>alive-ahora</h3>
 
 			</div>
+			<div className='nav_search'>
+					<section>
+						{/* insert search section */}
+					{/* <i className="fa-regular fa-magnifying-glass"></i> */}
+					{/* <i className="fa-solid fa-magnifying-glass"></i> */}
+						</section>
+			</div>
 			<div className='nav_options'>
 				<div className='content_nav_options'>
 					<li className='nav_list' id='nav_house'>

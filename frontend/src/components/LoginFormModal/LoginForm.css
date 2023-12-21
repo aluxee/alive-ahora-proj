@@ -8,22 +8,21 @@ Login section:
 	display: grid;
 	grid-template-areas: 'lf_one' 'lf_two';
 	justify-content: end;
-  	justify-items: end;
+	justify-items: end;
 }
 
 .login_container {
 	display: flex;
 	flex-direction: column;
-  	align-items: flex-end;
-  	flex-wrap: wrap;
+	align-items: flex-end;
+	flex-wrap: wrap;
 	align-content: flex-end;
+
 }
 
-.login_container > h1 {
+.login_container>h1 {
 	margin: auto;
-	padding: 5px;
-	width: 10%;
-	margin-left: 15%;
+	padding: 12px;
 }
 
 .box_login {
@@ -34,7 +33,7 @@ Login section:
 
 }
 
-.box_login > input {
+.box_login>input {
 	padding-left: 5px;
 	margin: 5px;
 	font-size: 16px;
@@ -52,8 +51,8 @@ Login section:
 }
 
 #login_submit {
-padding: 5px;
-margin: 15px;
+	padding: 5px;
+	margin: 15px;
 }
 
 /* ____________________________________________ */
