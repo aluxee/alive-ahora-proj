@@ -59,13 +59,13 @@ module.exports = {
       {
         spotId: 3,
         userId: 2,
-        review: 'So expensive but so worth it. Best place I have ever been in in my entire life!',
+        review: 'Little pricey for my taste but so worth it. Best place I have ever been in in my entire life!',
         stars: 5
       },
       {
         spotId: 3,
         userId: 1,
-        review: 'Absolutely outstanding! This french home-like resort exceeded all my expectations. From the exceptional quality to the impeccable customer service, I couldn`t be happier.Five stars all the way!',
+        review: 'Absolutely outstanding! This french home-like resort exceeded all my expectations. From the exceptional quality to the impeccable customer service, I couldn`t be happier. Five stars all the way!',
         stars: 5
       },
       {
@@ -123,7 +123,7 @@ module.exports = {
         stars: 5
       },
       {
-        spotId: 2,
+        spotId: 5,
         userId: 2,
         review: 'Just kidding! Pulled your leg with my last review, this place is the definition of perfection!',
         stars: 5
@@ -131,14 +131,14 @@ module.exports = {
       {
         spotId: 5,
         userId: 3,
-        review: 'Exactly what perfection should look like!',
+        review: 'Exactly what perfection should look like! 100% worth the price!',
         stars: 5
       },
       {
         spotId: 5,
         userId: 1,
-        review: 'For the most part, in awe, but they could have made it a bit more comfortable in the living room!',
-        stars: 4
+        review: 'Completely home-love-struck!',
+        stars: 5
       },
       {
         spotId: 6,
@@ -168,7 +168,7 @@ module.exports = {
         spotId: 8,
         userId: 3,
         review: 'There`s a perfect spot by the pool where you can see the sunset!',
-        stars: 5
+        stars: 4
       },
       {
         spotId: 6,

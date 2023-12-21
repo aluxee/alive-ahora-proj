@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     await SpotImage.bulkCreate([
       {
         spotId: 1,
@@ -62,17 +62,17 @@ module.exports = {
       },
       {
         spotId: 3,
+        url: 'https://imgur.com/gwhB2Wg.png',
+        preview: true
+      },
+      {
+        spotId: 3,
+        url: 'https://imgur.com/8PE0day.png',
+        preview: true
+      },
+      {
+        spotId: 3,
         url: 'https://i.imgur.com/D2StPP2.png',
-        preview: true
-      },
-      {
-        spotId: 3,
-        url: 'https://i.imgur.com/NCa79sE.png',
-        preview: true
-      },
-      {
-        spotId: 3,
-        url: 'https://i.imgur.com/y3QIHSh.png',
         preview: true
       },
       {
@@ -82,7 +82,7 @@ module.exports = {
       },
       {
         spotId: 3,
-        url: 'https://i.imgur.com/fUIPgLY.png',
+        url: 'https://imgur.com/DFj4cTM.png',
         preview: true
       },
       {
@@ -112,27 +112,27 @@ module.exports = {
       },
       {
         spotId: 5,
-        url: 'https://i.imgur.com/GiMfAr3.png',
+        url: 'https://imgur.com/6jE1tvN.png',
         preview: true
       },
       {
         spotId: 5,
-        url: 'https://i.imgur.com/SrydAAY.png',
+        url: 'https://imgur.com/NdYldeJ.png',
         preview: true
       },
       {
         spotId: 5,
-        url: 'https://i.imgur.com/X7dHrAN.png',
+        url: 'https://imgur.com/IEkw2ap.png',
         preview: true
       },
       {
         spotId: 5,
-        url: 'https://i.imgur.com/6n4ngcq.png',
+        url: 'https://imgur.com/68smVXz.png',
         preview: true
       },
       {
         spotId: 5,
-        url: 'https://i.imgur.com/Ycuuk2G.png',
+        url: 'https://imgur.com/GhRbVPK.png',
         preview: true
       },
 
@@ -167,10 +167,10 @@ module.exports = {
         preview: true
       }
 
-    ], {validate: true})
+    ], { validate: true })
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
     options.tableName = 'SpotImages';
     const Op = Sequelize.Op;
     await queryInterface.bulkDelete(options, {
