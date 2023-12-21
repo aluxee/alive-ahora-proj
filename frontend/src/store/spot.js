@@ -106,10 +106,8 @@ export const thunkLoadSpots = () => async dispatch => {
 
 // custom
 
-
-
 //* receive a spot
-export const thunkReceiveSpot = (spotId) => async (dispatch) => {
+export const thunkReceiveSpot = (spot, spotId) => async (dispatch) => {
 	const res = await fetch(`/api/spots/${spotId}`, {
 		method: 'GET',
 		headers: {
