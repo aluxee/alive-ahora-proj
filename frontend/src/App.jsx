@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import Navigation from './components/Navigation';
 import * as sessionActions from './store/session';
 import Spots from './components/AllSpots/Spots'
+import SpotPage from './components/AllSpots/SpotPage';
 // import * as spotActions from './store/spot';
 
 
@@ -36,21 +37,34 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Spots />
+        element: <Spots />,
       },
-      // {
-      //   path: '/spots',
-      //   element:
-      //     <>
-      //       <SpotsIndex />
-      //       {/* <Outlet /> */}
-      //     </>,
-      //   children: [
-      //     {
-      //       path: '/:spotId'
-      //     }
-      //   ]
-      // }
+      {
+        path: 'spots',
+        children: [
+
+          {
+            index: true,
+            path: ':spotId',
+            element:
+              <>
+                <SpotPage />
+
+              </>
+
+          },
+        ]
+        //   element:
+        //     <>
+        //       <SpotsIndex />
+        //       {/* <Outlet /> */}
+        //     </>,
+        //   children: [
+        //     {
+        //       path: '/:spotId'
+        //     }
+        //   ]
+      }
 
     ]
   }

@@ -5,10 +5,10 @@ import { thunkLoadSpotImages } from "../../../store/spot";
 import './SpotDetails';
 
 function SpotDetails({ spot }) {
-	console.log("🚀 %c ~ file: SpotDetails.jsx:5 ~ SpotDetails ~ spot:", "color: magenta; font-size: 25px", spot, spot.previewImage)
+	// console.log("🚀 %c ~ file: SpotDetails.jsx:5 ~ SpotDetails ~ spot:", "color: magenta; font-size: 25px", spot, spot.previewImage)
 
 	const dispatch = useDispatch();
-	console.log("%c testing for spot id: ", "color: orange; font-size: 25px", spot.id)
+	// console.log("%c testing for spot id: ", "color: orange; font-size: 25px", spot.id)
 	const spotId = spot.id;
 	const displayImage = spot.previewImage;
 	const [img, setImg] = useState();
@@ -29,12 +29,11 @@ function SpotDetails({ spot }) {
 							<img src={img} alt={spot.name} style={
 								{
 									backgroundImage: `${setImg}`,
-									maxHeight: 250,
-									maxWidth: 238,
-									// overflow: "hidden"
+									height: 225,
+									width: 225,
+									overflow: "hidden",
 									objectFit: "cover",
 									overflowClipMargin: "content-box",
-									overflow: "clip",
 									borderRadius: 30
 								}
 							}

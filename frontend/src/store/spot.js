@@ -2,7 +2,8 @@
 /** Action Type Constants: */
 export const LOAD_SPOTS = 'spots/LOAD_SPOTS';
 export const LOAD_SPOT_IMAGES = 'spots/LOAD_SPOT_IMAGES';
-// export const RECEIVE_SPOTS = 'spots/RECEIVE_SPOTS';
+export const RECEIVE_SPOT = 'spots/RECEIVE_SPOT';
+// export const POST_SPOTS = 'spots/POST_SPOTS';
 // export const UPDATE_SPOTS = 'spots/UPDATE_SPOTS';
 export const REMOVE_SPOTS = 'spots/REMOVE_SPOTS';
 
@@ -12,16 +13,25 @@ export const loadSpots = (spots) => ({
 	spots
 });
 
-export const loadImagesFromSpot = (spot) => ({
+export const loadImagesFromSpot = (spots) => ({
 	type: LOAD_SPOT_IMAGES,
-	spot
-})
-// export const receiveSpot = (spot) => ({
-// 	type: RECEIVE_SPOTS,
-// 	spot
-// });
+	spots
+});
 
-// createSpot => *special*
+export const receiveSpot = (spot) => ({
+	//create custom obj prior to dispatch***
+	type: RECEIVE_SPOT,
+	spot
+});
+
+
+// export const createSpot = ( *special* ) => ({
+// 	type: POST_SPOTS,
+// 	spots
+// })
+
+
+
 // export const editSpot = (spot) => ({
 // 	type: UPDATE_SPOTS,
 // 	spot
@@ -34,12 +44,12 @@ export const removeSpot = (spotId) => ({
 
 // /** Thunk Action Creators: */
 
+//* load images
+export const thunkLoadSpotImages = (spot) => async dispatch => {
+	// console.log("🚀 ~ file: spot.js:39 ~ thunkLoadSpotImages ~ spot's id:", spotId)
 
-export const thunkLoadSpotImages = (spotId) => async dispatch => {
-	console.log("🚀 ~ file: spot.js:39 ~ thunkLoadSpotImages ~ spot's id:", spotId)
-
-	const imageUrl = spot.previewImage;
-	console.log("🚀 ~ file: spot.js:42 ~ thunkLoadSpotImages ~ imageUrl:", imageUrl)
+	// const imageUrl = spot.previewImage;
+	// console.log("🚀 ~ file: spot.js:42 ~ thunkLoadSpotImages ~ imageUrl:", imageUrl)
 
 
 	const response = await fetch(`/api/spots/${spot.id}`, {
@@ -48,11 +58,11 @@ export const thunkLoadSpotImages = (spotId) => async dispatch => {
 			'Content-Type': 'application/json'
 		}
 	});
-	console.log("🚀 ~ file: spot.js:49 ~ thunkLoadSpotImages ~ response:", response)
+	// console.log("🚀 ~ file: spot.js:49 ~ thunkLoadSpotImages ~ response:", response)
 
 	if (response.ok) {
 		const data = await response.json();
-		console.log("🚀 ~ file: spot.js:55 ~ thunkLoadSpotImages ~ data:", data)
+		// console.log("🚀 ~ file: spot.js:55 ~ thunkLoadSpotImages ~ data:", data)
 		dispatch(loadImagesFromSpot(data))
 		return data;
 	} else {
@@ -64,7 +74,7 @@ export const thunkLoadSpotImages = (spotId) => async dispatch => {
 }
 
 
-// // not gonna show anything unless we extract from back end which is where the thunk comes in
+//* load all spots
 export const thunkLoadSpots = () => async dispatch => {
 	// 	// get request: not likely to pass anything in but can throw props if you want but that's just a placeholder if inserted, prob not gonna use in the function
 
@@ -92,6 +102,100 @@ export const thunkLoadSpots = () => async dispatch => {
 	}
 }
 
+
+
+// custom
+
+
+
+//* receive a spot
+export const thunkReceiveSpot = (spotId) => async (dispatch) => {
+	const res = await fetch(`/api/spots/${spotId}`, {
+		method: 'GET',
+		headers: {
+			"Content-Type": "application/json"
+		}
+	})
+	if (res.ok) {
+		const data = await res.json()
+		dispatch(receiveSpot(data))
+		return data
+	} else {
+		const errorResponse = await res.json()
+		return errorResponse;
+	}
+};
+
+
+
+
+//* delete/remove a spot
+// export const thunkRemoveSpot = (spotId) => async dispatch => {
+
+// 	console.log("REPORT (props): ", spotId) // came back as undefined; changed from props to removeId
+
+
+// 	const response = await fetch(`/api/spots/${spotId}`, {
+// 		method: 'DELETE',
+// 		headers: {
+// 			"Content-Type": "application/json"
+// 		},
+
+// 	});
+// 	// is the body above correct if we're deleting?
+
+
+// 	if (response.ok) {
+// 		dispatch(removeSpot(spotId))
+// 		return { 'valid': 'data' }
+// 	} else {
+// 		const errorResponse = await res.json()
+// 		return errorResponse
+// 	}
+// }
+
+
+//* create / post a spot
+// export const thunkCreateSpot = (spot) => async (dispatch) => {
+// 	const res = await fetch(`api/spots`, {
+// 		method: 'POST',
+// 		headers: {
+// 			"Content-Type": "application/json",
+// 			body: JSON.stringify(spot)
+// 		}
+// 	})
+// 	if (res.ok) {
+// 		const data = await res.json()
+// 		dispatch(receiveSpot(data))
+// 		return data
+// 	} else {
+// 		const errorResponse = await res.json()
+// 		return errorResponse
+// 	}
+// }
+
+
+//* edit a spot
+// export const thunkEditSpot = (spot) => async (dispatch) => {
+// 	const res = await fetch(`api/spots/${spot.id}`, {
+// 		method: 'PUT',
+// 		headers: {
+// 			"Content-Type": "application/json",
+// 			body: JSON.stringify(spot)
+// 		}
+// 	})
+// 	if (res.ok) {
+// 		const data = await res.json()
+// 		dispatch(receiveSpot(data))
+// 		return data
+// 	} else {
+// 		const errorResponse = await res.json()
+// 		return errorResponse
+// 	}
+// }
+
+
+//  __________________________________________reducer____________________________________________________
 const initialState = {};
 const spotsReducer = (state = initialState, action) => {
 
@@ -104,6 +208,11 @@ const spotsReducer = (state = initialState, action) => {
 				allSpotsState[spot.id] = spot
 			})
 			return allSpotsState;
+		}
+		case RECEIVE_SPOT: {
+			console.log("🚀 ~ file: spot.js:221 ~ spotsReducer ~ action:", action)
+
+			return { ...state, [action.spot.id]: action.spot };
 		}
 		default:
 			return state;
