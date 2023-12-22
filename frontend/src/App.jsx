@@ -5,6 +5,7 @@ import Navigation from './components/Navigation';
 import * as sessionActions from './store/session';
 import Spots from './components/AllSpots/Spots'
 import SpotPage from './components/AllSpots/SpotPage';
+import CreateSpotForm from './components/Forms/CreateSpotForm/CreateSpotForm';
 // import * as spotActions from './store/spot';
 
 
@@ -37,12 +38,17 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Spots />,
+        element:
+          <>
+            <Spots />,
+
+          </>
       },
+
       {
         path: 'spots',
+        element: <Outlet />,
         children: [
-
           {
             index: true,
             path: ':spotId',
@@ -51,7 +57,10 @@ const router = createBrowserRouter([
                 <SpotPage />
 
               </>
-
+          },
+          {
+            path: 'new',
+            element: <CreateSpotForm />
           },
         ]
         //   element:
