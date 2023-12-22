@@ -104,8 +104,6 @@ export const thunkLoadSpots = () => async dispatch => {
 
 
 
-// custom
-
 //* receive a spot
 export const thunkReceiveSpot = (spotId) => async (dispatch) => {
 	// ! renders the spotId on the backend as undefined
@@ -124,7 +122,6 @@ export const thunkReceiveSpot = (spotId) => async (dispatch) => {
 		return errorResponse;
 	}
 };
-
 
 
 
@@ -155,23 +152,25 @@ export const thunkReceiveSpot = (spotId) => async (dispatch) => {
 
 
 //* create / post a spot
-// export const thunkCreateSpot = (spot) => async (dispatch) => {
-// 	const res = await fetch(`api/spots`, {
-// 		method: 'POST',
-// 		headers: {
-// 			"Content-Type": "application/json",
-// 			body: JSON.stringify(spot)
-// 		}
-// 	})
-// 	if (res.ok) {
-// 		const data = await res.json()
-// 		dispatch(receiveSpot(data))
-// 		return data
-// 	} else {
-// 		const errorResponse = await res.json()
-// 		return errorResponse
-// 	}
-// }
+export const thunkCreateSpot = (spot) => async (dispatch) => {
+
+	const response = await fetch(`api/spots`, {
+		method: 'POST',
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(spot)
+	})
+	if (response.ok) {
+		const data = await response.json();
+		console.log("this response is rendering in thunkCreateSpot; here's the data: ", data)
+		dispatch(receiveSpot(data))
+		return data
+	} else {
+		const errorResponse = await response.json()
+		return errorResponse
+	}
+}
 
 
 //* edit a spot
@@ -209,7 +208,7 @@ const spotsReducer = (state = initialState, action) => {
 			return allSpotsState;
 		}
 		case RECEIVE_SPOT: {
-			console.log("🚀 %c ~ file: spot.js:221 ~ spotsReducer ~ ACTION: (receive_spot)", "color: orange; font-size: 25px", action, "action spot in spot id: ", action.spot.Spot.id, "action.spot.Spot: ", action.spot.Spot );
+			console.log("🚀 %c ~ file: spot.js:221 ~ spotsReducer ~ ACTION: (receive_spot)", "color: orange; font-size: 25px", action, "action spot in spot id: ", action.spot.Spot.id, "action.spot.Spot: ", action.spot.Spot);
 
 			return { ...state, [action.spot.Spot.id]: action.spot.Spot };
 		}

@@ -1,3 +1,4 @@
+import CreateSpotForm from "../../Forms/CreateSpotForm/CreateSpotForm";
 
 
 
@@ -5,8 +6,12 @@ function CreateSpot() {
 
 
 	return (
-
-		null
+		<>
+			<CreateSpotForm
+				spot={spot}
+				formType="Create Spot"
+			/>
+		</>
 	)
 }
 

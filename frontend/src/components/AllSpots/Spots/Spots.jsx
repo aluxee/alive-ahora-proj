@@ -45,7 +45,6 @@ function Spots() {
 					}
 				</ul>
 			</section>
-
 		</>
 	)
 }
