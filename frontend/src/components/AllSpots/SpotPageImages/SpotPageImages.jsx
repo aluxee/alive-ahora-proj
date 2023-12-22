@@ -12,9 +12,9 @@ function SpotPageImages({ spot }) {
 	const dispatch = useDispatch();
 	const spotId = spot.id;
 
-	console.log("%c testing for spot id: ", "color: orange; font-size: 25px", spotId)
+	// console.log("%c testing for spot id: ", "color: orange; font-size: 25px", spotId)
 	const displayImage = spot.previewImage;
-	console.log("SPOT!!!: ", spot, spot.SpotImages);
+	// console.log("SPOT!!!: ", spot, spot.SpotImages);
 	const [img, setImg] = useState();
 
 	useEffect(() => {
@@ -47,8 +47,8 @@ function SpotPageImages({ spot }) {
 					}}
 				/>
 			</div>
-			{otherImages.map(image => (
-				<div className="images-container_two">
+			<div className="images-container_two">
+				{otherImages.map(image => (
 					<img src={image.url} key={spotId} className="the-spot-images" style={
 						{
 							backgroundImage: `${setImg}`,
@@ -58,8 +58,8 @@ function SpotPageImages({ spot }) {
 							borderRadius: 30
 						}}
 					/>
-				</div>
-			))}
+				))}
+			</div>
 		</div>
 
 	)

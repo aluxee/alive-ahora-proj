@@ -1,16 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import * as spotActions from "../../../store/spot";
-import SpotDetails from "../SpotImages";
+import SpotImages from "../SpotImages";
 import './Spots.css';
+
 function Spots() {
 	const dispatch = useDispatch();
 	const spot = useSelector(state => state.spots);
 
-	// console.log("%c spot (before):", "font-size: 25px; color: red", spot)
+	console.log("%c spot (before):", "font-size: 25px; color: red", spot)
 
 	const spots = Object.values(spot)
-	// console.log("%c spot (after):", "font-size: 25px; color: blue", spots)
+	console.log("%c spot (after):", "font-size: 25px; color: blue", spots)
 
 	useEffect(() => {
 
@@ -23,7 +24,7 @@ function Spots() {
 					{spots.map(spot => (
 						<>
 							<div className="spot-item-div">
-								<SpotDetails
+								<SpotImages
 									spot={spot}
 									key={spot.id}
 								/>
