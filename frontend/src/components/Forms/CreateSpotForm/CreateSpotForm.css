@@ -1,22 +1,100 @@
+/* whole form & general layout */
 .create-form {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	align-content: center;
-	margin-inline: 10rem;
+	margin-inline: 12rem;
+	align-content: space-between;
+	justify-content: space-between;
+	align-items: baseline;
 }
 
+.create-form-container {
+display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+	justify-content: center;
+	align-items: baseline;
+	padding: 5px 20px;
+	align-content: center;
+	margin-inline: inherit;
+}
+
+hr {
+	margin-top: 2rem;
+	height: 0.5px;
+	width: 100%;
+}
+
+label>input {
+	display: flex;
+	width: 90%;
+}
+
+label {
+	margin-left: 20px;
+}
+
+textarea {
+	margin-left: 1rem;
+}
+
+/* _________________________________________________________________________________ */
+/* form headers and paired texts*/
+
+#create-form-h2 {
+	margin: 0;
+	padding-left: 5px;
+}
+
+#create-form-h3 {
+
+	margin-top: 12px;
+	margin-right: 1rem;
+
+
+}
+
+.form-text-div {
+	margin-top: 8px;
+	width: 90%;
+	margin-bottom: 10px;
+}
+
+.p-error {
+	margin: 0 auto;
+	font-size: 12px;
+	padding-left: 18px;
+	color: red;
+}
+
+/* _________________________________________________________________________________ */
+/* form section one: locale */
 .create-form-locale {
 	display: flex;
 	flex-direction: column;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
 	justify-content: center;
 	align-items: center;
+
 }
 
-.create-form-header-text {
+
+.create-form-locale>label>input {
+	width: 5rem;
+}
+
+.form-locale {
+	margin: 4px;
+	width: 100%;
+}
+
+.create-form-header {
 	display: flex;
 	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	align-content: flex-start;
+	width: 95%;
 }
 
 .form-country {}
@@ -25,33 +103,149 @@
 
 .form-city-state {
 	display: flex;
-	flex-direction: column;
+	width: 100%;
+
+	flex-wrap: wrap;
+	margin-right: 3rem;
+	padding-inline-start: 0%;
+	align-items: center;
 }
 
-#city {}
+.form-city-state-container>label {
+	width: fit-content;
+	padding-left: 0.4rem;
 
-#state {}
+}
 
-.form-description {
-
+.form-city-state-container {
 	display: flex;
 	flex-direction: column;
+	flex-wrap: wrap;
+	width: fit-content;
+	align-items: baseline;
+	/* margin-right: 20px; */
+	align-content: space-between;
 }
 
-.form-title {}
+.form-label {
+	width: 75%;
+}
 
-.form-price {}
+#city {
+	/* width: 75%; */
+	/* margin-left: 0px; */
+}
+
+#city-container {
+	margin-left: 1rem;
+	width: 72%;
+}
+
+input#city.form-label.city {
+	/* width: 122%; */
+	/* margin-left: 25px; */
+}
+
+#city>label {
+	/* margin-left: 10px; */
+}
+
+#comma {
+	margin-left: -3rem;
+}
+
+#state>label {
+	width: 93%;
+
+}
+
+input#state.form-label.state {
+	width: 92%;
+}
+
+div.form-city-state-container {
+	display: flex;
+	width: 30%;
+	padding-left: 1px;
+}
+
+div.form-city-state-container~.form-city-state-container::before {
+	/* width: 72%; */
+	/* content: ',';	 */
+}
+
+/* _________________________________________________________________________________ */
+/* form section two: description*/
+.form-description {
+	/* display: flex;
+	flex-direction: column;
+	align-content: center;
+	align-items: flex-start;
+	flex-wrap: wrap;
+	justify-content: flex-end; */
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: baseline;
+}
+
+.form-description>h3 {
+	margin-left: 2rem;
+}
+
+.form-description>.form-text-div {
+	margin-left: 1.5rem;
+}
+
+.form-title {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-content: space-around;
+	justify-content: center;
+	align-items: stretch;
+}
+
+.form-title>h3 {
+	margin-left: 1rem;
+}
+
+.form-price {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-content: space-around;
+	justify-content: center;
+	align-items: stretch;
+}
+
+.form-price>h3 {
+	margin-left: 1rem;
+}
+
+.price-container {}
 
 .spot-pics {
 	display: flex;
-		flex-direction: column;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-content: space-around;
+	align-items: stretch;
+
 }
 
-.spot-pics > input {
+.spot-pics>h3 {
+	margin-left: 1rem;
+}
+
+.spot-pics>input {
 	margin: 10px;
 }
-.spot-create-form-btn{
+
+.spot-create-form-btn {
 	border: 1px solid black;
 	padding: 5px;
 	margin: 10px;
+	align-self: center;
 }

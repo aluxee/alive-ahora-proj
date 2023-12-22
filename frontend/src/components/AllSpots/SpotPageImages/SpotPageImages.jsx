@@ -24,13 +24,23 @@ function SpotPageImages({ spot }) {
 	}, [dispatch, img, displayImage, spotId])
 
 
-	//* need to fix second spot, none of the images pop up and brekas the page
+	//* need to fix second spot, none of the images pop up and breaks the page
 	const mainImage = spot.SpotImages.find(image => (
 		// image.id === 1 ? image.url : '';
 		image
 		// console.log("IMAGE RENDER: ", image)
 
 	))
+	/*
+! could not save latest changes for spotImages to push to main because of this error; dup error
+react-dom.development.js:86 Warning: Encountered two children with the same key, `2`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+	 at div
+	 at div
+	 at SpotPageImages (http://localhost:5173/src/components/AllSpots/SpotPageImages/SpotPageImages.jsx?t=1703225481671:22:27)
+	 at div
+	 at section
+	 at SpotPage
+	*/
 	const otherImages = spot.SpotImages.filter(image => (
 
 		image.url !== spot.SpotImages[0].url ? image : null
@@ -47,7 +57,7 @@ function SpotPageImages({ spot }) {
 
 		<div className="spot-page-images-container">
 			<div className="images-container_one">
-				<img src={mainImage.url} key={spotId} className="the-main-spot-image" style={
+				<img src={mainImage.url} key={mainImage.url} className="the-main-spot-image" style={
 					{
 						backgroundImage: `${setImg}`,
 						overflow: "hidden",
@@ -61,7 +71,7 @@ function SpotPageImages({ spot }) {
 			</div>
 			<div className="images-container_two">
 				{otherImages.map(image => (
-					<img src={image.url} key={spotId} className="the-spot-images" style={
+					<img src={image.url} key={image.url} className="the-spot-images" style={
 						{
 							backgroundImage: `${setImg}`,
 							overflow: "hidden",
