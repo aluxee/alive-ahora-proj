@@ -1,0 +1,25 @@
+.spot-page-images-container {
+	display: flex;
+	flex-wrap: wrap;
+	padding: 5px;
+}
+
+img.the-spot-images> :first-child {
+	width: 450px;
+	height: 450px;
+}
+
+img.the-spot-images {
+	width: 160px;
+	height: 200px;
+	margin: 4px;
+}
+
+.images-container_two {
+
+	width: 345px;
+	display: flex;
+	height: 100%;
+	flex-wrap: wrap;
+	align-content: flex-start;
+}

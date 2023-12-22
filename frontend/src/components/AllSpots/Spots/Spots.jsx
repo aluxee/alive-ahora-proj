@@ -1,16 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import * as spotActions from "../../../store/spot";
-import SpotDetails from "../SpotDetails";
+import SpotImages from "../SpotImages";
 import './Spots.css';
+
 function Spots() {
 	const dispatch = useDispatch();
 	const spot = useSelector(state => state.spots);
 
-	// console.log("%c spot (before):", "font-size: 25px; color: red", spot)
+	console.log("%c spot (before):", "font-size: 25px; color: red", spot)
 
 	const spots = Object.values(spot)
-	// console.log("%c spot (after):", "font-size: 25px; color: blue", spots)
+	console.log("%c spot (after):", "font-size: 25px; color: blue", spots)
 
 	useEffect(() => {
 
@@ -21,17 +22,29 @@ function Spots() {
 			<section id="spots-section">
 				<ul className="spots-list">
 					{spots.map(spot => (
-
-						<SpotDetails
-							spot={spot}
-							key={spot.id}
-						/>
-
+						<>
+							<div className="spot-item-div">
+								<SpotImages
+									spot={spot}
+									key={spot.id}
+								/>
+								<div className="spot-name-rate">
+									<span id="spot-state-city">{spot.state}, {spot.city}</span>
+									<span id="spot-rating">
+										<i className="fa-solid fa-star"></i>
+										{spot.avgRating}
+									</span>
+								</div>
+								<div className="spot-price">
+									<span>${spot.price} night</span>
+									<span></span>
+								</div>
+							</div>
+						</>
 					))
 					}
 				</ul>
 			</section>
-
 		</>
 	)
 }

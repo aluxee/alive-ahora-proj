@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
@@ -27,6 +27,9 @@ function Navigation({ isLoaded }) {
 					{/* <i className="fa-solid fa-magnifying-glass"></i> */}
 						</section>
 			</div>
+			<Link to={`/spots/new`} className='nav_create-spot'>
+				Create a new Spot
+			</Link>
 			<div className='nav_options'>
 				<div className='content_nav_options'>
 					<li className='nav_list' id='nav_house'>

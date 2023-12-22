@@ -147,6 +147,13 @@ button:hover {
 	background-color: #acabab;
 }
 
+.nav_create-spot {
+	position: absolute;
+	right: 15rem;
+	top: 1.5rem;
+}
+
+
 .profile-dropdown {
 	display: flex;
 	flex-direction: column;
