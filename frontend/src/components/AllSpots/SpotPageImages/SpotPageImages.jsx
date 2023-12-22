@@ -24,12 +24,24 @@ function SpotPageImages({ spot }) {
 	}, [dispatch, img, displayImage, spotId])
 
 
+	//* need to fix second spot, none of the images pop up and brekas the page
 	const mainImage = spot.SpotImages.find(image => (
-		image.id === 1 ? image.url : ''
+		// image.id === 1 ? image.url : '';
+		image
+		// console.log("IMAGE RENDER: ", image)
+
 	))
-	const otherImages = spot.SpotImages.filter(image => image.id !== 1)
-	// console.log("🚀 ~ file: SpotPageImages.jsx:31 ~ SpotPageImages ~ otherImage:", otherImages)
-	// console.log("🚀%c ~ file: SpotPageImages.jsx:27 ~ SpotPageImages ~ mainImage:", "color: red; font-size: 20px", mainImage, mainImage.url)
+	const otherImages = spot.SpotImages.filter(image => (
+
+		image.url !== spot.SpotImages[0].url ? image : null
+	)
+	)
+	// image.id !== 1
+
+	console.log("🚀 ~ file: SpotPageImages.jsx:31 ~ SpotPageImages ~ otherImage:", otherImages)
+	console.log("🚀%c ~ file: SpotPageImages.jsx:27 ~ SpotPageImages ~ mainImage:", "color: red; font-size: 20px", mainImage, mainImage.url)
+
+	if (mainImage.length === 0 || otherImages.length === 0) return null;
 
 	return (
 

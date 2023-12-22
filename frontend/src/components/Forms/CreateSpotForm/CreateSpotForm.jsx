@@ -37,7 +37,9 @@ function CreateSpotForm({ spot, formType }) {
 	// };
 // * notes:
 // - need to figure out a way to ensure the pics submitted render onto a new spot
-//	-
+//	- ensure all errors are erroring correctly
+// - include short circuits
+
 	return (
 		<form onSubmit={handleSubmit} className="create-form">
 			<h2>
