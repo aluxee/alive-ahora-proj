@@ -1,9 +1,10 @@
+import { csrfFetch } from "./csrf";
 
 /** Action Type Constants: */
 export const LOAD_SPOTS = 'spots/LOAD_SPOTS';
 export const LOAD_SPOT_IMAGES = 'spots/LOAD_SPOT_IMAGES';
 export const RECEIVE_SPOT = 'spots/RECEIVE_SPOT';
-// export const POST_SPOTS = 'spots/POST_SPOTS';
+export const POST_SPOT = 'spots/POST_SPOT';
 // export const UPDATE_SPOTS = 'spots/UPDATE_SPOTS';
 export const REMOVE_SPOTS = 'spots/REMOVE_SPOTS';
 
@@ -25,10 +26,10 @@ export const receiveSpot = (spot) => ({
 });
 
 
-// export const createSpot = ( *special* ) => ({
-// 	type: POST_SPOTS,
-// 	spots
-// })
+export const createSpot = (spot) => ({
+	type: POST_SPOT,
+	spot
+})
 
 
 
@@ -154,17 +155,19 @@ export const thunkReceiveSpot = (spotId) => async (dispatch) => {
 //* create / post a spot
 export const thunkCreateSpot = (spot) => async (dispatch) => {
 
-	const response = await fetch(`api/spots`, {
+	const response = await csrfFetch(`/api/spots`, {
 		method: 'POST',
 		headers: {
 			"Content-Type": "application/json",
 		},
 		body: JSON.stringify(spot)
 	})
+
+	console.log("%c thunkCreateSpot:, spot ", "color: red; font-size: 25px", spot)
 	if (response.ok) {
 		const data = await response.json();
 		console.log("this response is rendering in thunkCreateSpot; here's the data: ", data)
-		dispatch(receiveSpot(data))
+		dispatch(createSpot(data))
 		return data
 	} else {
 		const errorResponse = await response.json()
@@ -211,6 +214,9 @@ const spotsReducer = (state = initialState, action) => {
 			console.log("🚀 %c ~ file: spot.js:221 ~ spotsReducer ~ ACTION: (receive_spot)", "color: orange; font-size: 25px", action, "action spot in spot id: ", action.spot.Spot.id, "action.spot.Spot: ", action.spot.Spot);
 
 			return { ...state, [action.spot.Spot.id]: action.spot.Spot };
+		}
+		case POST_SPOT: {
+			return { ...state, [action.spot.id]: action.spot }
 		}
 		default:
 			return state;

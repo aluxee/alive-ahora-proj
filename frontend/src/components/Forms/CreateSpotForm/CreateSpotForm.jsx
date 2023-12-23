@@ -6,7 +6,7 @@ import './CreateSpotForm.css';
 
 
 function CreateSpotForm({ spot, formType }) {
-	console.log("🚀 ~ file: CreateSpotForm.jsx:5 ~ CreateSpotForm ~ spot:", spot)
+	// console.log("🚀 ~ file: CreateSpotForm.jsx:5 ~ CreateSpotForm ~ spot:", spot)
 	//!  no such route w new so how to render? - will try to make a modal...? or create a url
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -22,6 +22,9 @@ function CreateSpotForm({ spot, formType }) {
 
 	const [errors, setErrors] = useState({});
 
+	const createdImages = [];
+
+
 
 	useEffect(() => {
 		const errorsObject = {};
@@ -33,10 +36,13 @@ function CreateSpotForm({ spot, formType }) {
 		describeText.length < 30 ? errorsObject.describeText = "Description needs a minimum of 30 characters" : describeText;
 		title.length < 5 ? errorsObject.title = "Name is required" : title;
 		price.length === 0 ? errorsObject.price = "Price is required" : price;
-		mainImage.length === 0 || !mainImage.includes(".jpg") || !mainImage.includes(".png") || !mainImage.includes(".jpeg") ? errorsObject.mainImage = "Preview image is required." : mainImage;
-		otherImage.length === 0 || !otherImage.includes(".jpg") || !otherImage.includes(".png") || !otherImage.includes(".jpeg") ? errorsObject.otherImage = "Image URL must end in .png, .jpg, or .jpeg" : otherImage;
+		if (mainImage.length === 0 || otherImage.length === 0) {
 
+			mainImage.length === 0 || !mainImage.includes(".jpg") || !mainImage.includes(".png") || !mainImage.includes(".jpeg") ? errorsObject.mainImage = "Preview image is required." : mainImage;
+			otherImage.length === 0 || !otherImage.includes(".jpg") || !otherImage.includes(".png") || !otherImage.includes(".jpeg") ? errorsObject.otherImage = "Image URL must end in .png, .jpg, or .jpeg" : otherImage;
+		}
 		setErrors(errorsObject);
+
 
 
 	}, [country, address, city, state, describeText, title, price, mainImage, otherImage]);
@@ -44,13 +50,58 @@ function CreateSpotForm({ spot, formType }) {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+
+
+
 		setErrors({}); // causing re-render
-		spot = { ...spot };
+		spot = {
+			country, address, city, state,
+			lat: 0,
+			lng: 0,
+			description: describeText,
+			name: title,
+			price, previewImage: mainImage || otherImage
+		};
+		console.log("SPOT!!!", spot);
+		spot.previewImage = setMainImage || setOtherImage;
+
 
 		if (formType === 'Create Spot') {
 			const submissionResults = await dispatch(thunkCreateSpot(spot))
 
+
 			if (!submissionResults.errors) {
+				console.log("🚀 %c ~ file: CreateSpotForm.jsx:73 ~ handleSubmit ~ submissionResults:", "color: yellow; font-size: 30px", submissionResults)
+
+
+				if (submissionResults.id && mainImage || submissionResults.id && otherImage) {
+					//if there are images push into empty array and dispatch to another thunk, loop thru that image array and fetch each image
+
+					const fetchImage = () => async dispatch => {
+						const response = await fetch(`/api/spots/${submissionResults.id}/images`, {
+							method: 'GET',
+							headers: {
+								'Content-Type': 'application/json'
+							}
+						})
+						console.log("🚀 ~ file: CreateSpotForm.jsx:84 ~ fetchImage ~ response:", response)
+
+						const imagesReceived = await response.json();
+						console.log("IMAGES RECEIVED: ", imagesReceived)
+						mainImage ? createdImages.push(imagesReceived) : '';
+						otherImage ? createdImages.push(imagesReceived) : '';
+
+						dispatch(fetchImage(submissionResults.id))
+					}
+				}
+
+
+				console.log("🚀 ~ file: CreateSpotForm.jsx:55 ~ handleSubmit ~ submissionResults:", submissionResults)
+				console.log("%c We are now in the submissionResults: ", "color: green; font-size: 30px", submissionResults.id)
+				console.log("NEW IMAGES: ", createdImages)
+
+
+
 				navigate(`/spots/${submissionResults.id}`)
 			} else {
 				setErrors(submissionResults.errors)
@@ -216,7 +267,14 @@ function CreateSpotForm({ spot, formType }) {
 				</div>
 				<hr />
 			</div>
-			<button type="submit" className="spot-create-form-btn">Create Spot</button>
+			<button
+				type="submit"
+				className="spot-create-form-btn"
+				disabled={Object.values(errors).length > 0}
+			>
+				Create Spot
+				{formType}
+			</button>
 
 		</form>
 	)
