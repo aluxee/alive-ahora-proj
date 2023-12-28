@@ -31,16 +31,7 @@ function SpotPageImages({ spot }) {
 		// console.log("IMAGE RENDER: ", image)
 
 	))
-	/*
-! could not save latest changes for spotImages to push to main because of this error; dup error
-react-dom.development.js:86 Warning: Encountered two children with the same key, `2`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
-	 at div
-	 at div
-	 at SpotPageImages (http://localhost:5173/src/components/AllSpots/SpotPageImages/SpotPageImages.jsx?t=1703225481671:22:27)
-	 at div
-	 at section
-	 at SpotPage
-	*/
+
 	const otherImages = spot.SpotImages.filter(image => (
 
 		image.url !== spot.SpotImages[0].url ? image : null
@@ -48,9 +39,10 @@ react-dom.development.js:86 Warning: Encountered two children with the same key,
 	)
 	// image.id !== 1
 
-	console.log("🚀 ~ file: SpotPageImages.jsx:31 ~ SpotPageImages ~ otherImage:", otherImages)
-	console.log("🚀%c ~ file: SpotPageImages.jsx:27 ~ SpotPageImages ~ mainImage:", "color: red; font-size: 20px", mainImage, mainImage.url)
+	// console.log("🚀 ~ file: SpotPageImages.jsx:31 ~ SpotPageImages ~ otherImage:", otherImages)
+	// console.log("🚀%c ~ file: SpotPageImages.jsx:27 ~ SpotPageImages ~ mainImage:", "color: red; font-size: 20px", mainImage, mainImage.url)
 
+	if (!mainImage || !otherImages) return null;
 	if (mainImage.length === 0 || otherImages.length === 0) return null;
 
 	return (

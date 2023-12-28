@@ -2,7 +2,9 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { thunkCreateSpot } from "../../../store/spot";
+// import { thunkAddImage } from "../../../store/spot";
 import './CreateSpotForm.css';
+
 
 
 function CreateSpotForm({ spot, formType }) {
@@ -17,13 +19,16 @@ function CreateSpotForm({ spot, formType }) {
 	const [describeText, setDescribeText] = useState('');
 	const [title, setTitle] = useState('');
 	const [price, setPrice] = useState('');
-	const [mainImage, setMainImage] = useState('');
+	const [prevMainImage, setPrevMainImage] = useState('');
 	const [otherImage, setOtherImage] = useState('');
+	const [otherImage2, setOtherImage2] = useState('');
+	const [otherImage3, setOtherImage3] = useState('');
+	const [otherImage4, setOtherImage4] = useState('');
 
 	const [errors, setErrors] = useState({});
+	const createImage = [];
 
-	const createdImages = [];
-
+	// * NOTE: need to fix backend display of price from string to integer
 
 
 	useEffect(() => {
@@ -36,77 +41,83 @@ function CreateSpotForm({ spot, formType }) {
 		describeText.length < 30 ? errorsObject.describeText = "Description needs a minimum of 30 characters" : describeText;
 		title.length < 5 ? errorsObject.title = "Name is required" : title;
 		price.length === 0 ? errorsObject.price = "Price is required" : price;
-		if (mainImage.length === 0 || otherImage.length === 0) {
+		if (prevMainImage.length === 0 || otherImage.length === 0) {
 
-			mainImage.length === 0 || !mainImage.includes(".jpg") || !mainImage.includes(".png") || !mainImage.includes(".jpeg") ? errorsObject.mainImage = "Preview image is required." : mainImage;
+			prevMainImage.length === 0 || !prevMainImage.includes(".jpg") || !prevMainImage.includes(".png") || !prevMainImage.includes(".jpeg") ? errorsObject.prevMainImage = "Preview image is required." : prevMainImage;
 			otherImage.length === 0 || !otherImage.includes(".jpg") || !otherImage.includes(".png") || !otherImage.includes(".jpeg") ? errorsObject.otherImage = "Image URL must end in .png, .jpg, or .jpeg" : otherImage;
 		}
 		setErrors(errorsObject);
 
 
 
-	}, [country, address, city, state, describeText, title, price, mainImage, otherImage]);
+	}, [country, address, city, state, describeText, title, price, prevMainImage, otherImage]);
 
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
+		// setErrors({}); // causing re-render
+		console.log("CAN I STILL SEE THE ERRORS UPON SUBMISSION? (as an array):  ", Object.values(errors))
+		let newPrevImage;
+		if (!Object.values(errors).length) {
+			newPrevImage = {
+				url: prevMainImage,
+				preview: true
+			}
+		}
+		let newSpot = {
+			Spot: {
+				country, address, city, state,
+				lat: 0,
+				lng: 0,
+				name: title,
+				price,
+				description: describeText,
+				previewImage: newPrevImage
+			},
+		}
+		let Images = [newPrevImage];
 
+		if (otherImage) {
+			Images.push({ url: otherImage, preview: false })
+		}
+		if (otherImage2) {
+			Images.push({ url: otherImage2, preview: false })
+		}
+		if (otherImage3) {
+			Images.push({ url: otherImage3, preview: false })
+		}
+		if (otherImage4) {
+			Images.push({ url: otherImage4, preview: false })
+		}
 
-		setErrors({}); // causing re-render
-		spot = {
-			country, address, city, state,
-			lat: 0,
-			lng: 0,
-			description: describeText,
-			name: title,
-			price, previewImage: mainImage || otherImage
-		};
-		console.log("SPOT!!!", spot);
-		spot.previewImage = setMainImage || setOtherImage;
+		newSpot.Images = Images;
 
+		console.log("SPOT!!!", newSpot);
+
+		// const displayImage = spot.previewImage;
+		console.log("SPOT STILL SHOWING?")
 
 		if (formType === 'Create Spot') {
+			// TO TEST:
+			// createImage.push(displayImage)
+			console.log("ARE WE INSIDE THE FORM TYPE!?!?!!")
+			// const imgResults = await dispatch(thunkAddImage(createImage))
 			const submissionResults = await dispatch(thunkCreateSpot(spot))
 
+			console.log("sub results: ", submissionResults)
 
 			if (!submissionResults.errors) {
-				console.log("🚀 %c ~ file: CreateSpotForm.jsx:73 ~ handleSubmit ~ submissionResults:", "color: yellow; font-size: 30px", submissionResults)
-
-
-				if (submissionResults.id && mainImage || submissionResults.id && otherImage) {
-					//if there are images push into empty array and dispatch to another thunk, loop thru that image array and fetch each image
-
-					const fetchImage = () => async dispatch => {
-						const response = await fetch(`/api/spots/${submissionResults.id}/images`, {
-							method: 'GET',
-							headers: {
-								'Content-Type': 'application/json'
-							}
-						})
-						console.log("🚀 ~ file: CreateSpotForm.jsx:84 ~ fetchImage ~ response:", response)
-
-						const imagesReceived = await response.json();
-						console.log("IMAGES RECEIVED: ", imagesReceived)
-						mainImage ? createdImages.push(imagesReceived) : '';
-						otherImage ? createdImages.push(imagesReceived) : '';
-
-						dispatch(fetchImage(submissionResults.id))
-					}
-				}
-
-
-				console.log("🚀 ~ file: CreateSpotForm.jsx:55 ~ handleSubmit ~ submissionResults:", submissionResults)
-				console.log("%c We are now in the submissionResults: ", "color: green; font-size: 30px", submissionResults.id)
-				console.log("NEW IMAGES: ", createdImages)
-
-
-
+				// createImage.push(imgResults)
+				// setOtherImage(imgResults)
+				// setPrevMainImage(imgResults)
 				navigate(`/spots/${submissionResults.id}`)
 			} else {
 				setErrors(submissionResults.errors)
 			}
+
 		}
+
 
 	}
 
@@ -249,11 +260,11 @@ function CreateSpotForm({ spot, formType }) {
 						<p>Submit a link to at least one photo to publish your spot.</p>
 					</div>
 					<input type="text" name="preview-img" id="preview-img" placeholder="Preview Image URL"
-						value={mainImage}
-						onChange={(e) => setMainImage(e.target.value)}
+						value={prevMainImage}
+						onChange={(e) => setPrevMainImage(e.target.value)}
 
 					/>
-					{"mainImage" in errors && <p className="p-error">{errors.mainImage}</p>}
+					{"prevMainImage" in errors && <p className="p-error">{errors.prevMainImage}</p>}
 
 					<input type="text" name="img-one" className="spot-form-img" id="img-one" placeholder="Image URL"
 						value={otherImage}
@@ -261,9 +272,18 @@ function CreateSpotForm({ spot, formType }) {
 					/>
 					{"otherImage" in errors && <p className="p-error">{errors.otherImage}</p>}
 
-					<input type="text" name="img-two" className="spot-form-img" id="img-two" placeholder="Image URL" />
-					<input type="text" name="img-three" className="spot-form-img" id="img-three" placeholder="Image URL" />
-					<input type="text" name="img-four" className="spot-form-img" id="img-four" placeholder="Image URL" />
+					<input type="text" name="img-two" className="spot-form-img" id="img-two" placeholder="Image URL"
+						value={otherImage2}
+						onChange={(e) => setOtherImage2(e.target.value)}
+					/>
+					<input type="text" name="img-three" className="spot-form-img" id="img-three" placeholder="Image URL"
+						value={otherImage3}
+						onChange={(e) => setOtherImage3(e.target.value)}
+					/>
+					<input type="text" name="img-four" className="spot-form-img" id="img-four" placeholder="Image URL"
+						value={otherImage4}
+						onChange={(e) => setOtherImage4(e.target.value)}
+					/>
 				</div>
 				<hr />
 			</div>

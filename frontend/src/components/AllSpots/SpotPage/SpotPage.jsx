@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { thunkReceiveSpot, thunkLoadSpotImages } from "../../../store/spot";
 import './SpotPage.css';
 import SpotPageImages from "../SpotPageImages/SpotPageImages";
@@ -10,13 +10,14 @@ function SpotPage() {
 
 	const dispatch = useDispatch();
 	const { spotId } = useParams();
-	const navigate = useNavigate();
+
 	const [toSpot, setToSpot] = useState(); // useState causes re-render of your component if you call its setter with a new reference in memory.
 	const spotObj = useSelector(state => state.spots);
 	const spot = spotObj[spotId];
 
 
 	useEffect(() => {
+		setToSpot(spotId)
 		dispatch(thunkReceiveSpot(spotId))
 		dispatch(thunkLoadSpotImages(spotId))
 

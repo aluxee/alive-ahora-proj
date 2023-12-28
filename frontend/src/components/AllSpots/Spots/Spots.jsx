@@ -23,7 +23,8 @@ function Spots() {
 				<ul className="spots-list">
 						{/* // {console.log("inside render: ", spot.name)} */}
 					{spots.map(spot => (
-						<div className="spot-item-div" key={spot.name}>
+						// getting rejection about duplicate keys again
+						<div className="spot-item-div" key={spot.id}>
 							<SpotImages
 								spot={spot}
 								key={spot.name}
