@@ -138,69 +138,84 @@ export const thunkReceiveSpot = (spotId) => async (dispatch) => {
 	}
 };
 
-// ! IMAGE ADD HERE
-//* add image
-export const thunkAddImage = (image, spotId) => async dispatch => {
-	console.log("🚀 %c ~ file: spot.js:141 ~ INSIDE OF THUNKADDIMAGE thunkAddImage ~ images:", "color: red; font-size: 25px", image) // undefined
+// // ! IMAGE ADD HERE
+// //* add image
+// export const thunkAddImage = (image, spotId) => async dispatch => {
+// 	console.log("🚀 %c ~ file: spot.js:141 ~ INSIDE OF THUNKADDIMAGE thunkAddImage ~ images:", "color: red; font-size: 25px", image) // undefined
 
-	console.log("🚀 %c ~ file: spot.js:92 ~ thunkAddImage ~ image:", "color: red; font-size: 25px", spotId)
-
-
-	// for (let image of images) { // ! images are not iterable
-		if (image) {
-			// maybe its the response?
-			const response = await csrfFetch(`/api/spots/${spotId}/images`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({ image })
-			});
-
-			if (response.ok) {
-				const imageData = await response.json();
-				console.log("🚀 ~ file: spot.js:158 ~ thunkAddImage ~ imageData:", imageData)
-				dispatch(addSpotImage(imageData, spotId))
-			} else {
-				const errorResponse = await response.json();
-				return errorResponse;
-			}
-		}
-	// }
+// 	console.log("🚀 %c ~ file: spot.js:92 ~ thunkAddImage ~ image:", "color: red; font-size: 25px", spotId)
 
 
-	console.log("🚀 ~ file: spot.js:117 ~ thunkAddImage ~ thunkAddImage:", thunkAddImage)
-};
+// 	// for (let image of images) { // ! images are not iterable
+// 	// if (image) {
+// 	// 	// maybe its the response?
+// 	// 	const response = await csrfFetch(`/api/spots/${spotId}/images`, {
+// 	// 		method: 'POST',
+// 	// 		headers: {
+// 	// 			'Content-Type': 'application/json'
+// 	// 		},
+// 	// 		body: JSON.stringify(image)
+// 	// 	});
+
+// 	// 	if (response.ok) {
+// 	// 		const imageData = await response.json();
+// 	// 		console.log("🚀 ~ file: spot.js:158 ~ thunkAddImage ~ imageData:", imageData)
+// 	// 		dispatch(addSpotImage(imageData, spotId))
+// 	// 	} else {
+// 	// 		const errorResponse = await response.json();
+// 	// 		return errorResponse;
+// 	// 	}
+// 	// }
+// 	// }
+
+
+// 	console.log("🚀 ~ file: spot.js:117 ~ thunkAddImage ~ thunkAddImage:", thunkAddImage)
+// };
 
 
 //* create / post a spot
-export const thunkCreateSpot = (spotData) => async (dispatch) => {
-	console.log("🚀 ~ file: spot.js:207 ~ thunkCreateSpot ~ spotData:", spotData)
-
-
+export const thunkCreateSpot = (spotData, images) => async (dispatch) => {
+	console.log("🚀 %c ~ file: spot.js:178 ~ thunkCreateSpot ~ images:", "color: yellow; font-size: 32px", images)
+	console.log("🚀 %c ~ file: spot.js:178 ~ thunkCreateSpot ~ spotData:", "color: yellow; font-size: 32px", spotData)
 
 	const response = await csrfFetch('/api/spots', {
 		method: 'POST',
 		headers: {
 			"Content-Type": "application/json",
 		},
-		body: JSON.stringify(spotData)
+		body: JSON.stringify(spotData.Spot)
 	})
 	// may need to change the json body from spotData to spotData.Spot
 
 	if (response.ok) {
+
 		const data = await response.json();
-		console.log("this response is rendering in thunkCreateSpot; here's the data: ", data)
-		await dispatch(createSpot(data))
+
+		console.log(" %c this response is rendering in thunkCreateSpot; here's the data: ", "color: white; font-size: 32px", data);
+
 		// dispatch the images with it's given data, use param of spotData's images key (used SpotImages, may need to be Images?), which is an empty array; use the id that will be made from this thunk
-		await dispatch(thunkAddImage(spotData.Images, data.id))
+		for (let image of images) {
+
+			const response = await csrfFetch(`/api/spots/${data.id}/images`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(image)
+
+			})
+			console.log("RESPONSE: ", response)
+		}
+
+		console.log("🚀 %c~ file: spot.js:217 ~ thunkCreateSpot ~ data: PRIOR TO RETURN", "color: white; font-size: 32px", data)
+		await dispatch(createSpot(data))
 		return data
+
 	} else {
 		const errorResponse = await response.json()
 		return errorResponse
 	}
 }
-
 
 //* edit a spot
 // export const thunkEditSpot = (spot) => async (dispatch) => {
@@ -281,31 +296,42 @@ const spotsReducer = (state = initialState, action) => {
 
 		case POST_SPOT: {
 			let newSpotState = { ...state }
+
 			console.log("🚀 ~ file: spot.js:293 ~ spotsReducer ~ newSpotState:", newSpotState)
+
 			let newSpot = { ...action.spotData, SpotImages: [], Owner: {} }
+
 			console.log("🚀 ~ file: spot.js:295 ~ spotsReducer ~ newSpot:", newSpot)
-			newSpotState[action.spotData.id] = { ...state[action.spotData.id], ...newSpot }
+
+			newSpotState[action.spotData.id] = {
+				// ...state[action.spotData.id],
+				...newSpot
+			}
+
+			console.log("🚀 ~ file: spot.js:292 ~ spotsReducer ~ newSpotState: (BEFORE RETURN)", newSpotState)
+
+			
 			return newSpotState;
 		}
 
-		case ADD_IMAGE: {
-			console.log("%c initialState (case of ADD_IMAGE): ", "color: cyan; font-size: 30px", initialState)
-			// adding images, need new ref in memory
-			let spotImageState = { ...state };
-			console.log("🚀 ~ file: spot.js:278 ~ spotsReducer ~ spotState:", spotImageState)
-			//need to manipulate copied state to add fetched image to previewImage of spot
-			let spot = spotImageState[action.spotData.id];
-			console.log("%c WHAT IS THE ACTION IN ADD_IMAGE?: ", "color: white; font-size: 25px", action);
-			console.log("🚀 ~ file: spot.js:286 ~ spotsReducer ~ spot:", spot)
+		// case ADD_IMAGE: {
+		// 	console.log("%c initialState (case of ADD_IMAGE): ", "color: cyan; font-size: 30px", initialState)
+		// 	// adding images, need new ref in memory
+		// 	let spotImageState = { ...state };
+		// 	console.log("🚀 ~ file: spot.js:278 ~ spotsReducer ~ spotState:", spotImageState)
+		// 	//need to manipulate copied state to add fetched image to previewImage of spot
+		// 	let spot = spotImageState[action.spotData.id];
+		// 	console.log("%c WHAT IS THE ACTION IN ADD_IMAGE?: ", "color: white; font-size: 25px", action);
+		// 	console.log("🚀 ~ file: spot.js:286 ~ spotsReducer ~ spot:", spot)
 
-			if (action.image.preview === true) {
-				spot.previewImage = action.image.url
-			}
+		// 	if (action.image.preview === true) {
+		// 		spot.previewImage = action.image.url
+		// 	}
 
-			spotImageState[action.spotData.id] = { ...state[action.spotData.id], ...spot }
+		// 	spotImageState[action.spotData.id] = { ...state[action.spotData.id], ...spot }
 
-			return spotImageState;
-		}
+		// 	return spotImageState;
+		// }
 
 		default:
 			return state;

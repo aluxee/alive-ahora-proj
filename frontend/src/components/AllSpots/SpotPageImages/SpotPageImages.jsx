@@ -4,7 +4,7 @@ import { thunkLoadSpotImages } from "../../../store/spot";
 import './SpotPageImages.css';
 
 function SpotPageImages({ spot }) {
-	console.log("🚀 %c ~ file: SpotPageImages.jsx:8 ~ SpotPageImages ~ SpotPageImages:", "color: magenta; font-size: 26px", SpotPageImages)
+	// console.log("🚀 %c ~ file: SpotPageImages.jsx:8 ~ SpotPageImages ~ SpotPageImages:", "color: magenta; font-size: 26px", SpotPageImages)
 
 	// goal: load all array of images for specified spot
 

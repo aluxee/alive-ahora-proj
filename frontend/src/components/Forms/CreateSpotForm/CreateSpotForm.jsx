@@ -25,8 +25,10 @@ function CreateSpotForm({ spot, formType }) {
 	const [otherImage3, setOtherImage3] = useState('');
 	const [otherImage4, setOtherImage4] = useState('');
 
+	const [images, setImages] = useState([]);
 	const [errors, setErrors] = useState({});
-	const createImage = [];
+
+	//! 12.27.23 re-erased all progress, unable to ensure that images go into it's own array and end up in SpotImages once loaded as it's own page, while appropriately using states without any array pushes or flexible variables without useRef()
 
 	// * NOTE: need to fix backend display of price from string to integer
 
@@ -57,68 +59,99 @@ function CreateSpotForm({ spot, formType }) {
 		e.preventDefault();
 
 		// setErrors({}); // causing re-render
-		console.log("CAN I STILL SEE THE ERRORS UPON SUBMISSION? (as an array):  ", Object.values(errors))
-		let newPrevImage;
-		if (!Object.values(errors).length) {
-			newPrevImage = {
-				url: prevMainImage,
-				preview: true
-			}
-		}
-		let newSpot = {
-			Spot: {
-				country, address, city, state,
-				lat: 0,
-				lng: 0,
-				name: title,
-				price,
-				description: describeText,
-				previewImage: newPrevImage
-			},
-		}
-		let Images = [newPrevImage];
+		// console.log("CAN I STILL SEE THE ERRORS UPON SUBMISSION? (as an object):  ", Object.errors)
 
-		if (otherImage) {
-			Images.push({ url: otherImage, preview: false })
-		}
-		if (otherImage2) {
-			Images.push({ url: otherImage2, preview: false })
-		}
-		if (otherImage3) {
-			Images.push({ url: otherImage3, preview: false })
-		}
-		if (otherImage4) {
-			Images.push({ url: otherImage4, preview: false })
-		}
+		// spot = {
+		// 	country, address, city, state,
+		// 	lat: 0,
+		// 	lng: 0,
+		// 	description: describeText,
+		// 	name: title,
+		// 	price,
+		// 	previewImage: prevMainImage || otherImage
+		// };
 
-		newSpot.Images = Images;
 
-		console.log("SPOT!!!", newSpot);
+		console.log("SPOT!!!", spot);
 
 		// const displayImage = spot.previewImage;
-		console.log("SPOT STILL SHOWING?")
+
+		// * insert setImage push for all images
+		// if (formType === 'Create Spot') {
+		// 	// TO TEST:
+		// 	// createImage.push(displayImage)
+		// 	console.log("ARE WE INSIDE THE FORM TYPE!?!?!!")
+		// 	// const imgResults = await dispatch(thunkAddImage(createImage))
+		// 	const submissionResults = await dispatch(thunkCreateSpot(spot, images))
+
+		// 	console.log("sub results: ", submissionResults)
+
+		// 	if (!submissionResults.errors) {
+		// 		// createImage.push(imgResults)
+		// 		// setOtherImage(imgResults)
+		// 		// setPrevMainImage(imgResults)
+		// 		navigate(`/spots/${submissionResults.id}`)
+		// 	} else {
+		// 		setErrors(submissionResults.errors)
+		// 	}
+
+		// }
 
 		if (formType === 'Create Spot') {
-			// TO TEST:
-			// createImage.push(displayImage)
-			console.log("ARE WE INSIDE THE FORM TYPE!?!?!!")
-			// const imgResults = await dispatch(thunkAddImage(createImage))
-			const submissionResults = await dispatch(thunkCreateSpot(spot))
 
-			console.log("sub results: ", submissionResults)
+			const newPrevImage = {
+				url: prevMainImage,
+				preview: true
+			}; //useref?
+
+			// if (!Object.values(errors).length) {
+
+			// }
+			let Images = [];
+			if (otherImage) {
+				Images.push({ url: otherImage, preview: false })
+				// setImages((imgs) => [...imgs, { url: otherImage, preview: false }])
+			}
+			// if (otherImage2) {
+			// 	// Images.push({ url: otherImage2, preview: false })
+			// 	setImages((imgs) => [...imgs, { url: otherImage2, preview: false }])
+			// }
+			// if (otherImage3) {
+			// 	Images.push({ url: otherImage3, preview: false })
+			// }
+			// if (otherImage4) {
+			// 	Images.push({ url: otherImage4, preview: false })
+			// }
+			// setImages((imgs) => [...imgs, newPrevImage])
+			Images.push(newPrevImage);
+
+			setImages(Images)
+			spot = {
+				Spot: {
+					country, address, city, state,
+					lat: 0,
+					lng: 0,
+					name: title,
+					price,
+					description: describeText,
+					previewImage: newPrevImage
+				},
+				// images
+			}
+
+			const submissionResults = await dispatch(thunkCreateSpot(spot, Images));
+			console.log("🚀 ~ file: CreateSpotForm.jsx:141 ~ handleSubmit ~ images INSIDE CREATESPOTFORM:", Images)
+
+			console.log("🚀 ~ file: CreateSpotForm.jsx:141 ~ handleSubmit ~ submissionResults:", submissionResults)
 
 			if (!submissionResults.errors) {
-				// createImage.push(imgResults)
-				// setOtherImage(imgResults)
-				// setPrevMainImage(imgResults)
+				console.log("SUBMISSION ID: ", submissionResults.id)
 				navigate(`/spots/${submissionResults.id}`)
 			} else {
-				setErrors(submissionResults.errors)
+				return submissionResults.errors
 			}
 
 		}
-
-
 	}
 
 	// if (!user) {

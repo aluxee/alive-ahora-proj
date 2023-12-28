@@ -37,11 +37,11 @@ function SpotPage() {
 	// }
 
 
-	console.log("🚀 %c ~ file: SpotPage.jsx:26 ~ SpotPage ~ spotObj:", "color: blue; font-size: 26px", spotObj,)
+	// console.log("🚀 %c ~ file: SpotPage.jsx:26 ~ SpotPage ~ spotObj:", "color: blue; font-size: 26px", spotObj,)
 
 	// console.log("🚀 %c ~ file: SpotPage.jsx:8 ~ SpotPage ~ SPOT:", "color: pink; font-size: 25px", spot, spot.Owner); // spots is an array of objects; spot is an object
 	const ownerObj = spot.Owner;
-	console.log("🚀 ~ file: SpotPage.jsx:26 ~ SpotPage ~ ownerObj:", ownerObj, ownerObj.firstName)
+	// console.log("🚀 ~ file: SpotPage.jsx:26 ~ SpotPage ~ ownerObj:", ownerObj, ownerObj.firstName)
 
 
 
