@@ -47,42 +47,53 @@ function SpotPage() {
 
 	return (
 		<>
-			<section id="spot-page-section" style={{ maxWidth: 1000 }}>
+			<div className="outside-spot-page-container">
+				<div className="inside-spot-page-container">
+					<section id="spot-page-section" style={{ maxWidth: 1000 }}>
 
 
-				<div className="spot-page_text-info">
-					<h2>{spot.name}</h2>
-					<h4>{spot.city}, {spot.state}, {spot.country}</h4>
-				</div>
-				<div className="spot-page_pics">
-					<SpotPageImages key={spot.id} spot={spot} />
-				</div>
-				<div className="spot-page_part-two">
-					<div className="spot-page_host">
-						<h2>
-							Hosted by {ownerObj.firstName} {ownerObj.lastName}
-						</h2>
-						<p>{spot.description}</p>
-						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel possimus, suscipit placeat rem deleniti quo veritatis, nisi dolorum incidunt voluptatibus a, expedita doloribus eveniet ab vitae architecto natus unde adipisci. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Officia magni alias ipsam blanditiis nihil, rerum vitae sed exercitationem cumque porro ipsum quos dolor veniam non, pariatur ratione? Facere, ad possimus. Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eveniet, ab earum obcaecati iste eum cum, alias aliquam nam vero provident tenetur voluptatibus quaerat consectetur repellat impedit numquam voluptate repudiandae fugiat.</p>
-					</div>
-					<div className="spot-page_price_and_reserve">
-						<div id="spot-page_price">
-							<span>${spot.price} night</span>
-							<span></span>
+						<div className="spot-page_text-info">
+							<h2>{spot.name}</h2>
+							<h4>{spot.city}, {spot.state}, {spot.country}</h4>
 						</div>
-						<div id="spot-page_ratings_container">
-							<span id="spot-page_rating" style={{fontSize: 12}}>
-								<i className="fa-solid fa-star"></i>
-								{spot.avgRating} · {spot.numReviews}  reviews
-							</span>
+						<div className="spot-page_pics">
+							<SpotPageImages key={spot.id} spot={spot} />
 						</div>
-						<button id="spot-page_button">reserve</button>
-					</div>
-				</div>
+						<div className="spot-page_part-two">
+							<div className="spot-page_host">
+								<h2>
+									Hosted by {ownerObj.firstName} {ownerObj.lastName}
+								</h2>
+								<p>{spot.description}</p>
+							</div>
+							<div className="spot-page_price_and_reserve">
+								<div className="price-reserve-inner">
 
-				<hr />
-				<div className="spot-page_reviews">placeholder</div>
-			</section>
+									<div id="spot-page_price">
+										<span>${spot.price} night</span>
+										<span></span>
+									</div>
+									<div id="spot-page_ratings_container">
+										<span id="spot-page_rating" style={{ fontSize: 12 }}>
+											<i className="fa-solid fa-star"></i>
+											{spot.numReviews ?
+
+												spot.avgRating + '·' + spot.numReviews + 'reviews'
+												: 'New'
+											}
+										</span>
+									</div>
+									<button id="spot-page_button">reserve</button>
+								</div>
+
+							</div>
+						</div>
+
+						<hr />
+						<div className="spot-page_reviews">placeholder</div>
+					</section>
+				</div>
+			</div>
 		</>
 	)
 }

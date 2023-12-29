@@ -102,30 +102,27 @@ function CreateSpotForm({ spot, formType }) {
 			const newPrevImage = {
 				url: prevMainImage,
 				preview: true
-			}; //useref?
+			}; // return edits: what about having this as a useRef?
 
-			// if (!Object.values(errors).length) {
 
-			// }
-			let Images = [];
 			if (otherImage) {
-				Images.push({ url: otherImage, preview: false })
+				images.push({ url: otherImage, preview: false })
 				// setImages((imgs) => [...imgs, { url: otherImage, preview: false }])
 			}
-			// if (otherImage2) {
-			// 	// Images.push({ url: otherImage2, preview: false })
-			// 	setImages((imgs) => [...imgs, { url: otherImage2, preview: false }])
-			// }
-			// if (otherImage3) {
-			// 	Images.push({ url: otherImage3, preview: false })
-			// }
-			// if (otherImage4) {
-			// 	Images.push({ url: otherImage4, preview: false })
-			// }
-			// setImages((imgs) => [...imgs, newPrevImage])
-			Images.push(newPrevImage);
+			if (otherImage2) {
+				images.push({ url: otherImage2, preview: false })
+				// setImages((imgs) => [...imgs, { url: otherImage2, preview: false }])
+			}
+			if (otherImage3) {
+				images.push({ url: otherImage3, preview: false })
+			}
+			if (otherImage4) {
+				images.push({ url: otherImage4, preview: false })
+			}
 
-			setImages(Images)
+			images.push(newPrevImage);
+
+			setImages(images)
 			spot = {
 				Spot: {
 					country, address, city, state,
@@ -136,11 +133,11 @@ function CreateSpotForm({ spot, formType }) {
 					description: describeText,
 					previewImage: newPrevImage
 				},
-				// images
+
 			}
 
-			const submissionResults = await dispatch(thunkCreateSpot(spot, Images));
-			console.log("🚀 ~ file: CreateSpotForm.jsx:141 ~ handleSubmit ~ images INSIDE CREATESPOTFORM:", Images)
+			const submissionResults = await dispatch(thunkCreateSpot(spot, images));
+			console.log("🚀 ~ file: CreateSpotForm.jsx:141 ~ handleSubmit ~ images INSIDE createSpotForm:", images)
 
 			console.log("🚀 ~ file: CreateSpotForm.jsx:141 ~ handleSubmit ~ submissionResults:", submissionResults)
 
@@ -163,173 +160,180 @@ function CreateSpotForm({ spot, formType }) {
 	// - include short circuits
 
 	return (
-		<form onSubmit={handleSubmit} className="create-form">
-			<div className="create-form-container">
+		<>
+			<div className="form-outer-container">
+				<div className="form-inner-container">
+					<form onSubmit={handleSubmit} className="create-form">
+						<div className="create-form-container">
 
-				<h2 id="create-form-h2">
-					Create a new Spot
-					{formType}
-				</h2>
-				<div className="create-form-locale">
-					<div className="create-form-header">
-						<h3 className="create-form-h3">
-							Where&apos;s your place located?
-						</h3>
-						<div className="form-text-div">Guests will only get your exact address once they booked a reservation.
+							<h2 id="create-form-h2">
+								Create a new Spot
+								{formType}
+							</h2>
+							<div className="create-form-locale">
+								<div className="create-form-header">
+									<h3 className="create-form-h3">
+										Where&apos;s your place located?
+									</h3>
+									<div className="form-text-div">Guests will only get your exact address once they booked a reservation.
+									</div>
+								</div>
+
+								<div className="form-locale form-country" id="form-country">
+									<label htmlFor="country">
+										Country
+										<input type="text" name="country" id="country" placeholder="Country"
+											value={country}
+											onChange={(e) => setCountry(e.target.value)}
+											required />
+									</label>
+									{"country" in errors && <p className="p-error">{errors.country}</p>}
+								</div>
+
+								<div className="form-locale form-address" id="form-address">
+									<label htmlFor="address">
+										Street Address
+										<input type="text" name="address" id="address" placeholder="Address"
+											value={address}
+											onChange={(e) => setAddress(e.target.value)}
+											required />
+									</label>
+									{"address" in errors && <p className="p-error">{errors.address}</p>}
+								</div>
+
+								<div className="form-locale form-city-state">
+									<div className="form-city-state-container" id="city-container">
+										<label htmlFor="city">
+											City
+										</label>
+										<input type="text" name="city" id="city" className="form-label city" placeholder="City"
+											value={city}
+											onChange={(e) => setCity(e.target.value)}
+											required />
+										{"city" in errors && <p className="p-error">{errors.city}</p>}
+									</div>
+									<span id="comma">,</span>
+
+									<div className="form-city-state-container" id="state-container">
+										<label htmlFor="state">
+											State
+										</label>
+										<input type="text" name="state" id="state" className="form-label state" placeholder="STATE"
+											value={state}
+											onChange={(e) => setState(e.target.value)}
+											required />
+										{"state" in errors && <p className="p-error">{errors.state}</p>}
+									</div>
+
+								</div>
+							</div>
+
+							<hr />
+
+							<div className="form-description">
+								<div className="create-form-header">
+									<h3 className="create-form-h3">
+										Describe your place to guests
+									</h3>
+									<div className="form-text-div">
+										Mention the best features of your space, any special amenities like
+										fast wifi or parking, and what you love about the neighborhood.
+									</div>
+								</div>
+								<textarea name="" id="" cols="50" rows="10" placeholder="Please write at least 30 characters"
+									value={describeText}
+									onChange={(e) => setDescribeText(e.target.value)}
+								></textarea>
+								{"describeText" in errors && <p className="p-error">{errors.describeText}</p>}
+							</div>
+
+							<hr />
+
+							<div className="form-title">
+								<div className="create-form-header">
+									<h3 className="create-form-h3">Create a title for your spot</h3>
+									<div className="form-text-div">
+										Catch guests&apos; attention with a spot title that highlights what makes
+										your place special.
+									</div>
+								</div>
+								<input type="text" name="title" id="title" placeholder="Name of your spot"
+									value={title}
+									onChange={(e) => setTitle(e.target.value)}
+								/>
+								{"title" in errors && <p className="p-error">{errors.title}</p>}
+							</div>
+
+							<hr />
+
+							<div className="form-price">
+								<div className="create-form-header">
+									<h3 className="create-form-h3">Set a base price for your spot</h3>
+									<div className="form-text-div">
+										Competitive pricing can help your listing stand out and rank higher
+										in search results.
+									</div>
+								</div>
+								<div className="price-container">
+									<span>$</span>
+									<input type="text" name="price" id="price" placeholder="Price per night (USD)"
+										value={price}
+										onChange={(e) => setPrice(e.target.value)}
+									/>
+									{"price" in errors && <p className="p-error">{errors.price}</p>}
+
+								</div>
+							</div>
+
+							<hr />
+
+							<div className="spot-pics">
+								<div className="create-form-header">
+									<h3>Liven up your spot with photos</h3>
+									<p>Submit a link to at least one photo to publish your spot.</p>
+								</div>
+								<input type="text" name="preview-img" id="preview-img" placeholder="Preview Image URL"
+									value={prevMainImage}
+									onChange={(e) => setPrevMainImage(e.target.value)}
+
+								/>
+								{"prevMainImage" in errors && <p className="p-error">{errors.prevMainImage}</p>}
+
+								<input type="text" name="img-one" className="spot-form-img" id="img-one" placeholder="Image URL"
+									value={otherImage}
+									onChange={(e) => setOtherImage(e.target.value)}
+								/>
+								{"otherImage" in errors && <p className="p-error">{errors.otherImage}</p>}
+
+								<input type="text" name="img-two" className="spot-form-img" id="img-two" placeholder="Image URL"
+									value={otherImage2}
+									onChange={(e) => setOtherImage2(e.target.value)}
+								/>
+								<input type="text" name="img-three" className="spot-form-img" id="img-three" placeholder="Image URL"
+									value={otherImage3}
+									onChange={(e) => setOtherImage3(e.target.value)}
+								/>
+								<input type="text" name="img-four" className="spot-form-img" id="img-four" placeholder="Image URL"
+									value={otherImage4}
+									onChange={(e) => setOtherImage4(e.target.value)}
+								/>
+							</div>
+							<hr />
 						</div>
-					</div>
+						<button
+							type="submit"
+							className="spot-create-form-btn"
+							disabled={Object.values(errors).length > 0}
+						>
+							Create Spot
+							{/* {formType} */}
+						</button>
 
-					<div className="form-locale form-country">
-						<label htmlFor="country">
-							Country
-							<input type="text" name="country" id="country" placeholder="Country"
-								value={country}
-								onChange={(e) => setCountry(e.target.value)}
-								required />
-						</label>
-						{"country" in errors && <p className="p-error">{errors.country}</p>}
-					</div>
-
-					<div className="form-locale form-address">
-						<label htmlFor="address">
-							Street Address
-							<input type="text" name="address" id="address" placeholder="Address"
-								value={address}
-								onChange={(e) => setAddress(e.target.value)}
-								required />
-						</label>
-						{"address" in errors && <p className="p-error">{errors.address}</p>}
-					</div>
-
-					<div className="form-locale form-city-state">
-						<div className="form-city-state-container" id="city-container">
-							<label htmlFor="city">
-								City
-							</label>
-							<input type="text" name="city" id="city" className="form-label city" placeholder="City"
-								value={city}
-								onChange={(e) => setCity(e.target.value)}
-								required />
-							{"city" in errors && <p className="p-error">{errors.city}</p>}
-						</div>
-						<span id="comma">,</span>
-
-						<div className="form-city-state-container" id="state-container">
-							<label htmlFor="state">
-								State
-							</label>
-							<input type="text" name="state" id="state" className="form-label state" placeholder="STATE"
-								value={state}
-								onChange={(e) => setState(e.target.value)}
-								required />
-							{"state" in errors && <p className="p-error">{errors.state}</p>}
-						</div>
-
-					</div>
+					</form>
 				</div>
-
-				<hr />
-
-				<div className="form-description">
-					<div className="create-form-header">
-						<h3 className="create-form-h3">
-							Describe your place to guests
-						</h3>
-						<div className="form-text-div">
-							Mention the best features of your space, any special amenities like
-							fast wifi or parking, and what you love about the neighborhood.
-						</div>
-					</div>
-					<textarea name="" id="" cols="50" rows="10" placeholder="Please write at least 30 characters"
-						value={describeText}
-						onChange={(e) => setDescribeText(e.target.value)}
-					></textarea>
-					{"describeText" in errors && <p className="p-error">{errors.describeText}</p>}
-				</div>
-
-				<hr />
-
-				<div className="form-title">
-					<div className="create-form-header">
-						<h3 className="create-form-h3">Create a title for your spot</h3>
-						<div className="form-text-div">
-							Catch guests&apos; attention with a spot title that highlights what makes
-							your place special.
-						</div>
-					</div>
-					<input type="text" name="title" id="title" placeholder="Name of your spot"
-						value={title}
-						onChange={(e) => setTitle(e.target.value)}
-					/>
-					{"title" in errors && <p className="p-error">{errors.title}</p>}
-				</div>
-
-				<hr />
-
-				<div className="form-price">
-					<div className="create-form-header">
-						<h3 className="create-form-h3">Set a base price for your spot</h3>
-						<div className="form-text-div">
-							Competitive pricing can help your listing stand out and rank higher
-							in search results.
-						</div>
-					</div>
-					<div className="price-container">
-						<span>$</span>
-						<input type="text" name="price" id="price" placeholder="Price per night (USD)"
-							value={price}
-							onChange={(e) => setPrice(e.target.value)}
-						/>
-						{"price" in errors && <p className="p-error">{errors.price}</p>}
-
-					</div>
-				</div>
-
-				<hr />
-
-				<div className="spot-pics">
-					<div className="create-form-header">
-						<h3>Liven up your spot with photos</h3>
-						<p>Submit a link to at least one photo to publish your spot.</p>
-					</div>
-					<input type="text" name="preview-img" id="preview-img" placeholder="Preview Image URL"
-						value={prevMainImage}
-						onChange={(e) => setPrevMainImage(e.target.value)}
-
-					/>
-					{"prevMainImage" in errors && <p className="p-error">{errors.prevMainImage}</p>}
-
-					<input type="text" name="img-one" className="spot-form-img" id="img-one" placeholder="Image URL"
-						value={otherImage}
-						onChange={(e) => setOtherImage(e.target.value)}
-					/>
-					{"otherImage" in errors && <p className="p-error">{errors.otherImage}</p>}
-
-					<input type="text" name="img-two" className="spot-form-img" id="img-two" placeholder="Image URL"
-						value={otherImage2}
-						onChange={(e) => setOtherImage2(e.target.value)}
-					/>
-					<input type="text" name="img-three" className="spot-form-img" id="img-three" placeholder="Image URL"
-						value={otherImage3}
-						onChange={(e) => setOtherImage3(e.target.value)}
-					/>
-					<input type="text" name="img-four" className="spot-form-img" id="img-four" placeholder="Image URL"
-						value={otherImage4}
-						onChange={(e) => setOtherImage4(e.target.value)}
-					/>
-				</div>
-				<hr />
 			</div>
-			<button
-				type="submit"
-				className="spot-create-form-btn"
-				disabled={Object.values(errors).length > 0}
-			>
-				Create Spot
-				{formType}
-			</button>
+		</>
 
-		</form>
 	)
 }
 
