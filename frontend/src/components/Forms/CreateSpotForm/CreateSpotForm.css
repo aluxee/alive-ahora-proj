@@ -1,57 +1,282 @@
+/* whole form & general layout */
+
+.form-outer-container {
+	display: flex;
+	justify-content: center;
+}
+
+.form-inner-container {
+	display: flex;
+	flex-direction: column;
+	width: 50%;
+	margin: 2.5rem;
+	padding: 1rem;
+	flex-wrap: wrap;
+}
+
+.form-inner-container input {
+	width: 85%;
+}
+
 .create-form {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	align-content: center;
-	margin-inline: 10rem;
+
 }
 
+
+.create-form-container {
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: column;
+
+}
+
+
+hr {
+	margin-top: 2rem;
+	height: 0.5px;
+	width: 100%;
+}
+
+textarea {
+	margin-left: 1rem;
+}
+
+label {
+	width: 100%;
+	padding: 5px;
+	/* margin: 5px 0px; */
+}
+
+/* _________________________________________________________________________________ */
+/* form headers and paired texts*/
+
+#create-form-h2 {
+	margin: 0px -15px;
+	text-align: start;
+}
+
+#create-form-h3 {
+
+	margin-top: 12px;
+	margin-right: 1rem;
+
+
+}
+
+.form-text-div {
+	margin-top: 8px;
+	width: 90%;
+	margin-bottom: 10px;
+}
+
+.p-error {
+	font-size: 12px;
+	color: red;
+	width: max-content;
+
+}
+
+/* _________________________________________________________________________________ */
+/* form section one: locale */
 .create-form-locale {
 	display: flex;
 	flex-direction: column;
 	flex-wrap: wrap;
-	justify-content: center;
-	align-items: center;
+
 }
 
-.create-form-header-text {
+div.form-locale {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+}
+
+
+.create-form-header {
 	display: flex;
 	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	align-content: flex-start;
+	width: 95%;
 }
 
-.form-country {}
+/*
+#form-country>.p-error {
 
-.form-address {}
+	top: inherit;
+	bottom: inherit;
+	left: 24rem;
+	margin: 8px 4px;
+} */
+
+/* .form-address>.p-error {
+	position: absolute;
+	top: inherit;
+	bottom: inherit;
+	left: 24rem;
+	margin: 8px 4px;
+} */
+
+#form-address input {
+	width: 86.5%;
+}
+
+/* #city-container>.p-error {
+
+	top: inherit;
+	bottom: inherit;
+	left: 20rem;
+}
+
+#state-container>.p-error {
+
+	top: inherit;
+	bottom: inherit;
+	margin: 4px 4px;
+	right: 20rem;
+} */
+
 
 .form-city-state {
 	display: flex;
-	flex-direction: column;
+	width: 100%;
+	max-width: 100%;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	margin-right: 3rem;
+	padding-inline-start: 0%;
+	align-items: center;
 }
 
-#city {}
 
-#state {}
-
-.form-description {
-
+.form-city-state-container {
 	display: flex;
 	flex-direction: column;
+	flex-wrap: wrap;
+	width: fit-content;
+	align-items: baseline;
+	/* margin-right: 20px; */
+	align-content: space-between;
 }
 
-.form-title {}
 
-.form-price {}
+#city-container {
+	width: 56%;
+}
+
+#city-container label {
+	padding: 2.5px;
+}
+
+#city-container input {
+	/* width: 55%; */
+}
+
+#state-container label {
+	padding: 0.5px;
+}
+
+
+#comma {
+	align-self: center;
+}
+
+
+div.form-city-state-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	flex-wrap: wrap;
+
+}
+
+div.form-city-state-container>.p-error {
+	margin: 8px 4px;
+}
+
+div.form-city-state-container input {
+	margin: 0px 18px;
+}
+
+div#state-container {
+	width: 40%;
+}
+
+/* _________________________________________________________________________________ */
+/* form section two: description*/
+.form-description {
+	/* display: flex;
+	flex-direction: column;
+	align-content: center;
+	align-items: flex-start;
+	flex-wrap: wrap;
+	justify-content: flex-end; */
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: baseline;
+}
+
+.form-description>h3 {
+	margin-left: 2rem;
+}
+
+.form-description>.form-text-div {
+	margin-left: 1.5rem;
+}
+
+.form-title {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-content: space-around;
+	justify-content: center;
+	align-items: stretch;
+}
+
+.form-title>h3 {
+	margin-left: 1rem;
+}
+
+.form-price {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-content: space-around;
+	justify-content: center;
+	align-items: stretch;
+}
+
+.form-price>h3 {
+	margin-left: 1rem;
+}
+
+.price-container {}
 
 .spot-pics {
 	display: flex;
-		flex-direction: column;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-content: space-around;
+	align-items: stretch;
+
 }
 
-.spot-pics > input {
+.spot-pics>h3 {
+	margin-left: 1rem;
+}
+
+.spot-pics>input {
 	margin: 10px;
 }
-.spot-create-form-btn{
+
+.spot-create-form-btn {
 	border: 1px solid black;
 	padding: 5px;
 	margin: 10px;
+	align-self: center;
 }

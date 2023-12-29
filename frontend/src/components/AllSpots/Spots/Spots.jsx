@@ -21,27 +21,28 @@ function Spots() {
 		<>
 			<section id="spots-section">
 				<ul className="spots-list">
+						{/* // {console.log("inside render: ", spot.name)} */}
 					{spots.map(spot => (
-						<>
-							<div className="spot-item-div">
-								<SpotImages
-									spot={spot}
-									key={spot.id}
-								/>
-								<div className="spot-name-rate">
-									<span id="spot-state-city">{spot.state}, {spot.city}</span>
-									<span id="spot-rating">
-										<i className="fa-solid fa-star"></i>
-										{spot.avgRating}
-									</span>
-								</div>
-								<div className="spot-price">
-									<span>${spot.price} night</span>
-									<span></span>
-								</div>
+						// getting rejection about duplicate keys again
+						<div className="spot-item-div" key={spot.id}>
+							<SpotImages
+								spot={spot}
+								key={spot.name}
+							/>
+							<div className="spot-name-rate">
+								<span id="spot-state-city">{spot.state}, {spot.city}</span>
+								<span id="spot-rating">
+									<i className="fa-solid fa-star"></i>
+									{spot.avgRating}
+								</span>
 							</div>
-						</>
+							<div className="spot-price">
+								<span>${spot.price} night</span>
+								<span></span>
+							</div>
+						</div>
 					))
+
 					}
 				</ul>
 			</section>

@@ -151,6 +151,15 @@ button:hover {
 	position: absolute;
 	right: 15rem;
 	top: 1.5rem;
+	text-decoration: none;
+	color: darkblue;
+}
+
+.nav_create-spot:hover {
+	color: red;
+}
+.nav_create-spot:active {
+	font-weight: bold;
 }
 
 
