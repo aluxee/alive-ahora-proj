@@ -28,7 +28,7 @@ function Navigation({ isLoaded }) {
 						</section>
 			</div>
 			<Link to={`/spots/new`} className='nav_create-spot'>
-				Create a new Spot
+				Create a New Spot
 			</Link>
 			<div className='nav_options'>
 				<div className='content_nav_options'>

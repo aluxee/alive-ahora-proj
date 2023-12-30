@@ -21,9 +21,9 @@ function Spots() {
 		<>
 			<section id="spots-section">
 				<ul className="spots-list">
-						{/* // {console.log("inside render: ", spot.name)} */}
+
 					{spots.map(spot => (
-						// getting rejection about duplicate keys again
+
 						<div className="spot-item-div" key={spot.id}>
 							<SpotImages
 								spot={spot}
@@ -37,7 +37,7 @@ function Spots() {
 								</span>
 							</div>
 							<div className="spot-price">
-								<span>${spot.price} night</span>
+								<span>${spot.price} / night</span>
 								<span></span>
 							</div>
 						</div>

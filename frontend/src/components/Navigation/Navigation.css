@@ -111,6 +111,10 @@
 
 }
 
+.hr-profile {
+	width: 100%;
+}
+
 .button-profile-dropdown {
 
 	font-size: 15px;
@@ -131,9 +135,10 @@
 
 }
 
+/*
 .no-session_login {}
 
-.no-session_signup {}
+.no-session_signup {} */
 
 button {
 	padding: 2px;
@@ -158,6 +163,7 @@ button:hover {
 .nav_create-spot:hover {
 	color: red;
 }
+
 .nav_create-spot:active {
 	font-weight: bold;
 }
@@ -192,7 +198,7 @@ button:hover {
 
 }
 
-.profile-dropdown>li:first-child {}
+/* .profile-dropdown>li:first-child {} */
 
 .profile-dropdown>li:hover {
 	background-color: #f5f2f2ae;
@@ -212,18 +218,18 @@ button:hover {
 
 }
 
-.profile_dropdown_username {}
+/* .profile_dropdown_username {}
 
 .profile_dropdown_name {}
 
 
-.profile_dropdown_email {}
+.profile_dropdown_email {} */
+.profile_dropdown_manage {
+	max-height: fit-content;
+}
 
 .profile_dropdown_logout {
-	/* display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	margin-inline-start: -15px; */
+
 	max-height: fit-content;
 }
 
