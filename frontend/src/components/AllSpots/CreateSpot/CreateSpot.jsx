@@ -3,7 +3,7 @@ import CreateSpotForm from "../../Forms/CreateSpotForm/CreateSpotForm";
 
 
 function CreateSpot() {
-console.log("createSpot")
+// console.log("createSpot")
 
 	return (
 		<>

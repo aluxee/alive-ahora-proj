@@ -181,7 +181,8 @@ div.form-locale {
 
 
 #comma {
-	align-self: center;
+	align-self: end;
+	margin-right: auto;
 }
 
 
