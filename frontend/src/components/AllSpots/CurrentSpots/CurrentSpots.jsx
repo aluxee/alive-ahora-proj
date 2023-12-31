@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+
 import * as spotActions from "../../../store/spot";
 import './CurrentSpots.css';
 import RemoveSpot from "../RemoveSpot/RemoveSpot";
@@ -18,64 +19,84 @@ function CurrentSpots() {
 	const [showDeleteMenu, setShowDeleteMenu] = useState(false);
 	const ulRef = useRef();
 
-
 	console.log("🚀 ~ file: CurrentSpots.jsx:14 ~ CurrentSpots ~ spotObj:", spotObj);
 	console.log("🚀 ~ file: CurrentSpots.jsx:14 ~ CurrentSpots ~ user:", user);
 
 
-	const spots = Object.values(spotObj).filter(spot => spot.ownerId)
+
+	const spots = Object.values(spotObj).filter(spot => spot.ownerId === user.id);
 	console.log("%c spot (before):", "font-size: 25px; color: red", spots);
+	const [currSpot, setCurrSpot] = useState([]);
 
-	const toggleMenu = (e) => {
-		e.stopPropagation();
+	console.log("%c 🚀 ~ file: CurrentSpots.jsx:31 ~ CurrentSpots ~ currSpot: ", "color: white; font-size: 25px", currSpot, "versus spots again", spots)
 
-		setShowDeleteMenu(!showDeleteMenu);
-		<RemoveSpot />
+
+
+
+	const onClickSpot = (id) => {
+		navigate(`/spots/${id}`)
 	}
 
 
 	useEffect(() => {
-		console.log("Are we reaching our dispatch in our useEffect of currentSpots?")
+		console.log("%c Are we reaching our dispatch in our useEffect of currentSpots?", "color: yellow; font-size: 30px")
+
 		dispatch(spotActions.thunkLoadCurrentSpots())
 
-		if (!showDeleteMenu) return;
-
-		// const closeMenu = (e) => {
-		// 	console.log("🚀 ~ file: CurrentSpots.jsx:43 ~ closeMenu ~ closeMenu:", closeMenu)
-		// 	if(!ulRef.current.contains(e.target)){
-		// 		setShowDeleteMenu(false);
-		// 	}
-		// }
-
-		// document.addEventListener('click', closeMenu);
-		// console.log("🚀 ~ file: CurrentSpots.jsx:50 ~ useEffect ~ closeMenu: (inside add event listener)", closeMenu)
-
-		// return () => document.removeEventListener('click', closeMenu);
 
 	}, [dispatch, showDeleteMenu])
 
+
 	const closeMenu = () => setShowDeleteMenu(false);
+	if (!spots) return null;
+
+	const createSpot = (e) => {
+		e.preventDefault();
+
+		navigate('/spots/new');
+	}
+
+	const onDelete = async (spotId) => {
+
+		console.log("%c 🚀 ~ file: CurrentSpots.jsx:58 ~ onDelete ~ spotId: ", "color: white; font-size: 35px", spotId)
+
+		await dispatch(spotActions.thunkRemoveSpot(spotId));
+
+
+		const removedSpots = spots.filter(spot => spot.id !== spotId)
+		console.log("inside the onDelete of currentSpots.jsx line 92-- what is currSpot still?", currSpot, "and what is removedSpots? ", removedSpots); // think currSpots should be set to present spots then navigated
+
+
+		setCurrSpot(removedSpots);
+		navigate('/spots/current', { replace: true })
+
+	}
+
 
 
 	return (
-				<>
+		<>
 			<div className="current-spots-outside-container">
 				<div className="current-spots-inside-container">
 					<div className="current-spots-section" style={{ maxWidth: 1000 }}>
 						<div className="current-spots-top">
 							<h1>Manage Spots</h1>
 							<button className="current-spots-create-spot-button curr-button"
-								onClick={createSpot}>
+								onClick={createSpot}
+							>
 								Create a New Spot
 							</button>
 						</div>
 						<div className="each-current-spot">
-							<ul className="current-spot_list">
-								{spots.length &&
-									spots.map(spot => (
-										<div className="current-spot_item" key={spot.id}>
 
-											<>
+							<ul className="current-spot_list">
+
+								<>
+									{
+										spots.length !== 0 && spots !== undefined &&
+										spots.map(spot => (
+											<div className="current-spot_item" key={spot.id}>
+
 												<div className="current-spot_prev-img">
 													<img src={spot.previewImage} alt={`preview-image of ${spot.name} posted by ${user.username}`} style={
 														{
@@ -87,7 +108,9 @@ function CurrentSpots() {
 															overflowClipMargin: "content-box",
 															borderRadius: 30
 														}
-													} />
+													}
+														onClick={() => onClickSpot(spot.id)}
+													/>
 												</div>
 												<div className="current-spot-name-rate">
 													<span id="current-spot-state-city">{spot.state}, {spot.city}</span>
@@ -98,27 +121,33 @@ function CurrentSpots() {
 												</div>
 												<div className="current-spot-price">
 													<span id="current-spot-price-id">${spot.price} / night</span>
-													<span></span>
+													{/* <span></span> */}
 												</div>
 												<div className="current-spot-management-buttons">
-													<button className="curr-button" id="current-spot-update">Update</button>
-													<button onClick={toggleMenu} className="curr-button"
+													<button className="curr-button" id="current-spot-update" onClick={() => navigate(`/spots/${spot.id}/edit`)}>Update</button>
+													<button className="curr-button"
 														ref={ulRef}
 														id="current-spot-delete">
 														<OpenModalMenuItem itemText="Delete"
 															onItemClick={closeMenu}
-															modalComponent={<RemoveSpot id={spot.id} />}
+															modalComponent={
+																<RemoveSpot
+																	id={spot.id}
+
+																	spot={spot} />
+															}
 
 														/>
 													</button>
 												</div>
-											</>
-										</div>
-									))
-								}
+											</div>
+										))
+									}
+
+								</>
+								{/* : null} */}
 							</ul>
 						</div>
-
 					</div>
 				</div>
 			</div>

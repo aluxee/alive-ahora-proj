@@ -53,16 +53,16 @@ export const createSpot = (spotData) => ({
 });
 
 
-// export const editSpot = (spot) => ({
-// 	type: UPDATE_SPOTS,
-// 	spot
-// });
+export const editSpot = (spot) => ({
+	type: UPDATE_SPOT,
+	spot
+});
 
 
-export const removeSpot = (id) => {
+export const removeSpot = (spotId) => {
 	return {
 		type: REMOVE_SPOT,
-		id
+		spotId
 	}
 };
 
@@ -208,43 +208,45 @@ export const thunkCreateSpot = (spotData, images) => async (dispatch) => {
 }
 
 //* edit a spot
-// export const thunkEditSpot = (spot) => async (dispatch) => {
-// 	const res = await fetch(`api/spots/${spot.id}`, {
-// 		method: 'PUT',
-// 		headers: {
-// 			"Content-Type": "application/json",
-// 			body: JSON.stringify(spot)
-// 		}
-// 	})
-// 	if (res.ok) {
-// 		const data = await res.json()
-// 		dispatch(receiveSpot(data))
-// 		return data
-// 	} else {
-// 		const errorResponse = await res.json()
-// 		return errorResponse
-// 	}
-// }
+export const thunkEditSpot = (spot) => async (dispatch) => {
+	const res = await fetch(`api/spots/${spot.id}`, {
+		method: 'PUT',
+		headers: {
+			"Content-Type": "application/json",
+			body: JSON.stringify(spot)
+		}
+	})
+	if (res.ok) {
+		const data = await res.json()
+		dispatch(receiveSpot(data))
+		return data
+	} else {
+		const errorResponse = await res.json()
+		return errorResponse
+	}
+}
 
 
 //* delete/remove a spot
-export const thunkRemoveSpot = (id) => async dispatch => {
-console.log("🚀 ~ file: spot.js:234 ~ thunkRemoveSpot ~ id:", id)
-console.log("thunk remove spot: id", id)
-	const response = await csrfFetch(`/api/spots/${id}`, {
+export const thunkRemoveSpot = (spot) => async dispatch => {
+
+	console.log("%c 🚀 ~ file: spot.js:233 ~ thunkRemoveSpot ~ spot:", "color: red; font-size: 25px",  spot)
+	// console.log("🚀 ~ file: spot.js:234 ~ thunkRemoveSpot ~ spotId:", id); // gives direct #; but upon submission of actually clicking the button it turns back into an object-- changing param into spot and keying in...
+	console.log("thunk remove spot: THE SPOT PARAM CHANGES", spot, spot.id); // gives direct #
+
+
+	const response = await csrfFetch(`/api/spots/${spot.id}`, {
 		method: 'DELETE',
 		headers: {
 			"Content-Type": "application/json"
 		}
 	});
 
-	if (response.ok) {
-		const data = await response.json();
-		dispatch(removeSpot(data))
-		return response
-	} else {
-		const errorResponse = await response.json()
-		return errorResponse
+	if (response.ok) { // removed data and replaced it with id
+		console.log("Inside response.ok of spot.js line 246")
+		dispatch(removeSpot(spot.id))
+		console.log("a console.log right after the dispatch of removeSpot by spot.id in spot.js line 248")
+		return spot.id
 	}
 }
 //  __________________________________________reducer____________________________________________________
@@ -312,6 +314,11 @@ const spotsReducer = (state = initialState, action) => {
 
 			return newSpotState;
 		}
+
+		case UPDATE_SPOT: {
+
+		}
+
 		case REMOVE_SPOT: {
 			const newSpotState = { ...state };
 			// console.log("%c remove_spot spot.js inside reducer: -- action -- ", "color: blue; font-size 26px", action, state, action.spots.Spots.id)

@@ -29,9 +29,6 @@ h1 {
 	flex-direction: column;
 	margin: 10px 5px;
 	padding: 5px;
-	position: absolute;
-	top: -20px;
-	left: 3rem;
 }
 
 .curr-button {
@@ -47,13 +44,26 @@ h1 {
 	background-color: #ff0000;
 	box-shadow: 7px 3px 4px 3px #f28585d2;
 }
+
 .curr-button:active {
 	background-color: #FFC0CC;
 	box-shadow: 7px 5px 8px 4px #f29585d2;
 	color: black;
 }
+
+img:hover {
+	cursor: pointer;
+}
 /* _________________________________________________________________________________ */
-/* current-spot item */
+/* current-spot list & item */
+.current-spot_list {
+	display: flex;
+	gap: 2rem;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
 .current-spot_item {
 	width: 330px;
 	display: flex;
