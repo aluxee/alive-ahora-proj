@@ -179,14 +179,14 @@ export const thunkCreateSpot = (spotData, images) => async (dispatch) => {
 
 	if (response.ok) {
 
-		const data = await response.json();
+		const spot = await response.json();
 
-		console.log(" %c this response is rendering in thunkCreateSpot; here's the data: ", "color: white; font-size: 32px", data);
+		console.log(" %c this response is rendering in thunkCreateSpot; here's the spot: ", "color: white; font-size: 32px", spot);
 
 		// dispatch the images with it's given data, use param of spotData's images key (used SpotImages, may need to be Images?), which is an empty array; use the id that will be made from this thunk
 		for (let image of images) {
 
-			const response = await csrfFetch(`/api/spots/${data.id}/images`, {
+			const response = await csrfFetch(`/api/spots/${spot.id}/images`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json'
@@ -197,9 +197,9 @@ export const thunkCreateSpot = (spotData, images) => async (dispatch) => {
 			console.log("RESPONSE: ", response)
 		}
 
-		console.log("🚀 %c~ file: spot.js:217 ~ thunkCreateSpot ~ data: PRIOR TO RETURN", "color: white; font-size: 32px", data)
-		await dispatch(createSpot(data))
-		return data
+		console.log("🚀 %c~ file: spot.js:217 ~ thunkCreateSpot ~ spot: PRIOR TO RETURN", "color: white; font-size: 32px", spot)
+		await dispatch(createSpot(spot))
+		return spot
 
 	} else {
 		const errorResponse = await response.json()
@@ -207,21 +207,34 @@ export const thunkCreateSpot = (spotData, images) => async (dispatch) => {
 	}
 }
 
-//* edit a spot
-export const thunkEditSpot = (spot) => async (dispatch) => {
-	const res = await fetch(`api/spots/${spot.id}`, {
+//! edit a spot
+export const thunkEditSpot = (id, spot) => async (dispatch) => {
+
+	console.log("%c 🚀 ~ file: spot.js:213 ~ thunkEditSpot ~ id: ", "color: cyan; font-size: 25px", id)
+
+	const spotId = Number(id);
+
+	console.log("%c 🚀 ~ file: spot.js:213 ~ thunkEditSpot ~ spot: ", "color: cyan; font-size: 25px", spot, "spotid versus spot.id", spot.id, spotId)
+
+	// see sc for mdn times and sorts
+	const response = await csrfFetch(`/api/spots/${spotId}`, {
 		method: 'PUT',
 		headers: {
 			"Content-Type": "application/json",
-			body: JSON.stringify(spot)
-		}
+		},
+		body: JSON.stringify(spot)
 	})
-	if (res.ok) {
-		const data = await res.json()
-		dispatch(receiveSpot(data))
+	if (response.ok) {
+		const data = await response.json();
+
+		if (data) {
+			dispatch(editSpot(data))
+		}
 		return data
+
 	} else {
-		const errorResponse = await res.json()
+		const errorResponse = await response.json()
+
 		return errorResponse
 	}
 }
@@ -230,7 +243,7 @@ export const thunkEditSpot = (spot) => async (dispatch) => {
 //* delete/remove a spot
 export const thunkRemoveSpot = (spot) => async dispatch => {
 
-	console.log("%c 🚀 ~ file: spot.js:233 ~ thunkRemoveSpot ~ spot:", "color: red; font-size: 25px",  spot)
+	console.log("%c 🚀 ~ file: spot.js:233 ~ thunkRemoveSpot ~ spot:", "color: red; font-size: 25px", spot)
 	// console.log("🚀 ~ file: spot.js:234 ~ thunkRemoveSpot ~ spotId:", id); // gives direct #; but upon submission of actually clicking the button it turns back into an object-- changing param into spot and keying in...
 	console.log("thunk remove spot: THE SPOT PARAM CHANGES", spot, spot.id); // gives direct #
 
@@ -306,17 +319,26 @@ const spotsReducer = (state = initialState, action) => {
 			console.log("🚀 ~ file: spot.js:295 ~ spotsReducer ~ newSpot:", newSpot)
 
 			newSpotState[action.spotData.id] = {
-				// ...state[action.spotData.id],
 				...newSpot
 			}
-
-			// console.log("🚀 ~ file: spot.js:292 ~ spotsReducer ~ newSpotState: (BEFORE RETURN)", newSpotState)
 
 			return newSpotState;
 		}
 
 		case UPDATE_SPOT: {
+			const updatedSpotState = { ...state }
 
+			console.log("%c 🚀 ~ file: spot.js:321 ~ spotsReducer ~ updatedSpotState: ", "color: pink; font-size: 25px", updatedSpotState);
+			console.log("INSIDE UPDATE_ SPOT: ", action)
+			const newSpot = { ...action.spot, SpotImages: [], Owner: {} }
+
+			updatedSpotState[newSpot.id] = {
+				...state, [action.spot.id]: {
+					Owner: {}, SpotImages: [], ...newSpot
+				}
+			}
+
+			return updatedSpotState;
 		}
 
 		case REMOVE_SPOT: {

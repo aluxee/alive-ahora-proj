@@ -18,7 +18,7 @@ export const exitUser = () => ({
 });
 
 // thunk action creator middleware
-
+// * put an onclick on a diff button to auto fill (?) user info? instead of typing it out
 
 // * login/restore:
 

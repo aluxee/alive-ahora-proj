@@ -1,4 +1,4 @@
-import CreateSpotForm from "../../Forms/CreateSpotForm/CreateSpotForm";
+import CreateSpotForm from "../Forms/CreateSpotForm";
 
 
 

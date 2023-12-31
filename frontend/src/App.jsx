@@ -5,10 +5,10 @@ import Navigation from './components/Navigation';
 import * as sessionActions from './store/session';
 import Spots from './components/AllSpots/Spots'
 import SpotPage from './components/AllSpots/SpotPage';
-import CreateSpot from './components/AllSpots/CreateSpot/CreateSpot';
-import CurrentSpots from './components/AllSpots/CurrentSpots/CurrentSpots';
-import UpdateSpot from './components/AllSpots/UpdateSpot';
-import RemoveSpot from './components/AllSpots/RemoveSpot/RemoveSpot';
+import CreateSpot from './components/AllSpots/ManageSpots/CreateSpot/CreateSpot';
+import CurrentSpots from './components/AllSpots/ManageSpots/CurrentSpots';
+import UpdateSpot from './components/AllSpots/ManageSpots/UpdateSpot/UpdateSpot';
+
 // import * as spotActions from './store/spot';
 
 
@@ -68,7 +68,7 @@ const router = createBrowserRouter([
       {
         path: '/spots/current',
         element: <CurrentSpots />,
-    
+
       }
     ]
   }

@@ -1,15 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { thunkCreateSpot } from "../../../store/spot";
+import { thunkCreateSpot } from "../../../../../store/spot";
 // import { thunkAddImage } from "../../../store/spot";
 import './CreateSpotForm.css';
 
 
 
 function CreateSpotForm({ spot, formType }) {
-	// console.log("🚀 ~ file: CreateSpotForm.jsx:5 ~ CreateSpotForm ~ spot:", spot)
-	//!  no such route w new so how to render? - will try to make a modal...? or create a url
+
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 	const [country, setCountry] = useState('');
@@ -28,9 +27,7 @@ function CreateSpotForm({ spot, formType }) {
 	const [images, setImages] = useState([]);
 	const [errors, setErrors] = useState({});
 
-	//! 12.27.23 re-erased all progress, unable to ensure that images go into it's own array and end up in SpotImages once loaded as it's own page, while appropriately using states without any array pushes or flexible variables without useRef()
 
-	// * NOTE: need to fix backend display of price from string to integer
 
 
 	useEffect(() => {
@@ -58,44 +55,8 @@ function CreateSpotForm({ spot, formType }) {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		// setErrors({}); // causing re-render
-		// console.log("CAN I STILL SEE THE ERRORS UPON SUBMISSION? (as an object):  ", Object.errors)
-
-		// spot = {
-		// 	country, address, city, state,
-		// 	lat: 0,
-		// 	lng: 0,
-		// 	description: describeText,
-		// 	name: title,
-		// 	price,
-		// 	previewImage: prevMainImage || otherImage
-		// };
-
-
 		console.log("SPOT!!!", spot);
 
-		// const displayImage = spot.previewImage;
-
-		// * insert setImage push for all images
-		// if (formType === 'Create Spot') {
-		// 	// TO TEST:
-		// 	// createImage.push(displayImage)
-		// 	console.log("ARE WE INSIDE THE FORM TYPE!?!?!!")
-		// 	// const imgResults = await dispatch(thunkAddImage(createImage))
-		// 	const submissionResults = await dispatch(thunkCreateSpot(spot, images))
-
-		// 	console.log("sub results: ", submissionResults)
-
-		// 	if (!submissionResults.errors) {
-		// 		// createImage.push(imgResults)
-		// 		// setOtherImage(imgResults)
-		// 		// setPrevMainImage(imgResults)
-		// 		navigate(`/spots/${submissionResults.id}`)
-		// 	} else {
-		// 		setErrors(submissionResults.errors)
-		// 	}
-
-		// }
 
 		if (formType === 'Create Spot') {
 
