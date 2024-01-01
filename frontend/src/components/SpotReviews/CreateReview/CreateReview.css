@@ -1,0 +1,89 @@
+/* ____________________________________________________________________________ */
+/* general and main display */
+
+.outer-post-review {
+	display: flex;
+}
+
+.inner-post-review {
+	display: flex;
+	padding: 25px;
+	margin: 5px;
+	flex-direction: column;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.review-form {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.star-reviews-container>li {
+	color: rgb(155, 149, 149);
+}
+
+.star-reviews-container>ul {
+	display: flex;
+
+
+}
+
+ul.star-reviews-container {
+	display: flex;
+	flex-direction: row-reverse;
+	justify-content: center;
+	flex-wrap: wrap;
+	padding: 0;
+}
+
+div.star-ratings-reviews {
+	display: flex;
+	justify-content: center;
+}
+
+/* ____________________________________________________________________________ */
+/* buttons and features */
+
+/* .filled::before{
+	color: orange;
+	background-color: orange;
+} */
+
+.empty {
+	color: black;
+}
+
+.empty:hover {
+	color: black;
+}
+
+.filled:hover {
+	color: gold;
+}
+
+.filled {
+	color: gold;
+}
+
+#setStars-4 {}
+
+#setStars-3 {}
+
+#setStars-2 {}
+
+#setStars-1 {}
+
+.user-spot-review-submit {
+	display: flex;
+	color: white;
+	padding: 5px;
+	width: fit-content;
+	margin: 15px;
+	box-shadow: 7px 3px 4px 3px #869dc9;
+	background-color: #1c30e7d0;
+	border: 2px solid #eeeef4;
+
+}

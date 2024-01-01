@@ -280,22 +280,22 @@ const spotsReducer = (state = initialState, action) => {
 		}
 
 		case LOAD_SPOT_IMAGES: {
-			console.log("%c initialState (case of LOAD_SPOT_IMAGES): ", "color: cyan; font-size: 30px", initialState, action.spotData.Spot.SpotImages, action.spotData)
+			// console.log("%c initialState (case of LOAD_SPOT_IMAGES): ", "color: cyan; font-size: 30px", initialState, action.spotData.Spot.SpotImages, action.spotData)
 			let spotImageState = { ...state };
-			console.log("🚀 ~ file: spot.js:269 ~ spotsReducer ~ spotImageState:", spotImageState)
+			// console.log("🚀 ~ file: spot.js:269 ~ spotsReducer ~ spotImageState:", spotImageState)
 
 			return spotImageState;
 		}
 
 		case LOAD_CURRENT_SPOTS: {
 			const currentSpotsState = { ...state };
-			console.log("🚀 %c~ file: spot.js:278 ~ spotsReducer ~ currentSpotsState:", "color: orange; font-size: 30px", currentSpotsState) // an object within an object with it's own key (normalized)
+			// console.log("🚀 %c~ file: spot.js:278 ~ spotsReducer ~ currentSpotsState:", "color: orange; font-size: 30px", currentSpotsState) // an object within an object with it's own key (normalized)
 
 			action.spots.Spots.forEach(spot => {
 				const newSpotState = { ...spot }
-				console.log("🚀 %c ~ file: spot.js:281 ~ spotsReducer ~ newSpotState:", "color: orange; font-size: 25px", newSpotState)
+				// console.log("🚀 %c ~ file: spot.js:281 ~ spotsReducer ~ newSpotState:", "color: orange; font-size: 25px", newSpotState)
 				currentSpotsState[spot.id] = { ...state[spot.id], ...newSpotState };
-				console.log("🚀 ~ file: spot.js:284 ~ spotsReducer ~ newSpotState: (AFTER)", newSpotState)
+				// console.log("🚀 ~ file: spot.js:284 ~ spotsReducer ~ newSpotState: (AFTER)", newSpotState)
 
 			}
 			)
@@ -303,7 +303,7 @@ const spotsReducer = (state = initialState, action) => {
 		}
 
 		case RECEIVE_SPOT: {
-			console.log("🚀 %c ~ file: spot.js:221 ~ spotsReducer ~ ACTION: (receive_spot)", "color: orange; font-size: 25px", action, "action spot in spot id: ", action.spotData.Spot.id, "action.spot.Spot: ", action.spotData.Spot);
+			// console.log("🚀 %c ~ file: spot.js:221 ~ spotsReducer ~ ACTION: (receive_spot)", "color: orange; font-size: 25px", action, "action spot in spot id: ", action.spotData.Spot.id, "action.spot.Spot: ", action.spotData.Spot);
 			const spotState = { ...state, [action.spotData.Spot.id]: action.spotData.Spot };
 			return spotState;
 		}
@@ -312,11 +312,11 @@ const spotsReducer = (state = initialState, action) => {
 		case POST_SPOT: {
 			const newSpotState = { ...state }
 
-			console.log("🚀 ~ file: spot.js:293 ~ spotsReducer ~ newSpotState:", newSpotState)
+			// console.log("🚀 ~ file: spot.js:293 ~ spotsReducer ~ newSpotState:", newSpotState)
 
 			const newSpot = { ...action.spotData, SpotImages: [], Owner: {} }
 
-			console.log("🚀 ~ file: spot.js:295 ~ spotsReducer ~ newSpot:", newSpot)
+			// console.log("🚀 ~ file: spot.js:295 ~ spotsReducer ~ newSpot:", newSpot)
 
 			newSpotState[action.spotData.id] = {
 				...newSpot
@@ -328,8 +328,8 @@ const spotsReducer = (state = initialState, action) => {
 		case UPDATE_SPOT: {
 			const updatedSpotState = { ...state }
 
-			console.log("%c 🚀 ~ file: spot.js:321 ~ spotsReducer ~ updatedSpotState: ", "color: pink; font-size: 25px", updatedSpotState);
-			console.log("INSIDE UPDATE_ SPOT: ", action)
+			// console.log("%c 🚀 ~ file: spot.js:321 ~ spotsReducer ~ updatedSpotState: ", "color: pink; font-size: 25px", updatedSpotState);
+			// console.log("INSIDE UPDATE_ SPOT: ", action)
 			const newSpot = { ...action.spot, SpotImages: [], Owner: {} }
 
 			updatedSpotState[newSpot.id] = {

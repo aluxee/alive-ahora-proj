@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { thunkReceiveSpot, thunkLoadSpotImages } from "../../../store/spot";
 import './SpotPage.css';
 import SpotPageImages from "../SpotPageImages/SpotPageImages";
+import LoadReviews from "../../SpotReviews/LoadReviews";
+
 
 
 function SpotPage() {
@@ -13,7 +15,13 @@ function SpotPage() {
 
 	const [toSpot, setToSpot] = useState(); // useState causes re-render of your component if you call its setter with a new reference in memory.
 	const spotObj = useSelector(state => state.spots);
+	const userId = useSelector(state => state.session.user?.id)
+
+	console.log("%c 🚀 ~ file: SpotPage.jsx:20 ~ SpotPage ~ userId: ", "color: pink; font-size: 25px",  userId)
 	const spot = spotObj[spotId];
+	// const spotReview = spot[spotId];
+
+	console.log("%c 🚀 ~ file: SpotPage.jsx:19 ~ SpotPage ~ spot: ", "color: blue; font-size: 25px", spot)
 
 
 	useEffect(() => {
@@ -41,9 +49,7 @@ function SpotPage() {
 
 	// console.log("🚀 %c ~ file: SpotPage.jsx:8 ~ SpotPage ~ SPOT:", "color: pink; font-size: 25px", spot, spot.Owner); // spots is an array of objects; spot is an object
 	const ownerObj = spot.Owner;
-	// console.log("🚀 ~ file: SpotPage.jsx:26 ~ SpotPage ~ ownerObj:", ownerObj, ownerObj.firstName)
-
-
+	console.log("🚀 ~ file: SpotPage.jsx:26 ~ SpotPage ~ ownerObj:", ownerObj, ownerObj.firstName)
 
 	return (
 		<>
@@ -75,10 +81,10 @@ function SpotPage() {
 									</div>
 									<div id="spot-page_ratings_container">
 										<span id="spot-page_rating" style={{ fontSize: 12 }}>
-											<i className="fa-solid fa-star"></i>
+											<i className="fa-solid fa-star" style={{ color: "gold" }}></i>
 											{spot.numReviews ?
 
-												spot.avgRating + '·' + spot.numReviews + 'reviews'
+												spot.avgRating + " " + '·' + " " + spot.numReviews + " " + 'reviews'
 												: 'New'
 											}
 										</span>
@@ -90,7 +96,48 @@ function SpotPage() {
 						</div>
 
 						<hr />
-						<div className="spot-page_reviews">placeholder</div>
+						<div className="spot-page_reviews">
+							{
+								spot.numReviews === 0 ?
+									<>
+										<div className="no-reviews" >
+											<div className="no-reviews_header" style={{}}>
+												<h2>
+													<i className="fa-solid fa-star"></i>
+													New
+												</h2>
+											</div>
+											<div className="no-reviews_comment">
+												{
+													spot.ownerId !== userId ?
+													<div>
+
+													<button className="post-review-button">Post Your Review</button>
+													Be the first to post a review!
+													</div>
+													:
+													null
+												}
+											</div>
+										</div>
+									</>
+									:
+									<>
+										<div className="post-reviews">
+											<div className="reviews_header" style={{}}>
+												<h2>
+													<i className="fa-solid fa-star" style={{ color: "gold" }}></i>
+													{spot.avgRating + " " + '·' + " " + spot.numReviews + " review(s)"}
+												</h2>
+											</div>
+											<div className="reviews_section">
+												{/* <button className="post-review-button">Post Your Review</button> */}
+												<LoadReviews avgRating={spot.avgRating} numReviews={spot.numReviews} ownerId={spot.ownerId} reviews={spot.reviews} />
+											</div>
+										</div>
+									</>
+							}
+						</div>
 					</section>
 				</div>
 			</div>
