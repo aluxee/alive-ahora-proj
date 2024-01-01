@@ -19,6 +19,8 @@ export const loadAllReviews = (reviews) => ({
 
 export const createReview = (review) => {
 
+console.log("%c 🚀 ~ file: review.js:22 ~ createReview ~ review: ", "color: pink; font-size: 30px", review)
+
 	return {
 		type: CREATE_REVIEW,
 		review
@@ -66,12 +68,17 @@ export const thunkLoadAllReviews = (spotId) => async dispatch => {
 // * create review
 export const thunkCreateReview = (spotId, user, review) => async dispatch => {
 
+	console.log("%c 🚀 ~ file: review.js:69 ~ thunkCreateReview ~ user: ", "color: cyan; font-size: 25px", user)
+
 	console.log("%c 🚀 ~ file: review.js:69 ~ thunkCreateReview ~ review: ", "color: cyan; font-size: 25px", review)
 
-	console.log("%c 🚀 ~ file: review.js:69 ~ thunkCreateReview ~ user: ", "color: cyan; font-size: 25px", spotId)
+	console.log("%c 🚀 ~ file: review.js:69 ~ thunkCreateReview ~ spotId: ", "color: cyan; font-size: 30px", spotId)
+	const idSpot = parseInt(spotId);
+
+	console.log("%c 🚀 ~ file: review.js:75 ~ thunkCreateReview ~ idSpot: ", "color: red; font-size: 25px", idSpot, "spotId: ", spotId)
 
 
-	const response = await csrfFetch(`/api/spots/${spotId}/reviews`, {
+	const response = await csrfFetch(`/api/spots/${idSpot}/reviews`, {
 		method: 'POST',
 		headers: {
 			"Content-Type": "application/json"
@@ -79,19 +86,24 @@ export const thunkCreateReview = (spotId, user, review) => async dispatch => {
 		body: JSON.stringify(review)
 	})
 
+	console.log("%c 🚀 ~ file: review.js:79 ~ thunkCreateReview ~ response: ", "color: cyan; font-size: 25px", response)
 
 	if (response.ok) {
-		const reviewData = await response.json();
+		const review = await response.json();
 
+		console.log("%c 🚀 ~ file: review.js:90 ~ thunkCreateReview ~ review: ", "color: orange; font-size: 25px", review)
 
 		review.User = {
 			id: user.id,
 			firstName: user.firstName,
 			lastName: user.lastName
 		}
-		dispatch(createReview(reviewData))
-		dispatch(loadAllReviews(spotId))
-		return reviewData
+
+		dispatch(createReview({ ...review, User: user }));
+		// dispatch(loadAllReviews(idSpot));
+
+		return review;
+
 	} else {
 		const errorResponse = await response.json();
 		return errorResponse;
@@ -108,16 +120,29 @@ const reviewsReducer = (state = initialState, action) => {
 	// const cpSpotId = action.id;
 	switch (action.type) {
 		case LOAD_REVIEWS: {
-			const allReviews = { ...state };
-			action.reviews.Reviews.forEach(review => {
-				let loadedReviewState = { ...review }
-				allReviews[review.id] = loadedReviewState;
-			})
-			return allReviews;
+			// const allReviews = {state} // best to not bring this back
+			const allReviews = {};
+
+			console.log("%c 🚀 ~ file: review.js:125 ~ reviewsReducer ~ allReviews: ", "color: magenta; font-size: 30px", "BEFORE", allReviews)
+			// action.reviews.Reviews.forEach(review => {
+			// 	let loadedReviewState = { ...review }
+			// 	allReviews[review.id] = loadedReviewState;
+
+			// })
+			for (let review of action.reviews.Reviews){
+				allReviews[review.id] = review
+			}
+			console.log("%c 🚀 ~ file: review.js:130 ~ reviewsReducer ~ allReviews: ", "color: magenta; font-size: 25px", "AFTER", allReviews);
+
+
+			return {...allReviews};
 
 		}
 		case CREATE_REVIEW: {
-			return { [action.review.id]: { ...action.review }, ...state }
+
+			const reviewState = {...state.spot, [action.review.id]: action.review}
+			// return {...state, ...reviewState}
+			return reviewState
 		}
 		default:
 			return state;

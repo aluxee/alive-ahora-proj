@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { thunkCreateSpot } from "../../../../../store/spot";
-// import { thunkAddImage } from "../../../store/spot";
 import './CreateSpotForm.css';
 
 
@@ -112,13 +111,6 @@ function CreateSpotForm({ spot, formType }) {
 		}
 	}
 
-	// if (!user) {
-	// 	return null
-	// };
-	// * notes:
-	// - need to figure out a way to ensure the pics submitted render onto a new spot
-	//	- ensure all errors are erroring correctly
-	// - include short circuits
 
 	return (
 		<>

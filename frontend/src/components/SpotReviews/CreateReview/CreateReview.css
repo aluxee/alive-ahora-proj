@@ -30,8 +30,10 @@
 
 
 }
-
-ul.star-reviews-container {
+.p-errors {
+	color: red;
+}
+ul.star-reviews-list {
 	display: flex;
 	flex-direction: row-reverse;
 	justify-content: center;
@@ -39,7 +41,7 @@ ul.star-reviews-container {
 	padding: 0;
 }
 
-div.star-ratings-reviews {
+div#star-ratings-reviews {
 	display: flex;
 	justify-content: center;
 }
@@ -56,25 +58,17 @@ div.star-ratings-reviews {
 	color: black;
 }
 
-.empty:hover {
-	color: black;
-}
-
-.filled:hover {
-	color: gold;
-}
-
 .filled {
 	color: gold;
 }
 
-#setStars-4 {}
+/* #setStars-4 {}
 
 #setStars-3 {}
 
 #setStars-2 {}
 
-#setStars-1 {}
+#setStars-1 {} */
 
 .user-spot-review-submit {
 	display: flex;

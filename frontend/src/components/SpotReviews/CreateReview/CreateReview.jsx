@@ -1,63 +1,115 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../../context/Modal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+// import { useNavigate } from "react-router-dom";
 import { thunkCreateReview, thunkLoadAllReviews } from "../../../store/review";
 import './CreateReview.css';
 import { thunkReceiveSpot } from "../../../store/spot";
+import StarRatingInput from "./StarRatingInput";
 
 function CreateReview({ spotId }) {
 
-	console.log("%c 🚀 ~ file: CreateReview.jsx:8 ~ CreateReview ~ spotId: ", "color: red; font-size: 25px", spotId)
-	const dispatch = useDispatch();
+	console.log("%c 🚀 ~ file: CreateReview.jsx:8 ~ CreateReview ~ spotId: ", "color: gold; font-size: 25px", spotId); //appears upon any enter of review info or hover over stars
 
-	const user = useSelector(state => state.session.user)
-	const currReviews = useSelector(state => state.reviews)
+	const dispatch = useDispatch();
+	// const navigate = useNavigate();
+	const currUser = useSelector(state => state.session.user)
+	// const currReview = useSelector(state => state.reviews)
+
+	// console.log("%c 🚀 ~ file: CreateReview.jsx:19 ~ CreateReview ~ currReview: ", "color: red; font-size: 25px", currReview)
 	const spot = useSelector(state => state.spots)
 
 
 	const [stars, setStars] = useState('');
 	const [review, setReview] = useState('');
+
+	console.log("%c 🚀 ~ file: CreateReview.jsx:26 ~ CreateReview ~ review: ", "color: red; font-size: 25px", review)
+
 	const [errors, setErrors] = useState({});
+	const [errorMessage, setErrorMessage] = useState({});
+	const [allow, setAllow] = useState(true);
+	const [modalPop, setModalPop] = useState(false);
 
-	const closeModal = useModal();
+	const { closeModal } = useModal();
 
-	const currUser = {
-		id: user.id,
-		firstName: user.firstName,
-		lastName: user.lastName,
+	const user = {
+		id: currUser.id,
+		firstName: currUser.firstName,
+		lastName: currUser.lastName,
 	}
+	const toggleMenu = (e) => {
+		e.stopPropagation();
 
+		setModalPop(!modalPop);
+	};
 
+	useEffect(() => {
+		const errorsObject = {};
+
+		(!stars) ? errorsObject.stars = "Must have at least 1 star" && setAllow(true) : stars && setAllow(false);
+		review.length < 10 ? (errorsObject.review = "Review must be at least 10 characters") && setAllow(true) : review.length && setAllow(false);
+		currUser.id === spot.ownerId ? errorsObject.errMessage = "Invalid post, same user" : currUser.id;
+
+		setErrors(errorsObject);
+		setErrorMessage(errorsObject.review);
+
+	}, [currUser.id, review.length, stars, setErrors, setErrorMessage, spot.ownerId])
+
+	const onChange = num => {
+		setStars(parseInt(num))
+	}
+	const closeMenu = () => setModalPop(false);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		const errorsObject = {};
-
-		if (!stars || stars === 0) errorsObject.stars = "Must have at least 1 star"
-		if (review.length < 10) errorsObject.review = "Review must be at least 10 characters"
-		if (user.id === spot.ownerId) errorsObject.errMessage = "Invalid post, same user"
-
-		setErrors(errorsObject);
 
 		const createReview = {
-			userId: currUser.id,
-			spotId: spotId,
-			review: currReviews,
+			// review: currReview,
+			userId: user.id,
+			spotId,
+			review,
 			stars
 		}
 
+		// const submissionReview = await dispatch(thunkCreateReview(spotId, user, createReview));
 
-		await dispatch(thunkCreateReview(spotId, currUser, createReview))
-
-
-
+		// console.log("%c 🚀 ~ file: CreateReview.jsx:56 ~ handleSubmit ~ spotId: ", "color: gold; font-size: 25px", spotId, "versus spot.id: ", spot.id); //spot.id does not function well
+		// if (!submissionReview.errors) {
 		setReview("")
 		setStars(0)
-		closeModal();
+		closeModal()
+		// 	// navigate(`/spots/${submissionReview.id}`);
+		// } else {
+		// 	return submissionReview.errors
+		// }
 
-		dispatch(thunkLoadAllReviews(spotId))
-		dispatch(thunkReceiveSpot(spotId))
+		// closeModal
+		// await dispatch(thunkReceiveSpot(spotId))
+		// await dispatch(thunkLoadAllReviews(spotId)) ; // commenting this out does not solve the issue of all the reviews stack loading upon eachother
+
+
+		await dispatch(thunkCreateReview(spotId, user, createReview))
+			.then(closeModal())
+			.then(closeMenu)
+			.catch(async response => {
+				const data = await response.json()
+				if (data?.errors) {
+					setErrors(data.errors)
+					closeModal()
+				} else if (data?.errorMessage) {
+					setErrorMessage(data)
+					closeModal()
+				}
+			})
+		setReview("")
+		setStars(0)
+		closeModal()
+
+		await dispatch(thunkReceiveSpot(spotId))
+		await dispatch(thunkLoadAllReviews(spotId)); // commenting this out does not solve the issue of all the reviews stack loading upon eachother
+		closeModal()
+		closeMenu
 	}
 
 
@@ -72,47 +124,29 @@ function CreateReview({ spotId }) {
 						<p key={ind} className="obj-err">{err}</p>
 
 					)}
-					<form className="review-form" onSubmit={handleSubmit}>
-						<textarea name="user-review" id="user-review"
-							cols="30" rows="10"
-							maxLength={245}
-							value={review}
-							onChange={(e) => setReview(e.target.value)}
+					<form className="review-form" onSubmit={handleSubmit} onClick={toggleMenu}>
+						<div>
 
-						></textarea>
-						<div className="star-ratings-reviews">
-							<ul className="star-reviews-container" style={{ listStyle: "none" }}>
-								<li id="setStars-5" onMouseEnter={() => setStars(5)}>
-									<i
-										className={`fa fa-star ${stars >= 5 ? " filled" : " empty"}`}
-									></i>
-								</li>
-								<li id="setStars-4" onMouseEnter={() => setStars(4)}>
-									<i
-										className={`fa fa-star ${stars >= 4 ? "filled" : "empty"}`}
-									></i>
-								</li>
-								<li id="setStars-3" onMouseEnter={() => setStars(3)}>
-									<i
-										className={`fa fa-star ${stars >= 3 ? "filled" : "empty"}`}
-									></i>
-								</li>
-								<li id="setStars-2" onMouseEnter={() => setStars(2)}>
-									<i
-										className={`fa fa-star ${stars >= 2 ? "filled" : "empty"}`}
-									></i>
-								</li>
-								<li id="setStars-1" onMouseEnter={() => setStars(1)}>
-									<i
-										className={`fa fa-star ${stars >= 1 ? "filled" : "empty"}`}
-									></i>
-								</li>
-								<div className="peek-a-boo" style={{ visibility: "hidden" }}>
+							<textarea name="user-review" id="user-review"
+								placeholder="Leave your review here..."
+								cols="30" rows="10"
+								maxLength={245}
+								value={review}
+								onChange={(e) => setReview(e.target.value)}
 
-								</div>
-							</ul>
+							></textarea>
+							{"review" in errors && <p className="p-errors">{
+								errorMessage.review
+								// errors.review
+							}
+							</p>}
 						</div>
-						<button className="user-spot-review-submit" disabled={review.length < 10 || stars === ""}>Submit Your Review</button>
+
+						<div id="star-ratings-reviews">
+							<StarRatingInput stars={stars} onChange={onChange} />
+						</div>
+						{"stars" in errors && <p className="p-errors">{errors.stars}</p>}
+						<button className="user-spot-review-submit" disabled={allow}>Submit Your Review</button>
 					</form>
 
 				</div>
