@@ -71,12 +71,6 @@ label {
 	margin-bottom: 10px;
 }
 
-.p-error {
-	font-size: 12px;
-	color: red;
-	width: max-content;
-
-}
 
 /* _________________________________________________________________________________ */
 /* form section one: locale */
@@ -170,20 +164,16 @@ div.form-locale {
 #city-container label {
 	padding: 2.5px;
 }
-
+/*
 #city-container input {
-	/* width: 55%; */
-}
+
+} */
 
 #state-container label {
 	padding: 0.5px;
 }
 
 
-#comma {
-	align-self: end;
-	margin-right: auto;
-}
 
 
 div.form-city-state-container {
@@ -256,7 +246,7 @@ div#state-container {
 	margin-left: 1rem;
 }
 
-.price-container {}
+/* .price-container {} */
 
 .spot-pics {
 	display: flex;
