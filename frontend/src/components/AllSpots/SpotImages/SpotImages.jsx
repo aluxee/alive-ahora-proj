@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { thunkLoadSpotImages } from "../../../store/spot";
 import './SpotImages';
 

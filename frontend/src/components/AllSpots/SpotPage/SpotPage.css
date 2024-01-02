@@ -1,3 +1,19 @@
+/* ____________________________________________________________________________ */
+/* main and containers */
+.outside-spot-page-container {
+	display: flex;
+}
+
+.inside-spot-page-container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	margin: 0px 10px;
+	padding: 5px;
+}
+
+/* ____________________________________________________________________________ */
+
 .spot-page_part-two {
 	display: flex;
 	flex-wrap: wrap;
@@ -5,9 +21,9 @@
 	align-items: center;
 }
 
-#spot-page-section {}
+/* #spot-page-section {}
 
-.spot-page_text-info {}
+.spot-page_text-info {} */
 
 .spot-page_pics {
 	display: flex;
@@ -24,7 +40,18 @@
 	padding: 10px;
 }
 
+/* ____________________________________________________________________________ */
 .spot-page_price_and_reserve {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	max-width: max-content;
+	width: fit-content;
+	margin: 10px;
+	padding: 2px;
+}
+
+.price-reserve-inner {
 	display: flex;
 	align-items: center;
 	align-content: space-between;
@@ -39,8 +66,6 @@
 
 #spot-page_rating {
 	width: 88px;
-
-
 }
 
 
@@ -50,6 +75,7 @@
 	padding: 2px;
 }
 
+/* ____________________________________________________________________________ */
 .spot-page_button {
 	padding: 10px;
 	margin: 10px;
@@ -66,4 +92,15 @@ button#spot-page_button {
 	width: 12rem;
 	border-style: solid;
 	border: 1.5px solid black;
+}
+
+/* ____________________________________________________________________________ */
+.post-review-button {
+		display: flex;
+			color: white;
+			padding: 5px;
+			margin: 15px;
+			box-shadow: 7px 3px 4px 3px #869dc9;
+			background-color: #1c30e7d0;
+			border: 2px solid #eeeef4;
 }

@@ -1,0 +1,82 @@
+/* _________________________________________________________________________________ */
+/* general */
+h1 {
+	width: fit-content;
+	height: fit-content;
+	margin: 0 auto;
+}
+
+.current-spots-outside-container {
+	display: flex;
+}
+
+.current-spots-inside-container {
+	display: flex;
+
+}
+
+.current-spots-section {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: flex-start;
+}
+
+
+
+.current-spots-top {
+	display: flex;
+	flex-direction: column;
+	margin: 10px 5px;
+	padding: 5px;
+}
+
+.curr-button {
+	color: white;
+	padding: 5px;
+	margin: 15px;
+	box-shadow: 7px 3px 4px 3px #869dc9;
+	background-color: #1c30e7d0;
+	border: 2px solid #eeeef4;
+}
+
+.curr-button:hover {
+	background-color: #ff0000;
+	box-shadow: 7px 3px 4px 3px #f28585d2;
+}
+
+.curr-button:active {
+	background-color: #FFC0CC;
+	box-shadow: 7px 5px 8px 4px #f29585d2;
+	color: black;
+}
+
+img:hover {
+	cursor: pointer;
+}
+/* _________________________________________________________________________________ */
+/* current-spot list & item */
+.current-spot_list {
+	display: flex;
+	gap: 2rem;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: space-around;
+}
+
+.current-spot_item {
+	width: 330px;
+	display: flex;
+	justify-content: flex-start;
+	flex-direction: column;
+	align-items: center;
+	border: 1px solid black;
+	height: fit-content;
+	padding: 5px;
+}
+
+
+
+.current-spot-name-rate {
+	text-align: center;
+}

@@ -1,0 +1,28 @@
+.delete-spot_container {
+	display: flex;
+	align-items: stretch;
+	flex-wrap: wrap;
+	height: 250px;
+	padding: 5px;
+	width: max-content;
+	flex-direction: column;
+	margin: 10px;
+}
+
+.delete-spot-options {
+	display: flex;
+	width: 500px;
+	align-content: stretch;
+	flex-direction: column;
+	flex-wrap: wrap;
+}
+
+.delete-spot-button {
+	display: flex;
+	color: white;
+	padding: 5px;
+	margin: 15px;
+	/* box-shadow: 7px 3px 4px 3px #869dc9; */
+	background-color: #1c30e7d0;
+	border: 2px solid #eeeef4;
+}

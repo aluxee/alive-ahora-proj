@@ -1,14 +1,14 @@
-import CreateSpotForm from "../../Forms/CreateSpotForm/CreateSpotForm";
+import CreateSpotForm from "../Forms/CreateSpotForm";
 
 
 
 function CreateSpot() {
-
+// console.log("createSpot")
 
 	return (
 		<>
 			<CreateSpotForm
-				spot={spot}
+				spot={{}}
 				formType="Create Spot"
 			/>
 		</>
