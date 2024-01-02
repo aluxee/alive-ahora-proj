@@ -18,7 +18,7 @@
 	align-items: center;
 	align-content: stretch;
 }
-}
+
 
 form {
 	display: flex;
@@ -55,7 +55,7 @@ label>input {
 
 }
 
-.signup_username {}
+/* .signup_username {}
 
 .signup_email {}
 
@@ -65,7 +65,7 @@ label>input {
 
 .signup_confirmedPassword {}
 
-.signup_password {}
+.signup_password {} */
 
 .signup-submit-button {
 	padding: 10px 15px;

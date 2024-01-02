@@ -195,11 +195,14 @@ export const thunkCreateSpot = (spotData, images) => async (dispatch) => {
 
 			})
 			// console.log("RESPONSE: ", response)
-		}
 
-		// console.log("🚀 %c~ file: spot.js:217 ~ thunkCreateSpot ~ spot: PRIOR TO RETURN", "color: white; font-size: 32px", spot)
-		await dispatch(createSpot(spot))
-		return spot
+			// console.log("🚀 %c~ file: spot.js:217 ~ thunkCreateSpot ~ spot: PRIOR TO RETURN", "color: white; font-size: 32px", spot)
+
+			if (response.ok) {
+				await dispatch(createSpot(spot))
+				return spot
+			}
+		}
 
 	} else {
 		const errorResponse = await response.json()

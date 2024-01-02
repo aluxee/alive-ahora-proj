@@ -36,7 +36,7 @@ function RemoveSpot({ spot }) {
 
 
 	const handleDelete = async (spotId) => {
-		
+
 		// console.log("%c 🚀 ~ file: RemoveSpot.jsx:42 ~ handleDelete ~ spotId: ", "color: blue; font-size: 25px", spotId)
 
 
@@ -65,7 +65,7 @@ function RemoveSpot({ spot }) {
 
 	useEffect(() => {
 		dispatch(thunkLoadCurrentSpots)
-	}, [dispatch])
+	}, [dispatch, currState])
 
 	return (
 		<>

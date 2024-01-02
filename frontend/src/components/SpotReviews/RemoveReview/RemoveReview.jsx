@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useModal } from "../../../context/Modal";
 import { thunkRemoveReview } from "../../../store/review";
 
@@ -27,8 +27,8 @@ function RemoveReview({ review }) {
 
 
 
-	const handleDelete = async (reviewId) => {
-
+	const handleDelete = async (e) => {
+		e.preventDefault();
 		// console.log("%c 🚀 ~ file: RemoveReview.jsx:32 ~ handleDelete ~ reviewId: ", "color: pink; font-size: 35px", reviewId)
 
 

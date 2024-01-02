@@ -37,11 +37,11 @@ function Navigation({ isLoaded }) {
 			<Link to={`/spots/new`} className='nav_create-spot'>
 				Create a New Spot
 			</Link>
-			<div className='nav_options' style={{fontSize: 15}}>
+			<div className='nav_options' style={{ fontSize: 15 }}>
 				<div className='content_nav_options'>
 					<li className='nav_list' id='nav_house'>
 						<NavLink to='/' className="house-icon">
-							<i class="fa-solid fa-bars" ></i>
+							<i className="fa-solid fa-bars" ></i>
 						</NavLink>
 					</li>
 					{isLoaded && (
