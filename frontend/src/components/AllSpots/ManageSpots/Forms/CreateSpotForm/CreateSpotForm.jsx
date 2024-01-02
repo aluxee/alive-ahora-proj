@@ -1,21 +1,15 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { thunkEditSpot, thunkReceiveSpot } from "../../../store/spot";
-import './EditSpotForm.css';
+import { thunkCreateSpot } from "../../../../../store/spot";
+import './CreateSpotForm.css';
 
 
 
-function EditSpotForm({ spot, formType }) {
-
-	console.log("%c 🚀 ~ file: EditSpotForm.jsx:12 ~ EditSpotForm ~ spot: ", "color: white; font-size: 25px", spot)
+function CreateSpotForm({ spot, formType }) {
 
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	const { id } = useParams();
-	const spotId = Number(id)
-	const prevSpot = spot[id];
-
 	const [country, setCountry] = useState('');
 	const [address, setAddress] = useState('');
 	const [city, setCity] = useState('');
@@ -28,7 +22,11 @@ function EditSpotForm({ spot, formType }) {
 	const [otherImage2, setOtherImage2] = useState('');
 	const [otherImage3, setOtherImage3] = useState('');
 	const [otherImage4, setOtherImage4] = useState('');
+
+	const [images, setImages] = useState([]);
 	const [errors, setErrors] = useState({});
+
+
 
 
 	useEffect(() => {
@@ -53,42 +51,38 @@ function EditSpotForm({ spot, formType }) {
 	}, [country, address, city, state, describeText, title, price, prevMainImage, otherImage]);
 
 
-	useEffect(() => {
-		dispatch(thunkReceiveSpot(spotId))
-
-	}, [dispatch, spotId]);
-
-	useEffect(() => {
-		if (prevSpot) {
-
-			setAddress(prevSpot.address);
-			setCity(prevSpot.city);
-			setCountry(prevSpot.country);
-			setState(prevSpot.state);
-			setDescribeText(prevSpot.describeText);
-			setTitle(prevSpot.title);
-			setPrice(prevSpot.price);
-
-
-			let mainImage = prevSpot.SpotImages.find(img => img.preview === true);
-			let otherImages = prevSpot.SpotImages.filter(img => img.preview === false);
-
-
-			setPrevMainImage(mainImage ? mainImage.prevMainImage.url : "");
-			setOtherImage(otherImages[0] ? otherImages[0].url : "");
-			setOtherImage2(otherImages[1] ? otherImages[1].url : "");
-			setOtherImage3(otherImages[2] ? otherImages[2].url : "");
-			setOtherImage4(otherImages[3] ? otherImages[3].url : "");
-		}
-	}, [prevSpot, dispatch])
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
+		console.log("SPOT!!!", spot);
 
-		if (formType === 'Edit Spot') {
+
+		if (formType === 'Create Spot') {
+
+			const newPrevImage = {
+				url: prevMainImage,
+				preview: true
+			}; // return edits: what about having this as a useRef?
 
 
+			if (otherImage) {
+				images.push({ url: otherImage, preview: false })
+				// setImages((imgs) => [...imgs, { url: otherImage, preview: false }])
+			}
+			if (otherImage2) {
+				images.push({ url: otherImage2, preview: false })
+				// setImages((imgs) => [...imgs, { url: otherImage2, preview: false }])
+			}
+			if (otherImage3) {
+				images.push({ url: otherImage3, preview: false })
+			}
+			if (otherImage4) {
+				images.push({ url: otherImage4, preview: false })
+			}
+
+			images.push(newPrevImage);
+
+			setImages(images)
 			spot = {
 				Spot: {
 					country, address, city, state,
@@ -97,17 +91,19 @@ function EditSpotForm({ spot, formType }) {
 					name: title,
 					price,
 					description: describeText,
+					previewImage: newPrevImage
 				},
+
 			}
 
-			const submissionResults = await dispatch(thunkEditSpot(spot));
-			console.log("🚀 ~ file: EditSpotForm.jsx:141 ~ handleSubmit ~ SPOT INSIDE editSpotForm:", spot)
+			const submissionResults = await dispatch(thunkCreateSpot(spot, images));
+			console.log("🚀 ~ file: CreateSpotForm.jsx:141 ~ handleSubmit ~ images INSIDE createSpotForm:", images)
 
-			console.log("🚀 ~ file: EditSpotForm.jsx:141 ~ handleSubmit ~ submissionResults:", submissionResults)
+			console.log("🚀 ~ file: CreateSpotForm.jsx:141 ~ handleSubmit ~ submissionResults:", submissionResults)
 
 			if (!submissionResults.errors) {
 				console.log("SUBMISSION ID: ", submissionResults.id)
-				navigate(`/spots/${spotId}`)
+				navigate(`/spots/${submissionResults.id}`)
 			} else {
 				return submissionResults.errors
 			}
@@ -115,21 +111,21 @@ function EditSpotForm({ spot, formType }) {
 		}
 	}
 
-if(!prevSpot || !Object.values(prevSpot).length ) return null;
 
 	return (
 		<>
 			<div className="form-outer-container">
 				<div className="form-inner-container">
-					<form onSubmit={handleSubmit} className="edit-form">
-						<div className="edit-form-container">
+					<form onSubmit={handleSubmit} className="create-form">
+						<div className="create-form-container">
 
-							<h2 id="edit-form-h2">
-								Update Your Spot
+							<h2 id="create-form-h2">
+								Create a new Spot
+								{formType}
 							</h2>
-							<div className="edit-form-locale">
-								<div className="edit-form-header">
-									<h3 className="edit-form-h3">
+							<div className="create-form-locale">
+								<div className="create-form-header">
+									<h3 className="create-form-h3">
 										Where&apos;s your place located?
 									</h3>
 									<div className="form-text-div">Guests will only get your exact address once they booked a reservation.
@@ -188,8 +184,8 @@ if(!prevSpot || !Object.values(prevSpot).length ) return null;
 							<hr />
 
 							<div className="form-description">
-								<div className="edit-form-header">
-									<h3 className="edit-form-h3">
+								<div className="create-form-header">
+									<h3 className="create-form-h3">
 										Describe your place to guests
 									</h3>
 									<div className="form-text-div">
@@ -207,8 +203,8 @@ if(!prevSpot || !Object.values(prevSpot).length ) return null;
 							<hr />
 
 							<div className="form-title">
-								<div className="edit-form-header">
-									<h3 className="edit-form-h3">Create a title for your spot</h3>
+								<div className="create-form-header">
+									<h3 className="create-form-h3">Create a title for your spot</h3>
 									<div className="form-text-div">
 										Catch guests&apos; attention with a spot title that highlights what makes
 										your place special.
@@ -224,8 +220,8 @@ if(!prevSpot || !Object.values(prevSpot).length ) return null;
 							<hr />
 
 							<div className="form-price">
-								<div className="edit-form-header">
-									<h3 className="edit-form-h3">Set a base price for your spot</h3>
+								<div className="create-form-header">
+									<h3 className="create-form-h3">Set a base price for your spot</h3>
 									<div className="form-text-div">
 										Competitive pricing can help your listing stand out and rank higher
 										in search results.
@@ -245,7 +241,7 @@ if(!prevSpot || !Object.values(prevSpot).length ) return null;
 							<hr />
 
 							<div className="spot-pics">
-								<div className="edit-form-header">
+								<div className="create-form-header">
 									<h3>Liven up your spot with photos</h3>
 									<p>Submit a link to at least one photo to publish your spot.</p>
 								</div>
@@ -279,11 +275,11 @@ if(!prevSpot || !Object.values(prevSpot).length ) return null;
 						</div>
 						<button
 							type="submit"
-							className="spot-edit-form-btn"
+							className="spot-create-form-btn"
 							disabled={Object.values(errors).length > 0}
 						>
-
-							{formType}
+							Create Spot
+							{/* {formType} */}
 						</button>
 
 					</form>
@@ -295,4 +291,4 @@ if(!prevSpot || !Object.values(prevSpot).length ) return null;
 }
 
 
-export default EditSpotForm;
+export default CreateSpotForm;

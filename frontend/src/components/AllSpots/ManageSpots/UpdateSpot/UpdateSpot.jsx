@@ -1,4 +1,4 @@
-import EditSpotForm from "../../Forms/EditSpotForm/EditSpotForm";
+import EditSpotForm from "../Forms/EditSpotForm/EditSpotForm";
 
 
 function UpdateSpot() {
@@ -7,7 +7,8 @@ function UpdateSpot() {
 	return (
 		<>
 			<EditSpotForm
-				spot={{}}
+				// spot={spot}
+
 				formType="Edit Spot"
 			/>
 		</>

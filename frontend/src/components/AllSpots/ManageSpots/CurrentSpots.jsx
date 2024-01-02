@@ -26,9 +26,6 @@ function CurrentSpots() {
 
 	const spots = Object.values(spotObj).filter(spot => spot.ownerId === user.id);
 	console.log("%c spot (before):", "font-size: 25px; color: red", spots);
-	const [currSpot, setCurrSpot] = useState([]);
-
-	console.log("%c 🚀 ~ file: CurrentSpots.jsx:31 ~ CurrentSpots ~ currSpot: ", "color: white; font-size: 25px", currSpot, "versus spots again", spots)
 
 
 
@@ -55,24 +52,6 @@ function CurrentSpots() {
 
 		navigate('/spots/new');
 	}
-
-	const onDelete = async (spotId) => {
-
-		console.log("%c 🚀 ~ file: CurrentSpots.jsx:58 ~ onDelete ~ spotId: ", "color: white; font-size: 35px", spotId)
-
-		await dispatch(spotActions.thunkRemoveSpot(spotId));
-
-
-		const removedSpots = spots.filter(spot => spot.id !== spotId)
-		console.log("inside the onDelete of currentSpots.jsx line 92-- what is currSpot still?", currSpot, "and what is removedSpots? ", removedSpots); // think currSpots should be set to present spots then navigated
-
-
-		setCurrSpot(removedSpots);
-		navigate('/spots/current', { replace: true })
-
-	}
-
-
 
 	return (
 		<>

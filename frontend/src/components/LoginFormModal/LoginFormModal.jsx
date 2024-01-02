@@ -11,21 +11,32 @@ function LoginFormModal() {
 	const [errors, setErrors] = useState({});
 	const { closeModal } = useModal(); // LoginFormModal consuming the ModalContext’s closeModal value and then invoke the closeModal function when the login action is successful (below)
 
-
-
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		setErrors({});
 
 		return dispatch(sessionActions.login({ credential, password })).then(closeModal)
-		.catch(
-			async (response) => {
-				const data = await response.json();
-				if (data && data?.errors) setErrors(data.errors);
-			}
-		);
-
+			.catch(
+				async (response) => {
+					const data = await response.json();
+					if (data && data?.errors) setErrors(data.errors);
+				}
+			);
 	};
+
+	const demoUser = (e) => {
+		e.preventDefault();
+		setErrors({})
+		dispatch(sessionActions.login({ credential: 'Demo-lition', password: 'password' }))
+			.then(closeModal())
+			.catch(async response => {
+				const data = await response.json();
+				if (data && data.errors) {
+					setErrors(data.errors)
+				}
+			})
+	}
+
 
 	return (
 		<>
@@ -33,26 +44,39 @@ function LoginFormModal() {
 
 				<h1>Log In</h1>
 				<form onSubmit={handleSubmit} className='loginForm'>
-					<label className='box_login' id='login_one'>
-						Username or Email
-						<input
-							type="text"
-							value={credential}
-							onChange={(e) => setCredential(e.target.value)}
-							required
-						/>
-					</label>
-					<label className='box_login' id='login_two'>
-						Password
-						<input
-							type="password"
-							value={password}
-							onChange={(e) => setPassword(e.target.value)}
-							required
-						/>
-					</label>
-					{errors.credential && <p>{errors.credential}</p>}
-					<button type="submit" id='login_submit'>Log In</button>
+					<div className='login'>
+
+						{errors.message && <p className='p-errors'>{errors.message}</p>}
+						<label className='box_login' id='login_one'>
+							<input
+								placeholder='Username or Email'
+								type="text"
+								value={credential}
+								onChange={(e) => setCredential(e.target.value)}
+								required
+							/>
+						</label>
+					</div>
+					<div className='login'>
+
+						<label className='box_login' id='login_two'>
+							<input
+								placeholder='Password'
+								type="password"
+								value={password}
+								onChange={(e) => setPassword(e.target.value)}
+								required
+							/>
+						</label>
+						{errors.credential && <p className='p-errors'>{errors.credential}</p>}
+					</div>
+					<button
+						type="submit"
+						id='login_submit'
+						className='disabled'
+						disabled={credential.length < 4 || password.length < 6}
+					>Log In</button>
+					<button className='demo' onClick={demoUser}>Log in as Demo User</button>
 				</form>
 			</div>
 		</>

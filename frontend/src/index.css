@@ -1,6 +1,6 @@
-/* TODO: Add sitewide styles */
-
+/* ____________________________________________________________________________ */
 /* body and root */
+
 body {
 	margin: 0 auto;
 	overflow-x: hidden;
@@ -29,6 +29,7 @@ body {
 	justify-content: center;
 }
 
+/* ____________________________________________________________________________ */
 /* gen-app/outlet */
 
 .outlet-wrapper {
@@ -42,6 +43,7 @@ body {
 	height: 100%;
 }
 
+/* ____________________________________________________________________________ */
 /* title elements */
 h1 {
 	font-size: 28px;
@@ -59,6 +61,8 @@ h3 {
 	font-size: 20px;
 }
 
+/* ____________________________________________________________________________ */
+/* list elements */
 li {
 	display: flex;
 	flex-direction: column;
@@ -66,4 +70,52 @@ li {
 	align-items: baseline;
 	height: min-content;
 	width: min-content;
+}
+
+/* ____________________________________________________________________________ */
+/* errors */
+.p-errors {
+	color: red;
+	margin: 0 auto;
+}
+
+/* ____________________________________________________________________________ */
+/* buttons */
+button {
+	color: white;
+	padding: 5px;
+	margin: 15px;
+	box-shadow: 7px 3px 4px 3px #869dc9;
+	background-color: #1c30e7d0;
+	border: 2px solid #eeeef4;
+}
+
+button:hover {
+	background-color: #ff0000;
+	box-shadow: 7px 3px 4px 3px #f28585d2;
+}
+
+button:active {
+	background-color: #FFC0CC;
+	box-shadow: 7px 5px 8px 4px #f29585d2;
+	color: black;
+}
+
+*:disabled {
+	background-color: dimgrey;
+	color: linen;
+	opacity: 1;
+	box-shadow: none;
+}
+
+*:disabled:hover {
+	background-color: dimgray;
+
+	box-shadow: none;
+}
+
+*:disabled:active {
+	background-color: none;
+	box-shadow: none;
+	color: linen;
 }

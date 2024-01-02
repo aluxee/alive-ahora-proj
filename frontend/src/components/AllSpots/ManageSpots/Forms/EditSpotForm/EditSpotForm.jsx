@@ -1,36 +1,63 @@
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { thunkCreateSpot } from "../../../store/spot";
-// import { thunkAddImage } from "../../../store/spot";
-import './CreateSpotForm.css';
+import { thunkEditSpot, thunkReceiveSpot } from "../../../../../store/spot";
+
+import './EditSpotForm.css';
 
 
 
-function CreateSpotForm({ spot, formType }) {
-	// console.log("🚀 ~ file: CreateSpotForm.jsx:5 ~ CreateSpotForm ~ spot:", spot)
-	//!  no such route w new so how to render? - will try to make a modal...? or create a url
+function EditSpotForm({ formType }) {
+
+	// console.log("%c 🚀 ~ file: EditSpotForm.jsx:11 ~ EditSpotForm ~ props: ", "color: red; font-size: 25px", props)
+
+	// console.log("%c 🚀 ~ file: EditSpotForm.jsx:12 ~ EditSpotForm ~ spot: ", "color: white; font-size: 25px", spot)
+
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const { spotId } = useParams();
+
+	console.log("%c 🚀 ~ file: EditSpotForm.jsx:17 ~ EditSpotForm ~ spotId: ", "color: yellow; font-size: 25px", spotId)
+
+	// console.log("%c 🚀 ~ file: EditSpotForm.jsx:20 ~ EditSpotForm ~ id: ", "color: yellow; font-size: 25px", id)
+	const spot = useSelector(state => state.spots[spotId]); //ensure for testing spot is good in form front and check to see that spots appears before giving an id; cannot appropriately load all spots without first coming from currentSpots
+	console.log("%c 🚀 ~ file: EditSpotForm.jsx:21 ~ EditSpotForm ~ spot:(only off currentSpots route to update button) ", "color: orange; font-size: 25px", spot)
+
+
+	// console.log("%c 🚀 ~ file: EditSpotForm.jsx:20 ~ EditSpotForm ~ spotId: ", "color: red; font-size: 25px", spotId)
+	const prevSpot = spot;
+
+	console.log("%c 🚀 ~ file: EditSpotForm.jsx:19 ~ EditSpotForm ~ prevSpot: ", "color: red; font-size: 25px", prevSpot);
+
 	const [country, setCountry] = useState('');
 	const [address, setAddress] = useState('');
 	const [city, setCity] = useState('');
 	const [state, setState] = useState('');
-	const [describeText, setDescribeText] = useState('');
-	const [title, setTitle] = useState('');
+	const [description, setDescription] = useState('');
+
+
+	console.log("%c 🚀 ~ file: EditSpotForm.jsx:39 ~ EditSpotForm ~ description: ", "color: red; font-size: 25px", description)
+	const [name, setName] = useState('');
 	const [price, setPrice] = useState('');
 	const [prevMainImage, setPrevMainImage] = useState('');
 	const [otherImage, setOtherImage] = useState('');
 	const [otherImage2, setOtherImage2] = useState('');
 	const [otherImage3, setOtherImage3] = useState('');
 	const [otherImage4, setOtherImage4] = useState('');
-
-	const [images, setImages] = useState([]);
 	const [errors, setErrors] = useState({});
-
-	//! 12.27.23 re-erased all progress, unable to ensure that images go into it's own array and end up in SpotImages once loaded as it's own page, while appropriately using states without any array pushes or flexible variables without useRef()
-
-	// * NOTE: need to fix backend display of price from string to integer
+	// const [updatedSpot, setUpdatedSpot] = useState(
+	// 	{
+	// 		spot: prevSpot
+	// 	// 	Spot: {
+	// 	// 		country, address, city, state,
+	// 	// 		lat: 0,
+	// 	// 		lng: 0,
+	// 	// 		name,
+	// 	// 		price,
+	// 	// 		description
+	// 	// 	},
+	// 	}
+	// );
 
 
 	useEffect(() => {
@@ -40,8 +67,8 @@ function CreateSpotForm({ spot, formType }) {
 		address.length < 10 ? errorsObject.address = "Address is required" : address;
 		city.length < 4 ? errorsObject.city = "City is required" : city;
 		state.length < 2 ? errorsObject.state = "State is required" : state;
-		describeText.length < 30 ? errorsObject.describeText = "Description needs a minimum of 30 characters" : describeText;
-		title.length < 5 ? errorsObject.title = "Name is required" : title;
+		description.length < 30 ? errorsObject.description = "Description needs a minimum of 30 characters" : description;
+		name.length < 5 ? errorsObject.name = "Name is required" : name;
 		price.length === 0 ? errorsObject.price = "Price is required" : price;
 		if (prevMainImage.length === 0 || otherImage.length === 0) {
 
@@ -52,97 +79,65 @@ function CreateSpotForm({ spot, formType }) {
 
 
 
-	}, [country, address, city, state, describeText, title, price, prevMainImage, otherImage]);
+	}, [country, address, city, state, description, name, price, prevMainImage, otherImage]);
+
+	useEffect(() => {
+		dispatch(thunkReceiveSpot(spotId))
+
+	}, [dispatch, spotId]);
+
+	useEffect(() => {
+		if (prevSpot) {
+
+			setAddress(prevSpot.address);
+			setCity(prevSpot.city);
+			setCountry(prevSpot.country);
+			setState(prevSpot.state);
+			setDescription(prevSpot.description);
+			setName(prevSpot.name);
+			setPrice(prevSpot.price);
+
+			console.log("inside of the EDITS: prevSpot =====>", prevSpot, "this is prior to the edits to the images and their url");
+			let mainImage = prevSpot.SpotImages.find(img => img.preview === true);
+
+			console.log("%c 🚀 ~ file: EditSpotForm.jsx:98 ~ useEffect ~ mainImage: ", "color: red; font-size: 25px", mainImage)
+			let otherImages = prevSpot.SpotImages.filter(img => img.preview === false);
+
+			console.log("%c 🚀 ~ file: EditSpotForm.jsx:101 ~ useEffect ~ otherImages: ", "color: red; font-size: 25px", otherImages)
+
+
+			setPrevMainImage(mainImage ? mainImage.url : "");
+			setOtherImage(otherImages[0] ? otherImages[0].url : "");
+			setOtherImage2(otherImages[1] ? otherImages[1].url : "");
+			setOtherImage3(otherImages[2] ? otherImages[2].url : "");
+			setOtherImage4(otherImages[3] ? otherImages[3].url : "");
+		}
+	}, [prevSpot])
 
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		// setErrors({}); // causing re-render
-		// console.log("CAN I STILL SEE THE ERRORS UPON SUBMISSION? (as an object):  ", Object.errors)
 
-		// spot = {
-		// 	country, address, city, state,
-		// 	lat: 0,
-		// 	lng: 0,
-		// 	description: describeText,
-		// 	name: title,
-		// 	price,
-		// 	previewImage: prevMainImage || otherImage
-		// };
+		if (formType === 'Edit Spot') {
+			const updatedSpot = {
 
-
-		console.log("SPOT!!!", spot);
-
-		// const displayImage = spot.previewImage;
-
-		// * insert setImage push for all images
-		// if (formType === 'Create Spot') {
-		// 	// TO TEST:
-		// 	// createImage.push(displayImage)
-		// 	console.log("ARE WE INSIDE THE FORM TYPE!?!?!!")
-		// 	// const imgResults = await dispatch(thunkAddImage(createImage))
-		// 	const submissionResults = await dispatch(thunkCreateSpot(spot, images))
-
-		// 	console.log("sub results: ", submissionResults)
-
-		// 	if (!submissionResults.errors) {
-		// 		// createImage.push(imgResults)
-		// 		// setOtherImage(imgResults)
-		// 		// setPrevMainImage(imgResults)
-		// 		navigate(`/spots/${submissionResults.id}`)
-		// 	} else {
-		// 		setErrors(submissionResults.errors)
-		// 	}
-
-		// }
-
-		if (formType === 'Create Spot') {
-
-			const newPrevImage = {
-				url: prevMainImage,
-				preview: true
-			}; // return edits: what about having this as a useRef?
-
-
-			if (otherImage) {
-				images.push({ url: otherImage, preview: false })
-				// setImages((imgs) => [...imgs, { url: otherImage, preview: false }])
-			}
-			if (otherImage2) {
-				images.push({ url: otherImage2, preview: false })
-				// setImages((imgs) => [...imgs, { url: otherImage2, preview: false }])
-			}
-			if (otherImage3) {
-				images.push({ url: otherImage3, preview: false })
-			}
-			if (otherImage4) {
-				images.push({ url: otherImage4, preview: false })
-			}
-
-			images.push(newPrevImage);
-
-			setImages(images)
-			spot = {
-				Spot: {
 					country, address, city, state,
 					lat: 0,
 					lng: 0,
-					name: title,
+					name: name,
 					price,
-					description: describeText,
-					previewImage: newPrevImage
-				},
+					description: description,
 
 			}
 
-			const submissionResults = await dispatch(thunkCreateSpot(spot, images));
-			console.log("🚀 ~ file: CreateSpotForm.jsx:141 ~ handleSubmit ~ images INSIDE createSpotForm:", images)
+			console.log("🚀 ~ file: EditSpotForm.jsx:141 ~ handleSubmit ~ SPOT INSIDE editSpotForm:", spot)
 
-			console.log("🚀 ~ file: CreateSpotForm.jsx:141 ~ handleSubmit ~ submissionResults:", submissionResults)
+			const submissionResults = await dispatch(thunkEditSpot(spotId, updatedSpot));
+			console.log("%c 🚀 ~ file: EditSpotForm.jsx:141 ~ handleSubmit ~ submissionResults: ", "color: green; font-size: 25px",  submissionResults)
 
-			if (!submissionResults.errors) {
-				console.log("SUBMISSION ID: ", submissionResults.id)
+			if (!submissionResults.errors && submissionResults) {
+				// console.log("SUBMISSION ID: ", submissionResults.id)
 				navigate(`/spots/${submissionResults.id}`)
 			} else {
 				return submissionResults.errors
@@ -151,28 +146,23 @@ function CreateSpotForm({ spot, formType }) {
 		}
 	}
 
-	// if (!user) {
-	// 	return null
-	// };
-	// * notes:
-	// - need to figure out a way to ensure the pics submitted render onto a new spot
-	//	- ensure all errors are erroring correctly
-	// - include short circuits
+	if (!prevSpot || !Object.values(prevSpot).length) return null;
 
 	return (
 		<>
 			<div className="form-outer-container">
 				<div className="form-inner-container">
-					<form onSubmit={handleSubmit} className="create-form">
-						<div className="create-form-container">
+					<form
+						onSubmit={handleSubmit}
+						className="edit-form">
+						<div className="edit-form-container">
 
-							<h2 id="create-form-h2">
-								Create a new Spot
-								{formType}
+							<h2 id="edit-form-h2">
+								Update Your Spot
 							</h2>
-							<div className="create-form-locale">
-								<div className="create-form-header">
-									<h3 className="create-form-h3">
+							<div className="edit-form-locale">
+								<div className="edit-form-header">
+									<h3 className="edit-form-h3">
 										Where&apos;s your place located?
 									</h3>
 									<div className="form-text-div">Guests will only get your exact address once they booked a reservation.
@@ -231,8 +221,8 @@ function CreateSpotForm({ spot, formType }) {
 							<hr />
 
 							<div className="form-description">
-								<div className="create-form-header">
-									<h3 className="create-form-h3">
+								<div className="edit-form-header">
+									<h3 className="edit-form-h3">
 										Describe your place to guests
 									</h3>
 									<div className="form-text-div">
@@ -241,34 +231,34 @@ function CreateSpotForm({ spot, formType }) {
 									</div>
 								</div>
 								<textarea name="" id="" cols="50" rows="10" placeholder="Please write at least 30 characters"
-									value={describeText}
-									onChange={(e) => setDescribeText(e.target.value)}
+									value={description}
+									onChange={(e) => setDescription(e.target.value)}
 								></textarea>
-								{"describeText" in errors && <p className="p-error">{errors.describeText}</p>}
+								{"description" in errors && <p className="p-error">{errors.description}</p>}
 							</div>
 
 							<hr />
 
-							<div className="form-title">
-								<div className="create-form-header">
-									<h3 className="create-form-h3">Create a title for your spot</h3>
+							<div className="form-name">
+								<div className="edit-form-header">
+									<h3 className="edit-form-h3">Create a name for your spot</h3>
 									<div className="form-text-div">
-										Catch guests&apos; attention with a spot title that highlights what makes
+										Catch guests&apos; attention with a spot name that highlights what makes
 										your place special.
 									</div>
 								</div>
-								<input type="text" name="title" id="title" placeholder="Name of your spot"
-									value={title}
-									onChange={(e) => setTitle(e.target.value)}
+								<input type="text" name="name" id="name" placeholder="Name of your spot"
+									value={name}
+									onChange={(e) => setName(e.target.value)}
 								/>
-								{"title" in errors && <p className="p-error">{errors.title}</p>}
+								{"name" in errors && <p className="p-error">{errors.name}</p>}
 							</div>
 
 							<hr />
 
 							<div className="form-price">
-								<div className="create-form-header">
-									<h3 className="create-form-h3">Set a base price for your spot</h3>
+								<div className="edit-form-header">
+									<h3 className="edit-form-h3">Set a base price for your spot</h3>
 									<div className="form-text-div">
 										Competitive pricing can help your listing stand out and rank higher
 										in search results.
@@ -288,7 +278,7 @@ function CreateSpotForm({ spot, formType }) {
 							<hr />
 
 							<div className="spot-pics">
-								<div className="create-form-header">
+								<div className="edit-form-header">
 									<h3>Liven up your spot with photos</h3>
 									<p>Submit a link to at least one photo to publish your spot.</p>
 								</div>
@@ -322,11 +312,10 @@ function CreateSpotForm({ spot, formType }) {
 						</div>
 						<button
 							type="submit"
-							className="spot-create-form-btn"
+							className="spot-edit-form-btn"
 							disabled={Object.values(errors).length > 0}
 						>
 							Create Spot
-							{/* {formType} */}
 						</button>
 
 					</form>
@@ -338,4 +327,4 @@ function CreateSpotForm({ spot, formType }) {
 }
 
 
-export default CreateSpotForm;
+export default EditSpotForm;
