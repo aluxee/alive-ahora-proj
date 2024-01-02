@@ -19,7 +19,7 @@ export const loadAllReviews = (reviews) => ({
 
 export const createReview = (review) => {
 
-console.log("%c 🚀 ~ file: review.js:22 ~ createReview ~ review: ", "color: pink; font-size: 30px", review)
+	// console.log("%c 🚀 ~ file: review.js:22 ~ createReview ~ review: ", "color: pink; font-size: 30px", review)
 
 	return {
 		type: CREATE_REVIEW,
@@ -48,7 +48,7 @@ export const removeReview = (reviewId) => {
 // * load reviews
 export const thunkLoadAllReviews = (spotId) => async dispatch => {
 
-	console.log("%c 🚀 ~ file: review.js:81 ~ thunkLoadAllReviews ~ spotId: ", "color: green; font-size: 25px", spotId)
+	// console.log("%c 🚀 ~ file: review.js:81 ~ thunkLoadAllReviews ~ spotId: ", "color: green; font-size: 25px", spotId)
 
 	const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
 
@@ -68,14 +68,14 @@ export const thunkLoadAllReviews = (spotId) => async dispatch => {
 // * create review
 export const thunkCreateReview = (spotId, user, review) => async dispatch => {
 
-	console.log("%c 🚀 ~ file: review.js:69 ~ thunkCreateReview ~ user: ", "color: cyan; font-size: 25px", user)
+	// console.log("%c 🚀 ~ file: review.js:69 ~ thunkCreateReview ~ user: ", "color: cyan; font-size: 25px", user)
 
-	console.log("%c 🚀 ~ file: review.js:69 ~ thunkCreateReview ~ review: ", "color: cyan; font-size: 25px", review)
+	// console.log("%c 🚀 ~ file: review.js:69 ~ thunkCreateReview ~ review: ", "color: cyan; font-size: 25px", review)
 
-	console.log("%c 🚀 ~ file: review.js:69 ~ thunkCreateReview ~ spotId: ", "color: cyan; font-size: 30px", spotId)
+	// console.log("%c 🚀 ~ file: review.js:69 ~ thunkCreateReview ~ spotId: ", "color: cyan; font-size: 30px", spotId)
 	const idSpot = parseInt(spotId);
 
-	console.log("%c 🚀 ~ file: review.js:75 ~ thunkCreateReview ~ idSpot: ", "color: red; font-size: 25px", idSpot, "spotId: ", spotId)
+	// console.log("%c 🚀 ~ file: review.js:75 ~ thunkCreateReview ~ idSpot: ", "color: red; font-size: 25px", idSpot, "spotId: ", spotId)
 
 
 	const response = await csrfFetch(`/api/spots/${idSpot}/reviews`, {
@@ -86,12 +86,12 @@ export const thunkCreateReview = (spotId, user, review) => async dispatch => {
 		body: JSON.stringify(review)
 	})
 
-	console.log("%c 🚀 ~ file: review.js:79 ~ thunkCreateReview ~ response: ", "color: cyan; font-size: 25px", response)
+	// console.log("%c 🚀 ~ file: review.js:79 ~ thunkCreateReview ~ response: ", "color: cyan; font-size: 25px", response)
 
 	if (response.ok) {
 		const review = await response.json();
 
-		console.log("%c 🚀 ~ file: review.js:90 ~ thunkCreateReview ~ review: ", "color: orange; font-size: 25px", review)
+		// console.log("%c 🚀 ~ file: review.js:90 ~ thunkCreateReview ~ review: ", "color: orange; font-size: 25px", review)
 
 		review.User = {
 			id: user.id,
@@ -112,6 +112,21 @@ export const thunkCreateReview = (spotId, user, review) => async dispatch => {
 
 // * delete review
 
+export const thunkRemoveReview = (review) => async dispatch => {
+
+	const response = await csrfFetch(`/api/reviews/${review.id}`, {
+		method: 'DELETE',
+		headers: {
+			"Content-Type": "application/json"
+		}
+	})
+
+	if (response.ok) {
+		dispatch(removeReview(review.id))
+		return review.id
+	}
+
+}
 //  __________________________________________reducer____________________________________________________
 const initialState = {}
 const reviewsReducer = (state = initialState, action) => {
@@ -123,26 +138,36 @@ const reviewsReducer = (state = initialState, action) => {
 			// const allReviews = {state} // best to not bring this back
 			const allReviews = {};
 
-			console.log("%c 🚀 ~ file: review.js:125 ~ reviewsReducer ~ allReviews: ", "color: magenta; font-size: 30px", "BEFORE", allReviews)
+			// console.log("%c 🚀 ~ file: review.js:125 ~ reviewsReducer ~ allReviews: ", "color: magenta; font-size: 30px", "BEFORE", allReviews)
 			// action.reviews.Reviews.forEach(review => {
 			// 	let loadedReviewState = { ...review }
 			// 	allReviews[review.id] = loadedReviewState;
 
 			// })
-			for (let review of action.reviews.Reviews){
+			for (let review of action.reviews.Reviews) {
 				allReviews[review.id] = review
 			}
-			console.log("%c 🚀 ~ file: review.js:130 ~ reviewsReducer ~ allReviews: ", "color: magenta; font-size: 25px", "AFTER", allReviews);
+			// console.log("%c 🚀 ~ file: review.js:130 ~ reviewsReducer ~ allReviews: ", "color: magenta; font-size: 25px", "AFTER", allReviews);
 
 
-			return {...allReviews};
+			return { ...allReviews };
 
 		}
 		case CREATE_REVIEW: {
 
-			const reviewState = {...state.spot, [action.review.id]: action.review}
+			const reviewState = { ...state.spot, [action.review.id]: action.review }
 			// return {...state, ...reviewState}
 			return reviewState
+		}
+
+		case DELETE_REVIEW: {
+			const reviewState = { ...state}
+
+			// console.log("%c 🚀 ~ file: review.js:166 ~ reviewsReducer ~ reviewState: ", "color: red; font-size: 35px", reviewState)
+
+			delete reviewState[action.reviewId]
+			return reviewState
+
 		}
 		default:
 			return state;

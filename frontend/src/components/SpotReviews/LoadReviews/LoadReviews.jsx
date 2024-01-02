@@ -6,28 +6,29 @@ import OpenModalMenuItem from "../../Navigation/OpenModalMenuItem";
 
 import CreateReview from "../CreateReview/CreateReview";
 import './LoadReviews.css';
+import DeleteReview from "../RemoveReview/RemoveReview";
 
 function LoadReviews({ ownerId }) {
 
 	const dispatch = useDispatch();
 	const { spotId } = useParams();
-	const [showCreateReview, setShowCreateReview] = useState(false)
-	console.log("%c STATE FOR LOAD REVIEWS: ", "color: orange; font-size: 30px", useSelector(state => state))
-	console.log("%c 🚀 ~ file: LoadReviews.jsx:9 ~ LoadReviews ~ dispatch: ", "color: red; font-size: 25px", dispatch)
+	const [showCreateReview, setShowCreateReview] = useState(false);
+	// console.log("%c STATE FOR LOAD REVIEWS: ", "color: orange; font-size: 30px", useSelector(state => state))
+	// console.log("%c 🚀 ~ file: LoadReviews.jsx:9 ~ LoadReviews ~ dispatch: ", "color: red; font-size: 25px", dispatch)
 	const recurredUserId = useSelector(state => state.session.user?.id);
 
 	// console.log("%c 🚀 ~ file: LoadReviews.jsx:12 ~ LoadReviews ~ user: ", "color: red; font-size: 25px", user)
 
 	const reviewsObj = useSelector(state => state.reviews)
-	console.log("%c 🚀 ~ file: LoadReviews.jsx:16 ~ LoadReviews ~ reviewsObj: ", "color: blue; font-size: 25px", reviewsObj)
+	// console.log("%c 🚀 ~ file: LoadReviews.jsx:16 ~ LoadReviews ~ reviewsObj: ", "color: blue; font-size: 25px", reviewsObj)
 
 
 	const reviews = Object.values(reviewsObj);
-	console.log("%c 🚀 ~ file: LoadReviews.jsx:25 ~ LoadReviews ~ reviews: ", "color: blue; font-size: 25px", reviews)
+	// console.log("%c 🚀 ~ file: LoadReviews.jsx:25 ~ LoadReviews ~ reviews: ", "color: blue; font-size: 25px", reviews)
 
 
 	const currReview = reviews.find(review => review.userId === recurredUserId);
-	console.log("%c 🚀 ~ file: LoadReviews.jsx:32 ~ LoadReviews ~ currReview: ", "color: cyan; font-size: 25px", currReview)
+	// console.log("%c 🚀 ~ file: LoadReviews.jsx:32 ~ LoadReviews ~ currReview: ", "color: cyan; font-size: 25px", currReview)
 
 
 
@@ -39,6 +40,11 @@ function LoadReviews({ ownerId }) {
 
 
 	if (!reviews) return null;
+
+
+
+
+
 
 	function orderSorts(a, b) {
 		return b.id - a.id
@@ -66,24 +72,25 @@ function LoadReviews({ ownerId }) {
 				<div className="reviews-inner-container">
 					<div className="loaded-reviews" key={spotId} >
 
-						<button className="post-review-button" id="review-button-loaded" >
-							{(
+						{(
 
-								currReview === undefined &&
-								ownerId !== recurredUserId
-								&& recurredUserId !== undefined
-							) ?
+							currReview === undefined &&
+							ownerId !== recurredUserId
+							&& recurredUserId !== undefined
+						) ?
+							<button className={'review-button'} id="review-button-loaded" >
 
 								<OpenModalMenuItem
 									itemText='Post Your Review'
-									className='direct-post-button'
+									className='direct-post-review-button'
 									style={{ width: "max-content" }}
 									onItemClick={closeMenu}
 									modalComponent={<CreateReview spotId={spotId} reviews={reviews} />}
 								/>
-								: null
-							}
-						</button>
+							</button>
+							:
+							null
+						}
 
 
 						{reviews.sort(orderSorts).map(currReview => (
@@ -101,6 +108,18 @@ function LoadReviews({ ownerId }) {
 								<div id="review-commentary">
 									{currReview.review}
 								</div>
+								{
+									currReview.userId === recurredUserId ?
+									<button className="curr-review-delete">
+											<OpenModalMenuItem
+												itemText='Delete'
+												className='direct-delete-review-button'
+												style={{ width: "max-content" }}
+												onItemClick={closeMenu}
+												modalComponent={<DeleteReview review={currReview} />}
+											/>
+									</button> : null
+								}
 							</div>
 						))
 						}

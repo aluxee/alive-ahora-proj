@@ -3,7 +3,6 @@ import {
 	useState, useRef,
 	useEffect
 } from "react";
-// import { useNavigate } from "react-router-dom";
 import { thunkLoadCurrentSpots, thunkRemoveSpot } from "../../../store/spot";
 import { useModal } from "../../../context/Modal";
 import './RemoveSpot.css';
@@ -21,9 +20,9 @@ function RemoveSpot({ spot }) {
 	const [showDeleteMenu, setShowDeleteMenu] = useState(false);
 	const [currState, setCurrState] = useState([spots]);
 
-	console.log("%c 🚀 ~ file: RemoveSpot.jsx:24 ~ RemoveSpot ~ currState: ", "color: red; font-size: 25px", currState)
+	// console.log("%c 🚀 ~ file: RemoveSpot.jsx:24 ~ RemoveSpot ~ currState: ", "color: red; font-size: 25px", currState)
 
-	console.log("🚀 %c ~ file: RemoveSpot.jsx:13 ~ spot: (recently added as a prop to removeSpots instead of extraction from useSelector)", "color: orange; font-size: 32px", spot);
+	// console.log("🚀 %c ~ file: RemoveSpot.jsx:13 ~ spot: (recently added as a prop to removeSpots instead of extraction from useSelector)", "color: orange; font-size: 32px", spot);
 
 
 
@@ -37,18 +36,18 @@ function RemoveSpot({ spot }) {
 
 
 	const handleDelete = async (spotId) => {
-		//*problem handling, at first page was not refreshing after deletion action: solution -- passed in spotId to target spot to handle, use optimistic handling by dispatching thunkRemoval followed by updating the state (state was set to selector of spots originally), this allowed update of page after deletion! -- special note: Again, the optimistic update pattern. Fire API + setState immediately... revert back if things go wrong.
-		console.log("%c 🚀 ~ file: RemoveSpot.jsx:42 ~ handleDelete ~ spotId: ", "color: blue; font-size: 25px", spotId)
+		
+		// console.log("%c 🚀 ~ file: RemoveSpot.jsx:42 ~ handleDelete ~ spotId: ", "color: blue; font-size: 25px", spotId)
 
 
-		console.log("inside Handle delete prior to the 'return' of the dispatch", currState)
+		// console.log("inside Handle delete prior to the 'return' of the dispatch", currState)
 
 
 		dispatch(thunkRemoveSpot(spot))
 		const remainingSpots = spots.filter(spot => spot.id !== spotId)
 		setCurrState(remainingSpots)
 
-		console.log("after dispatch: ", currState)
+		// console.log("after dispatch: ", currState)
 
 		closeModal()
 

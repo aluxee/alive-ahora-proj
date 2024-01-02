@@ -18,7 +18,7 @@ export const loadSpots = (spots) => ({
 });
 
 export const loadCurrentSpots = (spots) => {
-	console.log("🚀 ~ file: spot.js:21 ~ loadCurrentSpots ~ spots:", spots)
+	// console.log("🚀 ~ file: spot.js:21 ~ loadCurrentSpots ~ spots:", spots)
 	return {
 
 		type: LOAD_CURRENT_SPOTS,
@@ -39,7 +39,7 @@ export const receiveSpot = (spotData) => ({
 });
 
 export const addSpotImage = (image, spotId) => {
-	console.log("Inside addSpotImage action creator: ", image);
+	// console.log("Inside addSpotImage action creator: ", image);
 	return {
 		type: ADD_IMAGE,
 		image,
@@ -131,7 +131,7 @@ export const thunkLoadCurrentSpots = () => async dispatch => {
 
 	if (response.ok) {
 		const spotsCurrentData = await response.json();
-		console.log("🚀 ~ file: spot.js:131 ~ thunkLoadCurrentSpots ~ spotsCurrentData:", spotsCurrentData)
+		// console.log("🚀 ~ file: spot.js:131 ~ thunkLoadCurrentSpots ~ spotsCurrentData:", spotsCurrentData)
 		dispatch(loadCurrentSpots(spotsCurrentData))
 		return spotsCurrentData;
 
@@ -165,8 +165,8 @@ export const thunkReceiveSpot = (spotId) => async (dispatch) => {
 
 //* create / post a spot
 export const thunkCreateSpot = (spotData, images) => async (dispatch) => {
-	console.log("🚀 %c ~ file: spot.js:178 ~ thunkCreateSpot ~ images:", "color: yellow; font-size: 32px", images)
-	console.log("🚀 %c ~ file: spot.js:178 ~ thunkCreateSpot ~ spotData:", "color: yellow; font-size: 32px", spotData)
+	// console.log("🚀 %c ~ file: spot.js:178 ~ thunkCreateSpot ~ images:", "color: yellow; font-size: 32px", images)
+	// console.log("🚀 %c ~ file: spot.js:178 ~ thunkCreateSpot ~ spotData:", "color: yellow; font-size: 32px", spotData)
 
 	const response = await csrfFetch('/api/spots', {
 		method: 'POST',
@@ -181,7 +181,7 @@ export const thunkCreateSpot = (spotData, images) => async (dispatch) => {
 
 		const spot = await response.json();
 
-		console.log(" %c this response is rendering in thunkCreateSpot; here's the spot: ", "color: white; font-size: 32px", spot);
+		// console.log(" %c this response is rendering in thunkCreateSpot; here's the spot: ", "color: white; font-size: 32px", spot);
 
 		// dispatch the images with it's given data, use param of spotData's images key (used SpotImages, may need to be Images?), which is an empty array; use the id that will be made from this thunk
 		for (let image of images) {
@@ -194,10 +194,10 @@ export const thunkCreateSpot = (spotData, images) => async (dispatch) => {
 				body: JSON.stringify(image)
 
 			})
-			console.log("RESPONSE: ", response)
+			// console.log("RESPONSE: ", response)
 		}
 
-		console.log("🚀 %c~ file: spot.js:217 ~ thunkCreateSpot ~ spot: PRIOR TO RETURN", "color: white; font-size: 32px", spot)
+		// console.log("🚀 %c~ file: spot.js:217 ~ thunkCreateSpot ~ spot: PRIOR TO RETURN", "color: white; font-size: 32px", spot)
 		await dispatch(createSpot(spot))
 		return spot
 
@@ -210,11 +210,11 @@ export const thunkCreateSpot = (spotData, images) => async (dispatch) => {
 //! edit a spot
 export const thunkEditSpot = (id, spot) => async (dispatch) => {
 
-	console.log("%c 🚀 ~ file: spot.js:213 ~ thunkEditSpot ~ id: ", "color: cyan; font-size: 25px", id)
+	// console.log("%c 🚀 ~ file: spot.js:213 ~ thunkEditSpot ~ id: ", "color: cyan; font-size: 25px", id)
 
 	const spotId = Number(id);
 
-	console.log("%c 🚀 ~ file: spot.js:213 ~ thunkEditSpot ~ spot: ", "color: cyan; font-size: 25px", spot, "spotid versus spot.id", spot.id, spotId)
+	// console.log("%c 🚀 ~ file: spot.js:213 ~ thunkEditSpot ~ spot: ", "color: cyan; font-size: 25px", spot, "spotid versus spot.id", spot.id, spotId)
 
 	// see sc for mdn times and sorts
 	const response = await csrfFetch(`/api/spots/${spotId}`, {
@@ -243,9 +243,9 @@ export const thunkEditSpot = (id, spot) => async (dispatch) => {
 //* delete/remove a spot
 export const thunkRemoveSpot = (spot) => async dispatch => {
 
-	console.log("%c 🚀 ~ file: spot.js:233 ~ thunkRemoveSpot ~ spot:", "color: red; font-size: 25px", spot)
+	// console.log("%c 🚀 ~ file: spot.js:233 ~ thunkRemoveSpot ~ spot:", "color: red; font-size: 25px", spot)
 	// console.log("🚀 ~ file: spot.js:234 ~ thunkRemoveSpot ~ spotId:", id); // gives direct #; but upon submission of actually clicking the button it turns back into an object-- changing param into spot and keying in...
-	console.log("thunk remove spot: THE SPOT PARAM CHANGES", spot, spot.id); // gives direct #
+	// console.log("thunk remove spot: THE SPOT PARAM CHANGES", spot, spot.id); // gives direct #
 
 
 	const response = await csrfFetch(`/api/spots/${spot.id}`, {
@@ -256,9 +256,9 @@ export const thunkRemoveSpot = (spot) => async dispatch => {
 	});
 
 	if (response.ok) { // removed data and replaced it with id
-		console.log("Inside response.ok of spot.js line 246")
+		// console.log("Inside response.ok of spot.js line 246")
 		dispatch(removeSpot(spot.id))
-		console.log("a console.log right after the dispatch of removeSpot by spot.id in spot.js line 248")
+		// console.log("a console.log right after the dispatch of removeSpot by spot.id in spot.js line 248")
 		return spot.id
 	}
 }

@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useModal } from "../../../context/Modal";
 import { useState, useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
+
 import { thunkCreateReview, thunkLoadAllReviews } from "../../../store/review";
 import './CreateReview.css';
 import { thunkReceiveSpot } from "../../../store/spot";
@@ -9,12 +9,10 @@ import StarRatingInput from "./StarRatingInput";
 
 function CreateReview({ spotId }) {
 
-	console.log("%c 🚀 ~ file: CreateReview.jsx:8 ~ CreateReview ~ spotId: ", "color: gold; font-size: 25px", spotId); //appears upon any enter of review info or hover over stars
+	// console.log("%c 🚀 ~ file: CreateReview.jsx:8 ~ CreateReview ~ spotId: ", "color: gold; font-size: 25px", spotId); //appears upon any enter of review info or hover over stars
 
 	const dispatch = useDispatch();
-	// const navigate = useNavigate();
 	const currUser = useSelector(state => state.session.user)
-	// const currReview = useSelector(state => state.reviews)
 
 	// console.log("%c 🚀 ~ file: CreateReview.jsx:19 ~ CreateReview ~ currReview: ", "color: red; font-size: 25px", currReview)
 	const spot = useSelector(state => state.spots)
@@ -23,7 +21,7 @@ function CreateReview({ spotId }) {
 	const [stars, setStars] = useState('');
 	const [review, setReview] = useState('');
 
-	console.log("%c 🚀 ~ file: CreateReview.jsx:26 ~ CreateReview ~ review: ", "color: red; font-size: 25px", review)
+	// console.log("%c 🚀 ~ file: CreateReview.jsx:26 ~ CreateReview ~ review: ", "color: red; font-size: 25px", review)
 
 	const [errors, setErrors] = useState({});
 	const [errorMessage, setErrorMessage] = useState({});
@@ -104,10 +102,10 @@ function CreateReview({ spotId }) {
 			})
 		setReview("")
 		setStars(0)
-		closeModal()
+		// closeModal
 
 		await dispatch(thunkReceiveSpot(spotId))
-		await dispatch(thunkLoadAllReviews(spotId)); // commenting this out does not solve the issue of all the reviews stack loading upon eachother
+		await dispatch(thunkLoadAllReviews(spotId));
 		closeModal()
 		closeMenu
 	}

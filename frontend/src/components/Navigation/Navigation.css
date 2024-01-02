@@ -105,11 +105,12 @@
 
 .fa-solid {
 
-	margin: 2px;
+	margin: 3px;
 }
 
 .house-icon {
 	color: black;
+	font-size: 16px;
 }
 
 .house-icon:hover {
@@ -122,8 +123,14 @@
 
 .hr-profile {
 	width: 100%;
+	height: 0;
+	margin: 0;
 }
 
+.profile-dropdown > div {
+	display: flex;
+	
+}
 .button-profile-dropdown {
 
 	font-size: 15px;
@@ -186,6 +193,7 @@ button:hover {
 .profile-dropdown {
 	display: flex;
 	flex-direction: column;
+	flex-wrap: wrap;
 	list-style-type: none;
 	padding: 10px 0px 0px 5px;
 	margin: 2px;
@@ -208,12 +216,13 @@ button:hover {
 	font-family: serif;
 	max-width: 100%;
 	width: 100%;
+	font-size: medium;
 	border-collapse: collapse;
+	color: darkblue;
 
 
 }
 
-/* .profile-dropdown>li:first-child {} */
 
 .profile-dropdown>li:hover {
 	background-color: #f5f2f2ae;
@@ -233,19 +242,46 @@ button:hover {
 
 }
 
-/* .profile_dropdown_username {}
-
-.profile_dropdown_name {}
-
-
-.profile_dropdown_email {} */
-.profile_dropdown_manage {
-	max-height: fit-content;
+.profile_dropdown_username {
+	font-size: medium;
+	display: flex;
+	flex-wrap: wrap;
+	align-content: center;
+	align-items: center;
 }
 
-.profile_dropdown_logout {
+.profile_dropdown_name {
+	font-size: medium;
+	display: flex;
+	flex-wrap: wrap;
+	align-content: center;
+	align-items: center;
+}
 
-	max-height: fit-content;
+
+.profile_dropdown_email {
+	font-size: medium;
+	display: flex;
+	flex-wrap: wrap;
+	align-content: center;
+	align-items: center;
+}
+
+li.profile_dropdown_manage {
+	display: flex;
+	align-content: stretch;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	align-items: stretch;
+}
+
+li.profile_dropdown_logout {
+
+	display: flex;
+	align-content: stretch;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	align-items: stretch;
 }
 
 .user_session_profile {

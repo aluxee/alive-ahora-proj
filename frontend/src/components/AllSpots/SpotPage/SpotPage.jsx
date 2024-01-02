@@ -2,9 +2,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { thunkReceiveSpot, thunkLoadSpotImages } from "../../../store/spot";
-import './SpotPage.css';
 import SpotPageImages from "../SpotPageImages/SpotPageImages";
 import LoadReviews from "../../SpotReviews/LoadReviews";
+import CreateReview from "../../SpotReviews/CreateReview/CreateReview";
+import OpenModalMenuItem from "../../Navigation/OpenModalMenuItem";
+import './SpotPage.css';
 
 
 
@@ -12,16 +14,16 @@ function SpotPage() {
 
 	const dispatch = useDispatch();
 	const { spotId } = useParams();
-
+	const [showCreateReview, setShowCreateReview] = useState(false);
 	const [toSpot, setToSpot] = useState(); // useState causes re-render of your component if you call its setter with a new reference in memory.
 	const spotObj = useSelector(state => state.spots);
 	const userId = useSelector(state => state.session.user?.id)
 
-	console.log("%c 🚀 ~ file: SpotPage.jsx:20 ~ SpotPage ~ userId: ", "color: pink; font-size: 25px",  userId)
+	// console.log("%c 🚀 ~ file: SpotPage.jsx:20 ~ SpotPage ~ userId: ", "color: pink; font-size: 25px", userId)
 	const spot = spotObj[spotId];
 	// const spotReview = spot[spotId];
 
-	console.log("%c 🚀 ~ file: SpotPage.jsx:19 ~ SpotPage ~ spot: ", "color: blue; font-size: 25px", spot)
+	// console.log("%c 🚀 ~ file: SpotPage.jsx:19 ~ SpotPage ~ spot: ", "color: blue; font-size: 25px", spot)
 
 
 	useEffect(() => {
@@ -29,7 +31,7 @@ function SpotPage() {
 		dispatch(thunkReceiveSpot(spotId))
 		dispatch(thunkLoadSpotImages(spotId))
 
-	}, [dispatch, toSpot, spotId])
+	}, [dispatch, toSpot, spotId, showCreateReview])
 
 	if (Object.keys(spotObj).length === 0) {
 		return null;
@@ -38,18 +40,17 @@ function SpotPage() {
 	if (!spot || !spot.Owner) {
 		return null
 	}
-	// const handleSubmit = async (e) => {
-	// 	e.preventDefault();
-	// 	navigate(`/spots/${toSpot}`);
 
-	// }
-
+	const closeMenu = () => setShowCreateReview(false);
 
 	// console.log("🚀 %c ~ file: SpotPage.jsx:26 ~ SpotPage ~ spotObj:", "color: blue; font-size: 26px", spotObj,)
 
 	// console.log("🚀 %c ~ file: SpotPage.jsx:8 ~ SpotPage ~ SPOT:", "color: pink; font-size: 25px", spot, spot.Owner); // spots is an array of objects; spot is an object
+
+
 	const ownerObj = spot.Owner;
-	console.log("🚀 ~ file: SpotPage.jsx:26 ~ SpotPage ~ ownerObj:", ownerObj, ownerObj.firstName)
+
+	// console.log("🚀 ~ file: SpotPage.jsx:26 ~ SpotPage ~ ownerObj:", ownerObj, ownerObj.firstName)
 
 	return (
 		<>
@@ -110,13 +111,26 @@ function SpotPage() {
 											<div className="no-reviews_comment">
 												{
 													spot.ownerId !== userId ?
-													<div>
+														<div>
 
-													<button className="post-review-button">Post Your Review</button>
-													Be the first to post a review!
-													</div>
-													:
-													null
+															<button className={'review-button'} id="review-button-loaded" >
+
+																<OpenModalMenuItem
+																	itemText='Post Your Review'
+																	className='direct-post-review-button'
+																	style={{ width: "max-content" }}
+																	onItemClick={closeMenu}
+																	modalComponent={
+																	<CreateReview
+																	spotId={spotId}
+
+																	/>}
+																/>
+															</button>
+															Be the first to post a review!
+														</div>
+														:
+														null
 												}
 											</div>
 										</div>
@@ -131,7 +145,6 @@ function SpotPage() {
 												</h2>
 											</div>
 											<div className="reviews_section">
-												{/* <button className="post-review-button">Post Your Review</button> */}
 												<LoadReviews avgRating={spot.avgRating} numReviews={spot.numReviews} ownerId={spot.ownerId} reviews={spot.reviews} />
 											</div>
 										</div>
