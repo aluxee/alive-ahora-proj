@@ -41,6 +41,7 @@ function ProfileButton({ user }) {
 
 		dispatch(sessionActions.logout());
 		closeMenu();
+		navigate('/')
 		alert("You have logged out.")
 	}
 
@@ -65,8 +66,8 @@ function ProfileButton({ user }) {
 				{user ? (
 					<>
 
+							<li className="profile_dropdown_name" style={{fontFamily: "cursive"}}>Hello, {user.firstName}! </li>
 							<li className="profile_dropdown_username">{user.username}</li>
-							<li className="profile_dropdown_name">{user.firstName}{user.lastName}</li>
 							<li className="profile_dropdown_email">{user.email}</li>
 							<hr className="hr-profile" />
 							<li className="profile_dropdown_manage">

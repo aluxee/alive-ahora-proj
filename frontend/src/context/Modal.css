@@ -23,7 +23,8 @@
 	background-color: white;
 	border-radius: 2rem;
 	z-index: 3;
-	top: 7rem;
+	top: 2rem;
 	padding: 15px;
-	width: 50%;
+	width: 45%;
+	height: min-content;
 }
