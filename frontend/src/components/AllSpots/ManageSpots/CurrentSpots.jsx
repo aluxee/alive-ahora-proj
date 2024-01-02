@@ -19,13 +19,13 @@ function CurrentSpots() {
 	const [showDeleteMenu, setShowDeleteMenu] = useState(false);
 	const ulRef = useRef();
 
-	console.log("🚀 ~ file: CurrentSpots.jsx:14 ~ CurrentSpots ~ spotObj:", spotObj);
-	console.log("🚀 ~ file: CurrentSpots.jsx:14 ~ CurrentSpots ~ user:", user);
+	// console.log("🚀 ~ file: CurrentSpots.jsx:14 ~ CurrentSpots ~ spotObj:", spotObj);
+	// console.log("🚀 ~ file: CurrentSpots.jsx:14 ~ CurrentSpots ~ user:", user);
 
 
 
 	const spots = Object.values(spotObj).filter(spot => spot.ownerId === user.id);
-	console.log("%c spot (before):", "font-size: 25px; color: red", spots);
+	// console.log("%c spot (before):", "font-size: 25px; color: red", spots);
 
 
 
@@ -36,7 +36,7 @@ function CurrentSpots() {
 
 
 	useEffect(() => {
-		console.log("%c Are we reaching our dispatch in our useEffect of currentSpots?", "color: yellow; font-size: 30px")
+		// console.log("%c Are we reaching our dispatch in our useEffect of currentSpots?", "color: yellow; font-size: 30px")
 
 		dispatch(spotActions.thunkLoadCurrentSpots())
 

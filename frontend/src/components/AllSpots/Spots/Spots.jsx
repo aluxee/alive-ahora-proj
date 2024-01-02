@@ -33,7 +33,14 @@ function Spots() {
 								<span id="spot-state-city">{spot.state}, {spot.city}</span>
 								<span id="spot-rating">
 									<i className="fa-solid fa-star"></i>
-									{spot.avgRating}
+									{
+										spot.avgRating ?
+											<>
+												{parseFloat(spot.avgRating).toFixed(1)}
+											</> :
+											<>New!
+											</>
+									}
 								</span>
 							</div>
 							<div className="spot-price">

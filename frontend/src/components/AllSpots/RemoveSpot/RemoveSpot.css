@@ -1,28 +1,62 @@
+.outer-delete-container {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+}
+
+.inner-delete-container {
+	display: flex;
+	flex-wrap: wrap;
+	align-content: center;
+	justify-content: center;
+	align-items: center;
+
+}
+
+
 .delete-spot_container {
 	display: flex;
 	align-items: stretch;
-	flex-wrap: wrap;
-	height: 250px;
+	/* height: 250px; */
 	padding: 5px;
-	width: max-content;
-	flex-direction: column;
+	width: 80%;
 	margin: 10px;
+	flex-wrap: wrap;
+	justify-content: center;
+	/* flex-direction: row; */
+
 }
 
 .delete-spot-options {
 	display: flex;
-	width: 500px;
-	align-content: stretch;
 	flex-direction: column;
 	flex-wrap: wrap;
+	width: 100%;
+	align-content: center;
+}
+
+#delete-spot_confirm {
+
+	display: flex;
+	/* flex-wrap: wrap; */
+	/* margin: 10px; */
+	/* height: fit-content; */
+	/* width: 50%; */
+	align-content: flex-start;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
 }
 
 .delete-spot-button {
 	display: flex;
 	color: white;
-	padding: 5px;
-	margin: 15px;
+	padding: 15px;
+	margin: 15px 10px;
 	/* box-shadow: 7px 3px 4px 3px #869dc9; */
 	background-color: #1c30e7d0;
 	border: 2px solid #eeeef4;
+	flex-wrap: wrap;
+	width: 100%;
 }

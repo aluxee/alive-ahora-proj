@@ -17,17 +17,17 @@ function EditSpotForm({ formType }) {
 	const dispatch = useDispatch();
 	const { spotId } = useParams();
 
-	console.log("%c 🚀 ~ file: EditSpotForm.jsx:17 ~ EditSpotForm ~ spotId: ", "color: yellow; font-size: 25px", spotId)
+	// console.log("%c 🚀 ~ file: EditSpotForm.jsx:17 ~ EditSpotForm ~ spotId: ", "color: yellow; font-size: 25px", spotId)
 
 	// console.log("%c 🚀 ~ file: EditSpotForm.jsx:20 ~ EditSpotForm ~ id: ", "color: yellow; font-size: 25px", id)
 	const spot = useSelector(state => state.spots[spotId]); //ensure for testing spot is good in form front and check to see that spots appears before giving an id; cannot appropriately load all spots without first coming from currentSpots
-	console.log("%c 🚀 ~ file: EditSpotForm.jsx:21 ~ EditSpotForm ~ spot:(only off currentSpots route to update button) ", "color: orange; font-size: 25px", spot)
+	// console.log("%c 🚀 ~ file: EditSpotForm.jsx:21 ~ EditSpotForm ~ spot:(only off currentSpots route to update button) ", "color: orange; font-size: 25px", spot)
 
 
 	// console.log("%c 🚀 ~ file: EditSpotForm.jsx:20 ~ EditSpotForm ~ spotId: ", "color: red; font-size: 25px", spotId)
 	const prevSpot = spot;
 
-	console.log("%c 🚀 ~ file: EditSpotForm.jsx:19 ~ EditSpotForm ~ prevSpot: ", "color: red; font-size: 25px", prevSpot);
+	// console.log("%c 🚀 ~ file: EditSpotForm.jsx:19 ~ EditSpotForm ~ prevSpot: ", "color: red; font-size: 25px", prevSpot);
 
 	const [country, setCountry] = useState('');
 	const [address, setAddress] = useState('');
@@ -36,7 +36,7 @@ function EditSpotForm({ formType }) {
 	const [description, setDescription] = useState('');
 
 
-	console.log("%c 🚀 ~ file: EditSpotForm.jsx:39 ~ EditSpotForm ~ description: ", "color: red; font-size: 25px", description)
+	// console.log("%c 🚀 ~ file: EditSpotForm.jsx:39 ~ EditSpotForm ~ description: ", "color: red; font-size: 25px", description)
 	const [name, setName] = useState('');
 	const [price, setPrice] = useState('');
 	const [prevMainImage, setPrevMainImage] = useState('');
@@ -97,13 +97,13 @@ function EditSpotForm({ formType }) {
 			setName(prevSpot.name);
 			setPrice(prevSpot.price);
 
-			console.log("inside of the EDITS: prevSpot =====>", prevSpot, "this is prior to the edits to the images and their url");
+			// console.log("inside of the EDITS: prevSpot =====>", prevSpot, "this is prior to the edits to the images and their url");
 			let mainImage = prevSpot.SpotImages.find(img => img.preview === true);
 
-			console.log("%c 🚀 ~ file: EditSpotForm.jsx:98 ~ useEffect ~ mainImage: ", "color: red; font-size: 25px", mainImage)
+			// console.log("%c 🚀 ~ file: EditSpotForm.jsx:98 ~ useEffect ~ mainImage: ", "color: red; font-size: 25px", mainImage)
 			let otherImages = prevSpot.SpotImages.filter(img => img.preview === false);
 
-			console.log("%c 🚀 ~ file: EditSpotForm.jsx:101 ~ useEffect ~ otherImages: ", "color: red; font-size: 25px", otherImages)
+			// console.log("%c 🚀 ~ file: EditSpotForm.jsx:101 ~ useEffect ~ otherImages: ", "color: red; font-size: 25px", otherImages)
 
 
 			setPrevMainImage(mainImage ? mainImage.url : "");
@@ -122,19 +122,19 @@ function EditSpotForm({ formType }) {
 		if (formType === 'Edit Spot') {
 			const updatedSpot = {
 
-					country, address, city, state,
-					lat: 0,
-					lng: 0,
-					name: name,
-					price,
-					description: description,
+				country, address, city, state,
+				lat: 0,
+				lng: 0,
+				name: name,
+				price,
+				description: description,
 
 			}
 
 			console.log("🚀 ~ file: EditSpotForm.jsx:141 ~ handleSubmit ~ SPOT INSIDE editSpotForm:", spot)
 
 			const submissionResults = await dispatch(thunkEditSpot(spotId, updatedSpot));
-			console.log("%c 🚀 ~ file: EditSpotForm.jsx:141 ~ handleSubmit ~ submissionResults: ", "color: green; font-size: 25px",  submissionResults)
+			// console.log("%c 🚀 ~ file: EditSpotForm.jsx:141 ~ handleSubmit ~ submissionResults: ", "color: green; font-size: 25px", submissionResults)
 
 			if (!submissionResults.errors && submissionResults) {
 				// console.log("SUBMISSION ID: ", submissionResults.id)
@@ -145,6 +145,15 @@ function EditSpotForm({ formType }) {
 
 		}
 	}
+
+
+	let stylishComma;
+	if (errors.city || errors.state) {
+		stylishComma = 'center'
+	} else {
+		stylishComma = 'end'
+	}
+
 
 	if (!prevSpot || !Object.values(prevSpot).length) return null;
 
@@ -202,7 +211,8 @@ function EditSpotForm({ formType }) {
 											required />
 										{"city" in errors && <p className="p-error">{errors.city}</p>}
 									</div>
-									<span id="comma">,</span>
+
+									<span id="comma" style={{ alignSelf: stylishComma }}>,</span>
 
 									<div className="form-city-state-container" id="state-container">
 										<label htmlFor="state">

@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { useModal } from "../../../context/Modal";
 import { thunkRemoveReview } from "../../../store/review";
-
+import './RemoveReview.css';
 
 function RemoveReview({ review }) {
 
