@@ -34,9 +34,15 @@ function Navigation({ isLoaded }) {
 					{/* <i className="fa-solid fa-magnifying-glass"></i> */}
 				</section>
 			</div>
-			<Link to={`/spots/new`} className='nav_create-spot'>
-				Create a New Spot
-			</Link>
+			<div>
+				{
+					sessionUser ?
+					<Link to={`/spots/new`} className='nav_create-spot'>
+						Create a New Spot
+					</Link> : null
+				}
+
+			</div>
 			<div className='nav_options' style={{ fontSize: 15 }}>
 				<div className='content_nav_options'>
 					<li className='nav_list' id='nav_house'>
