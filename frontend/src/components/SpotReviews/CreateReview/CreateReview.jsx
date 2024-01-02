@@ -133,7 +133,7 @@ function CreateReview({ spotId }) {
 								onChange={(e) => setReview(e.target.value)}
 
 							></textarea>
-							{"review" in errors && <p className="p-errors">{
+							{"review" in errors && <p className="p-error">{
 								errorMessage.review
 								// errors.review
 							}
@@ -143,7 +143,7 @@ function CreateReview({ spotId }) {
 						<div id="star-ratings-reviews">
 							<StarRatingInput stars={stars} onChange={onChange} />
 						</div>
-						{"stars" in errors && <p className="p-errors">{errors.stars}</p>}
+						{"stars" in errors && <p className="p-error">{errors.stars}</p>}
 						<button className="user-spot-review-submit" disabled={allow}>Submit Your Review</button>
 					</form>
 

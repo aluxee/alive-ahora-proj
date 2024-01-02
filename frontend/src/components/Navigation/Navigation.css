@@ -24,7 +24,7 @@
 	align-items: center;
 	justify-content: center;
 	position: absolute;
-	bottom: 0.5rem;
+	bottom: -0.5rem;
 }
 
 /* ____________________________________________________________________________ */
@@ -129,7 +129,7 @@
 
 .profile-dropdown > div {
 	display: flex;
-	
+
 }
 .button-profile-dropdown {
 
@@ -175,6 +175,7 @@ button:hover {
 
 .nav_create-spot {
 	position: absolute;
+	z-index: 1;
 	right: 15rem;
 	top: 1.5rem;
 	text-decoration: none;

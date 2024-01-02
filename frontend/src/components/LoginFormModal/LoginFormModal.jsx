@@ -46,7 +46,7 @@ function LoginFormModal() {
 				<form onSubmit={handleSubmit} className='loginForm'>
 					<div className='login'>
 
-						{errors.message && <p className='p-errors'>{errors.message}</p>}
+						{errors.message && <p className='p-error'>{errors.message}</p>}
 						<label className='box_login' id='login_one'>
 							<input
 								placeholder='Username or Email'
@@ -68,7 +68,7 @@ function LoginFormModal() {
 								required
 							/>
 						</label>
-						{errors.credential && <p className='p-errors'>{errors.credential}</p>}
+						{errors.credential && <p className='p-error'>{errors.credential}</p>}
 					</div>
 					<button
 						type="submit"

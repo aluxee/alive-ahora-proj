@@ -54,7 +54,7 @@ function CreateSpotForm({ spot, formType }) {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 
-		console.log("SPOT!!!", spot);
+		// console.log("SPOT!!!", spot);
 
 
 		if (formType === 'Create Spot') {
@@ -97,9 +97,9 @@ function CreateSpotForm({ spot, formType }) {
 			}
 
 			const submissionResults = await dispatch(thunkCreateSpot(spot, images));
-			console.log("🚀 ~ file: CreateSpotForm.jsx:141 ~ handleSubmit ~ images INSIDE createSpotForm:", images)
+			// console.log("🚀 ~ file: CreateSpotForm.jsx:141 ~ handleSubmit ~ images INSIDE createSpotForm:", images)
 
-			console.log("🚀 ~ file: CreateSpotForm.jsx:141 ~ handleSubmit ~ submissionResults:", submissionResults)
+			// console.log("🚀 ~ file: CreateSpotForm.jsx:141 ~ handleSubmit ~ submissionResults:", submissionResults)
 
 			if (!submissionResults.errors) {
 				console.log("SUBMISSION ID: ", submissionResults.id)
@@ -110,7 +110,12 @@ function CreateSpotForm({ spot, formType }) {
 
 		}
 	}
-
+	let stylishComma;
+	if (errors.city || errors.state) {
+		stylishComma = 'center'
+	} else {
+		stylishComma = 'end'
+	}
 
 	return (
 		<>
@@ -165,7 +170,8 @@ function CreateSpotForm({ spot, formType }) {
 											required />
 										{"city" in errors && <p className="p-error">{errors.city}</p>}
 									</div>
-									<span id="comma">,</span>
+
+									<span id="comma" style={{ alignSelf: stylishComma }}>,</span>
 
 									<div className="form-city-state-container" id="state-container">
 										<label htmlFor="state">

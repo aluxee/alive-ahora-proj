@@ -19,7 +19,7 @@ function SpotPage() {
 	const spotObj = useSelector(state => state.spots);
 	const userId = useSelector(state => state.session.user?.id)
 
-	// console.log("%c 🚀 ~ file: SpotPage.jsx:20 ~ SpotPage ~ userId: ", "color: pink; font-size: 25px", userId)
+	console.log("%c 🚀 ~ file: SpotPage.jsx:20 ~ SpotPage ~ userId: ", "color: pink; font-size: 25px", userId)
 	const spot = spotObj[spotId];
 	// const spotReview = spot[spotId];
 
@@ -77,7 +77,7 @@ function SpotPage() {
 								<div className="price-reserve-inner">
 
 									<div id="spot-page_price">
-										<span>${spot.price} night</span>
+										<span>${spot.price} / night</span>
 										<span></span>
 									</div>
 									<div id="spot-page_ratings_container">
@@ -85,12 +85,14 @@ function SpotPage() {
 											<i className="fa-solid fa-star" style={{ color: "gold" }}></i>
 											{spot.numReviews ?
 
-												spot.avgRating + " " + '·' + " " + spot.numReviews + " " + 'reviews'
+												parseFloat(spot.avgRating).toFixed(1) + " " + '·' + " " + spot.numReviews + " " + 'Reviews'
 												: 'New'
 											}
 										</span>
 									</div>
-									<button id="spot-page_button">reserve</button>
+									<button id="spot-page_button"
+
+										onClick={() => alert("Feature coming soon!")}>reserve</button>
 								</div>
 
 							</div>
@@ -110,7 +112,7 @@ function SpotPage() {
 											</div>
 											<div className="no-reviews_comment">
 												{
-													spot.ownerId !== userId ?
+													spot.ownerId !== userId && userId ?
 														<div>
 
 															<button className={'review-button'} id="review-button-loaded" >
@@ -121,10 +123,10 @@ function SpotPage() {
 																	style={{ width: "max-content" }}
 																	onItemClick={closeMenu}
 																	modalComponent={
-																	<CreateReview
-																	spotId={spotId}
+																		<CreateReview
+																			spotId={spotId}
 
-																	/>}
+																		/>}
 																/>
 															</button>
 															Be the first to post a review!
@@ -141,7 +143,15 @@ function SpotPage() {
 											<div className="reviews_header" style={{}}>
 												<h2>
 													<i className="fa-solid fa-star" style={{ color: "gold" }}></i>
-													{spot.avgRating + " " + '·' + " " + spot.numReviews + " review(s)"}
+
+													{
+														spot.numReviews === 1 ?
+															<>
+																{parseFloat(spot.avgRating).toFixed(1) + " " + '·' + " " + spot.numReviews + " Review"}
+															</> : <>
+																{parseFloat(spot.avgRating).toFixed(1) + " " + '·' + " " + spot.numReviews + " Reviews"}
+															</>
+													}
 												</h2>
 											</div>
 											<div className="reviews_section">

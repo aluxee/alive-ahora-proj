@@ -69,21 +69,25 @@ function RemoveSpot({ spot }) {
 
 	return (
 		<>
+			<div className="outer-delete-container">
+				<div className="inner-delete-container">
 
-			<div className="delete-spot_container">
+					<div className="delete-spot_container">
 
-				<h1> Confirm Delete</h1>
-				<h3>Are you sure you want to remove this spot
-					from the listings?</h3>
-				<form id="delete-spot_confirm" onClick={toggleMenu}>
+						<h1> Confirm Delete</h1>
+						<h3>Are you sure you want to remove this spot
+							from the listings?</h3>
+						<form id="delete-spot_confirm" onClick={toggleMenu}>
 
-					<div ref={ulRef} className="delete-spot-options">
-						<button onClick={handleDelete} className="delete-spot-button" id="delete-spot-yes">Yes (Delete Spot)</button>
-						<button className="delete-spot-button" id="delete-spot-no" onClick={noDelete}>No (Keep Spot)</button>
+							<div ref={ulRef} className="delete-spot-options">
+								<button onClick={handleDelete} className="delete-spot-button" id="delete-spot-yes">Yes (Delete Spot)</button>
+								<button className="delete-spot-button" id="delete-spot-no" onClick={noDelete}>No (Keep Spot)</button>
+							</div>
+						</form>
 					</div>
-				</form>
-			</div>
 
+				</div>
+			</div>
 		</>
 
 

@@ -30,9 +30,7 @@
 
 
 }
-.p-errors {
-	color: red;
-}
+
 ul.star-reviews-list {
 	display: flex;
 	flex-direction: row-reverse;

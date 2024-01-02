@@ -74,8 +74,10 @@ li {
 
 /* ____________________________________________________________________________ */
 /* errors */
-.p-errors {
+.p-error {
 	color: red;
+	font-size: 12px;
+	width: max-content;
 	margin: 0 auto;
 }
 

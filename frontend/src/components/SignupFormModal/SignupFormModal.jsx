@@ -77,7 +77,7 @@ function SignupFormModal() {
 									required
 								/>
 							</label>
-							{errors.username && <p className='p-errors'>{errors.username}</p>}
+							{errors.username && <p className='p-error'>{errors.username}</p>}
 
 							<label className='signup_email'>
 								Email
@@ -89,7 +89,7 @@ function SignupFormModal() {
 									required
 								/>
 							</label>
-							{errors.email && <p className='p-errors'>{errors.email}</p>}
+							{errors.email && <p className='p-error'>{errors.email}</p>}
 
 							<label className='signup_firstName'>
 								First Name
@@ -101,7 +101,7 @@ function SignupFormModal() {
 									required
 								/>
 							</label>
-							{errors.firstName && <p className='p-errors'>{errors.firstName}</p>}
+							{errors.firstName && <p className='p-error'>{errors.firstName}</p>}
 
 							<label className='signup_lastName'>
 								Last Name
@@ -113,7 +113,7 @@ function SignupFormModal() {
 									required
 								/>
 							</label>
-							{errors.lastName && <p className='p-errors'>{errors.lastName}</p>}
+							{errors.lastName && <p className='p-error'>{errors.lastName}</p>}
 
 							<label className='signup_password'>
 								Password
@@ -125,7 +125,7 @@ function SignupFormModal() {
 									required
 								/>
 							</label>
-							{errors.password && <p className='p-errors'>{errors.password}</p>}
+							{errors.password && <p className='p-error'>{errors.password}</p>}
 
 							<label className='signup_confirmedPassword'>
 								Confirm Password
@@ -137,7 +137,7 @@ function SignupFormModal() {
 									required
 								/>
 							</label>
-							{errors.confirmedPassword && <p className='p-errors'>{errors.confirmedPassword}</p>}
+							{errors.confirmedPassword && <p className='p-error'>{errors.confirmedPassword}</p>}
 							<button
 								type='submit'
 								disabled={auth}
