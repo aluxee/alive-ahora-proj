@@ -270,7 +270,7 @@ const initialState = {}
 const spotsReducer = (state = initialState, action) => {
 
 	// spots are an object of array of objects
-	// const cpSpotId = action.id;
+
 	switch (action.type) {
 		case LOAD_SPOTS: {
 			const allSpotsState = { ...state };
