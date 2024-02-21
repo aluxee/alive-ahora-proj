@@ -108,29 +108,17 @@
 	margin: 3px;
 }
 
-.house-icon {
-	color: black;
-	font-size: 16px;
-}
-
-.house-icon:hover {
-
-	color: red;
-	border-style: none;
-
-
-}
-
 .hr-profile {
 	width: 100%;
 	height: 0;
 	margin: 0;
 }
 
-.profile-dropdown > div {
+.profile-dropdown>div {
 	display: flex;
 
 }
+
 .button-profile-dropdown {
 
 	font-size: 15px;
@@ -141,8 +129,6 @@
 	box-shadow: none;
 	margin: 17px;
 	color: black;
-
-
 }
 
 .button-profile-dropdown:hover {
@@ -161,7 +147,7 @@
 
 .no-session_signup {} */
 
-button {
+/* button {
 	padding: 2px;
 	margin: 15px;
 	border-style: none;
@@ -171,7 +157,7 @@ button {
 
 button:hover {
 	background-color: #acabab;
-}
+} */
 
 .nav_create-spot {
 	position: absolute;

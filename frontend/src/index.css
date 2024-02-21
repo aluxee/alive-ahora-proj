@@ -92,6 +92,30 @@ button {
 	border: 2px solid #eeeef4;
 }
 
+/* .onHover:hover {
+	visibility: visible;
+}
+*/
+.noVisibility {
+	visibility: hidden;
+}
+
+.caption {
+	position: absolute;
+	border: 1px solid dimgray;
+	background-color: white;
+	padding: 2px 8px;
+	top: 1.5rem;
+	color: black;
+	font-size: small;
+	font-style: italic;
+	width: min-content;
+	text-align: center;
+}
+
+
+
+
 button:hover {
 	background-color: #ff0000;
 	box-shadow: 7px 3px 4px 3px #f28585d2;
