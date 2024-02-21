@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useContext } from "react";
 import { ButtonContext } from "../../context/ButtonContext";
 import { useDispatch } from "react-redux";
@@ -13,22 +13,21 @@ import SignupFormModal from '../SignupFormModal';
 function ProfileButton({ user }) {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
-	const ulRef = useRef();
-	const [showMenu, setShowMenu] = useState(false);
+	// const ulRef = useRef();
+	// const [showMenu, setShowMenu] = useState(false);
 	const [hover, setHover] = useState(false);
+	const { showMenu, setShowMenu, closeMenu, ulRef } = useContext(ButtonContext)
+
+
 
 	const onHover = () => {
 		setHover(true)
 	};
 
-	const offHover = () => {
-		setHover(!hover)
-	}
-
 	const hovering = (e) => {
 		e.stopPropagation();
 
-		offHover();
+		setHover(!hover);
 	}
 
 	const toggleMenu = (e) => {
@@ -36,23 +35,23 @@ function ProfileButton({ user }) {
 		setShowMenu(!showMenu)
 	}
 
-	useEffect(() => {
+	// useEffect(() => {
 
-		if (!showMenu) return;
-		if (!hover) return;
+	// 	if (!showMenu) return;
+	// 	if (!hover) return;
 
-		const closeMenu = (e) => {
-			if (!ulRef.current.contains(e.target)) {
-				setShowMenu(false);
-			}
-		}
+	// 	const closeMenu = (e) => {
+	// 		if (!ulRef.current.contains(e.target)) {
+	// 			setShowMenu(false);
+	// 		}
+	// 	}
 
-		document.addEventListener('click', closeMenu);
+	// 	document.addEventListener('click', closeMenu);
 
-		return () => document.removeEventListener('click', closeMenu)
-	}, [showMenu, hover]);
+	// 	return () => document.removeEventListener('click', closeMenu)
+	// }, [showMenu, hover]);
 
-	const closeMenu = () => setShowMenu(false);
+	// const closeMenu = () => setShowMenu(false);
 
 	const logout = (e) => {
 		e.preventDefault();
@@ -70,8 +69,13 @@ function ProfileButton({ user }) {
 		navigate('/spots/current');
 		closeMenu();
 	}
+
+
+
 	const ulClassName = "profile-dropdown" + (showMenu ? "" : "hidden");
 	const hoverClassName = "caption" + (hover ? "" : "hidden")
+
+
 	return (
 		<>
 			<button
@@ -81,11 +85,16 @@ function ProfileButton({ user }) {
 
 				< i className="fa-solid fa-user"
 					onMouseOver={onHover}
+					// onMouseOver={(e) => setHover(true) && console.log('onMouseEnter/Over', e)}
 					onMouseOut={hovering}
+					// onMouseLeave={hovering}
 					role="button"
 
 				/>
-				{hover && <p className={hoverClassName + (showMenu ? (setHover(false)) : "")}>Profile</p>}
+				{
+					hover &&
+					<p className={hoverClassName + (showMenu ? (setHover(false)) : "")}>Profile</p>
+				}
 			</button>
 			<ul className={ulClassName} ref={ulRef}>
 				{user ? (

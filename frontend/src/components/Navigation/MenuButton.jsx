@@ -1,32 +1,44 @@
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import './MenuButton.css';
 import ProfileButton from "./ProfileButton";
+import { useContext } from "react";
+import { ButtonContext } from "../../context/ButtonContext";
+
+
+
+
 function MenuButton() {
 
-	const [hover, setHover] = useState(false);
+	// const [hover, setHover] = useState(false);
+	const { showMenu, setShowMenu, hover, setHover, closeMenu } = useContext(ButtonContext);
 
-	//! Need to figure out how to hide other caption when any button on the document, including modals, is clicked
 
-
-	useEffect(() => {
-		if (!hover) return;
-
-		document.addEventListener('click', isButtonClicked)
-
-		return () => document.removeEventListener('click', isButtonClicked)
-
-	}, [hover])
-	const onHover = () => {
+	const menuHover = () => {
 		setHover(true)
 	};
 
-	const offHover = (e) => {
+	const menuHovering = (e) => {
 		e.stopPropagation();
 
 		setHover(!hover)
-	};
+	}
+
+	// useEffect(() => {
+	// 	if (!hover) return;
+
+	// 	document.addEventListener('click', setShowMenu(true))
+
+	// 	return () => document.removeEventListener('click', setShowMenu(true))
+
+	// }, [hover, setShowMenu])
+
+
+	// const offMenuHover = (e) => {
+
+	// 	setHover(!hover)
+	// };
 
 	const hoverClassName = "caption" + (hover ? "" : "hidden")
 
@@ -34,13 +46,16 @@ function MenuButton() {
 
 	return (
 		<>
-			<div>
+			<div className="menu-select-no-drop">
 				<NavLink to='/' className='house-icon'>
 					< i className="fa-solid fa-bars"
-						onMouseOver={onHover}
-						onMouseOut={offHover}
+						// onMouseOver={onHover}
+						onMouseOver={(e) => menuHover && console.log('onMouseEnter of MenuButton', e)}
+						// onMouseOut={hovering}
+						onMouseOut={menuHovering}
+					// role="button"
 					/>
-					{/* {hover && <p className={hoverClassName + (isButtonClicked ? alert("this is true") : "")}>Return Home</p>} */}
+					{hover && <p className={hoverClassName + (showMenu ? setHover(false) : "")}>Return Home</p>}
 				</NavLink>
 			</div>
 		</>
