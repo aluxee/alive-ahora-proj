@@ -12,7 +12,7 @@ import { ButtonContext } from "../../context/ButtonContext";
 function MenuButton() {
 
 	// const [hover, setHover] = useState(false);
-	const { showMenu, setShowMenu, hover, setHover, closeMenu } = useContext(ButtonContext);
+	const { showMenu, hover, setHover, closeMenu } = useContext(ButtonContext);
 
 
 	const menuHover = () => {
@@ -23,7 +23,7 @@ function MenuButton() {
 		e.stopPropagation();
 
 		setHover(!hover)
-	}
+	};
 
 	// useEffect(() => {
 	// 	if (!hover) return;
@@ -49,11 +49,11 @@ function MenuButton() {
 			<div className="menu-select-no-drop">
 				<NavLink to='/' className='house-icon'>
 					< i className="fa-solid fa-bars"
-						// onMouseOver={onHover}
-						onMouseOver={(e) => menuHover && console.log('onMouseEnter of MenuButton', e)}
+						onMouseEnter={menuHover}
+						// onMouseEnter={(e) => menuHover && console.log('onMouseEnter of MenuButton', e)}
 						// onMouseOut={hovering}
-						onMouseOut={menuHovering}
-					// role="button"
+						onMouseLeave={menuHovering}
+						role="link"
 					/>
 					{hover && <p className={hoverClassName + (showMenu ? setHover(false) : "")}>Return Home</p>}
 				</NavLink>
