@@ -21,12 +21,3 @@ div.spot-item-div {
 	align-items: center;
 
 }
-
-.spot-name-rate {
-	display: inline-flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	justify-content: center;
-	align-items: center;
-	text-align: center;
-}

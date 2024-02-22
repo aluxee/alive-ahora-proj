@@ -12,9 +12,18 @@
 }
 
 .spots-list {
-display: flex;
+	display: flex;
 	justify-content: space-evenly;
 	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 1rem;
+}
+
+.spot-info {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-content: center;
 	align-items: center;
-	gap: 0.5rem;
+	width: 85%;
 }

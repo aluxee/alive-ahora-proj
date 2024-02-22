@@ -29,24 +29,28 @@ function Spots() {
 								spot={spot}
 								key={spot.name}
 							/>
-							<div className="spot-name-rate">
-								<span id="spot-state-city">{spot.state}, {spot.city}</span>
-								<span id="spot-rating">
-									<i className="fa-solid fa-star"></i>
-									{
-										spot.avgRating ?
-											<>
-												{parseFloat(spot.avgRating).toFixed(1)}
-											</> :
-											<>New!
-											</>
-									}
-								</span>
+							<div className="spot-info">
+
+								<div className="spot-name-rate">
+									<div id="spot-state-city">{spot.state}, {spot.city}</div>
+									<div id="spot-rating">
+										<i className="fa-solid fa-star" style={{color: "gold"}}></i>
+										{
+											spot.avgRating ?
+												<>
+													{parseFloat(spot.avgRating).toFixed(1)}
+												</> :
+												<>New!
+												</>
+										}
+									</div>
+								</div>
+								<div className="spot-price">
+									<div>${spot.price} / night</div>
+									{/* <span></span> */}
+								</div>
 							</div>
-							<div className="spot-price">
-								<span>${spot.price} / night</span>
-								<span></span>
-							</div>
+
 						</div>
 					))
 

@@ -137,8 +137,8 @@ module.exports = {
       {
         spotId: 5,
         userId: 1,
-        review: 'Completely home-love-struck!',
-        stars: 5
+        review: 'Completely home-love-struck! But I`m not sure about the price...',
+        stars: 3
       },
       {
         spotId: 6,
@@ -162,19 +162,19 @@ module.exports = {
         spotId: 7,
         userId: 1,
         review: 'Far too much open space for my liking...',
-        stars: 3
+        stars: 2
       },
       {
         spotId: 8,
         userId: 3,
-        review: 'There`s a perfect spot by the pool where you can see the sunset!',
+        review: 'Interior decor like a dream but could use more color.',
         stars: 4
       },
       {
         spotId: 6,
         userId: 3,
         review: 'A truly amazing spot!',
-        stars: 5
+        stars: 4
       },
     ], { validate: true })
   },

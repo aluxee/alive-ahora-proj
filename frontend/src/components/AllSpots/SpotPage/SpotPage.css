@@ -70,6 +70,25 @@
 
 }
 
+.spot-name-rate {
+	display: inline-flex;
+	flex-wrap: nowrap;
+	justify-content: space-evenly;
+	align-items: baseline;
+	width: 220px;
+	height: 40px;
+	padding: 5px;
+	font-family: Helvetica, sans-serif;
+}
+
+#spot-rating {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: baseline;
+}
+
+
 #spot-page_rating {
 	width: 88px;
 }
@@ -79,6 +98,17 @@
 	font-size: 22px;
 	margin-right: 5px;
 	padding: 2px;
+}
+
+#spot-state-city {
+	width: 70%;
+	font-size: 15.5px;
+	font-weight: 300;
+}
+
+.spot-price {
+	padding: 5px;
+	font-family: Helvetica, sans-serif;
 }
 
 /* ____________________________________________________________________________ */
