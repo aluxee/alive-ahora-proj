@@ -145,3 +145,18 @@ button:active {
 	box-shadow: none;
 	color: linen;
 }
+
+
+
+div.spot-item-div {
+	width: 30%;
+	padding: 5px;
+	margin: 10px 0px 10px;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: center;
+	align-content: center;
+	justify-content: flex-start;
+
+}

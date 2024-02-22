@@ -12,27 +12,27 @@ module.exports = {
     await SpotImage.bulkCreate([
       {
         spotId: 1,
-        url: 'https://i.imgur.com/OJkgHbF.png',
+        url: 'https://imgur.com/0R32WpE.png',
         preview: true
       },
       {
         spotId: 1,
-        url: 'https://i.imgur.com/JI7YHkY.png',
+        url: 'https://imgur.com/vWO6l5q.png',
         preview: true
       },
       {
         spotId: 1,
-        url: 'https://i.imgur.com/A88bfyT.png',
+        url: 'https://imgur.com/DhpCfhb.png',
         preview: true
       },
       {
         spotId: 1,
-        url: 'https://i.imgur.com/XXe7q.png',
+        url: 'https://i.imgur.com/41ybMsE.png',
         preview: true
       },
       {
         spotId: 1,
-        url: 'https://i.imgur.com/Fol9IbU.png',
+        url: 'https://imgur.com/OpwzUIP.png',
         preview: true
       },
       {

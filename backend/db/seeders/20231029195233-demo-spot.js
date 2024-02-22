@@ -11,14 +11,14 @@ module.exports = {
     await Spot.bulkCreate([
       {
         ownerId: 3,
-        address: "Outside City Hall",
-        city: "Paris",
-        state: "France",
-        country: "Europe",
+        address: "123 Paradise Road",
+        city: "Mos Eisley",
+        state: "Great Mesra Plateau",
+        country: "Tatooine",
         lat: 48.85717,
         lng: 2.3414,
-        name: "The Hot Spot de la Piscine",
-        description: "Relax like you're at a french resort!",
+        name: "Too Hot Spot para la Piscine",
+        description: "If you're looking for the hottest spot with the coolest resorts and lofts, this is the place to be! Just down a few paces from the Dowager Queen colony ship landmark crash!",
         price: 255
       },
       {
