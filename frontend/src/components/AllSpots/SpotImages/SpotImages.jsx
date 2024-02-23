@@ -1,11 +1,10 @@
 import { useDispatch } from "react-redux";
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { thunkLoadSpotImages } from "../../../store/spot";
 import './SpotImages';
-// import video from './video.mp4';
-import One from '../../../videos/one.mp4'
+
+import { one, two, three, four, five, six, seven, eight } from '../../../videos';
 
 
 
@@ -49,32 +48,24 @@ function SpotImages({ spot }) {
 	const thumbNailImg = () => {
 		const videoSources = [
 			null,
-			One,
-			// Two,
-			// Three,
-			// Four,
-			// Five
+			one, two, three, four, five, six, seven, eight
 		]
 
 		const videoSource = videoSources[spot.id] || null;
 
-//! How can we fix the below videoSource so that the size fits better into it's box?
+		//! How can we fix the below videoSource so that the size fits better into it's box?
 		return (
 			<>
 				{hover && videoSource ?
 
 					<video src={videoSource}
 						loop muted autoPlay
-						// style={{ width: "225", height: "225" }}
 						width={225}
 						height={225}
-
-						// overflowClipMargin="content-box"
-
+						className="spot-video-box"
 					/>
-
 					:
-					<img src={img} alt={spot.name} className="spot-image-box" style={imgStyle}/>
+					<img src={img} alt={spot.name} className="spot-image-box" style={imgStyle} />
 
 				}
 			</>
@@ -93,7 +84,7 @@ function SpotImages({ spot }) {
 
 					>
 						<>
-						{thumbNailImg()}
+							{thumbNailImg()}
 						</>
 						{/* {hover ? <>{thumbNailImg()}</>
 							:

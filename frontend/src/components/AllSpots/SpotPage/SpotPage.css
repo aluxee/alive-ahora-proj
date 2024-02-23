@@ -26,9 +26,15 @@
 	align-items: flex-start;
 }
 
-/* #spot-page-section {}
+#spot-page-section {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: flex-start;
+	align-content: flex-start;
+}
 
-.spot-page_text-info {} */
+/* .spot-page_text-info {} */
 
 .spot-page_pics {
 	display: flex;
