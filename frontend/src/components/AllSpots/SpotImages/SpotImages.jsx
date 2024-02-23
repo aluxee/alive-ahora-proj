@@ -39,26 +39,35 @@ function SpotImages({ spot }) {
 		backgroundImage: `${setImg}`,
 		height: 225,
 		width: 225,
+		marginTop: 15,
 		overflow: "hidden",
 		objectFit: "cover",
 		overflowClipMargin: "content-box",
-		borderRadius: 30
+		borderRadius: '15%'
+		// 	  height: 225px;
+		// 	width: 225px;
+		// 	margin- top: 15px;
+		// /* padding-top: 31px; */
+		// overflow: hidden;
+		// object - fit: cover;
+		// overflow - clip - margin: content - box;
+		// border - radius: 15 %;
 	}
 
 	const thumbNailImg = () => {
-		const videoSources = [
+		const videoThumbNails = [
 			null,
 			one, two, three, four, five, six, seven, eight
 		]
 
-		const videoSource = videoSources[spot.id] || null;
+		const videoThumbNail = videoThumbNails[spot.id] || null;
 
-		//! How can we fix the below videoSource so that the size fits better into it's box?
+		//! How can we fix the below videoThumbNail so that the size fits better into it's box? What about utilizing useEffect() for this section?
 		return (
 			<>
-				{hover && videoSource ?
+				{hover && videoThumbNail ?
 
-					<video src={videoSource}
+					<video src={videoThumbNail}
 						loop muted autoPlay
 						width={225}
 						height={225}

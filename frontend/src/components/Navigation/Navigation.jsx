@@ -27,16 +27,15 @@ function Navigation({ isLoaded }) {
 
 					<h1 className='airbnb-h1'>
 						<div className='clone-logo'>
-							<i className="fa-solid fa-igloo"
+							<i className="fa-solid fa-wand-sparkles"
 								style={{ color: "red" }}
 							/>
-
-							ahorabnb
+							starbnb
 						</div>
 					</h1>
 
 				</div>
-				<h3 id='alive-ahora'>alive-ahora</h3>
+				<h3 id='alive-ahora' className='clone-logo'>star-ahora</h3>
 
 			</div>
 			<div className='nav_search'>

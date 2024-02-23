@@ -27,3 +27,24 @@
 	align-items: center;
 	width: 85%;
 }
+
+div.spot-item-div {
+	width: 25%;
+	padding: 10px 10px;
+	margin: 10px 0px 10px;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: center;
+	align-content: center;
+	justify-content: flex-start;
+	border: 4px solid gold;
+	border-radius: 15%;
+}
+
+.spot-item-div:hover {
+	transform: translate(0px, -6px);
+	border-color: #00b8b2;
+	box-shadow: 0 0 10px blue;
+	outline: none;
+}
