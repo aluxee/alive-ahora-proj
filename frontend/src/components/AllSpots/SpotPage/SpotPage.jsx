@@ -58,14 +58,18 @@ function SpotPage() {
 				<div className="inside-spot-page-container">
 					<section id="spot-page-section" style={{ maxWidth: 1000 }}>
 
+						<div className="spot-page_part-one">
 
-						<div className="spot-page_text-info">
-							<h2>{spot.name}</h2>
-							<h4>{spot.city}, {spot.state}, {spot.country}</h4>
+							<div className="spot-page_text-info">
+								<h2>{spot.name}</h2>
+								<h4>{spot.city}, {spot.state}, {spot.country}</h4>
+							</div>
+							<div className="spot-page_pics">
+								<SpotPageImages key={spot.id} spot={spot} />
+							</div>
 						</div>
-						<div className="spot-page_pics">
-							<SpotPageImages key={spot.id} spot={spot} />
-						</div>
+
+
 						<div className="spot-page_part-two">
 							<div className="spot-page_host">
 								<h2>

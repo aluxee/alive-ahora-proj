@@ -1,6 +1,10 @@
 /* ____________________________________________________________________________ */
 /* body and root */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
 
+.clone-logo {
+	font-family: 'Space Grotesk', sans-serif;
+}
 body {
 	margin: 0 auto;
 	overflow-x: hidden;
@@ -144,4 +148,19 @@ button:active {
 	background-color: none;
 	box-shadow: none;
 	color: linen;
+}
+
+
+
+div.spot-item-div {
+	width: 30%;
+	padding: 5px;
+	margin: 10px 0px 10px;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: center;
+	align-content: center;
+	justify-content: flex-start;
+
 }

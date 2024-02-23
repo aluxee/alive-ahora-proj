@@ -16,19 +16,31 @@
 
 .spot-page_part-two {
 	display: flex;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
 	width: 100%;
 	height: fit-content;
 	padding-top: 15px;
-	align-content: flex-end;
+	justify-content: flex-end;
 	flex-direction: row;
-	justify-content: flex-start;
-	align-items: flex-start;
+	align-items: center;
 }
 
-/* #spot-page-section {}
+#spot-page-section {
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: center;
+	align-content: space-around;
+}
 
-.spot-page_text-info {} */
+.spot-page_part-one {
+	display: flex;
+	flex-direction: column;
+	align-items: baseline;
+	flex-wrap: wrap;
+}
+
+/* .spot-page_text-info {} */
 
 .spot-page_pics {
 	display: flex;
@@ -37,11 +49,11 @@
 .spot-page_host {
 	display: flex;
 	flex-direction: column;
-	width: 35%;
+	width: 40%;
 	/* margin-right: 20px; */
 	padding: 10px;
-	align-items: flex-end;
-	justify-content: flex-start;
+	align-items: flex-start;
+	flex-wrap: wrap;
 }
 
 /* ____________________________________________________________________________ */
@@ -61,14 +73,35 @@
 .price-reserve-inner {
 	display: flex;
 	align-items: center;
-	align-content: space-between;
 	flex-wrap: wrap;
+	height: max-content;
 	padding: 10px;
-	width: 50%;
-	border: 2px solid black;
+	width: 45%;
+	border: 4px solid gold;
+	border-radius: 15px;
 	justify-content: space-around;
+	align-content: stretch;
 
 }
+
+.spot-name-rate {
+	display: inline-flex;
+	flex-wrap: nowrap;
+	justify-content: space-evenly;
+	align-items: baseline;
+	width: 220px;
+	height: 40px;
+	padding: 5px;
+	font-family: Helvetica, sans-serif;
+}
+
+#spot-rating {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: baseline;
+}
+
 
 #spot-page_rating {
 	width: 88px;
@@ -79,6 +112,17 @@
 	font-size: 22px;
 	margin-right: 5px;
 	padding: 2px;
+}
+
+#spot-state-city {
+	width: 70%;
+	font-size: 15.5px;
+	font-weight: 300;
+}
+
+.spot-price {
+	padding: 5px;
+	font-family: Helvetica, sans-serif;
 }
 
 /* ____________________________________________________________________________ */
@@ -98,6 +142,7 @@ button#spot-page_button {
 	width: 12rem;
 	border-style: solid;
 	border: 1.5px solid black;
+	border-radius: 10px;
 }
 
 /* ____________________________________________________________________________ */

@@ -134,7 +134,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
 
 	const spotsPayload = await Promise.all(spots.map(async (spot) => {
-		const spotData = spot.toJSON()
+		const spotData = spot.toJSON();
 		spotData.previewImage = null;
 
 		const reviews = await Review.count(
@@ -568,13 +568,13 @@ router.get('/:spotId', async (req, res) => {
 			where: {
 				spotId: spotId
 			}
-		}) || 0;
+		});
 	const totalStars = await Review.sum('stars',
 		{
 			where: {
 				spotId: spotId
 			}
-		}) || 0;
+		});
 	avgRating = (totalStars / reviews).toFixed(1);
 
 	// console.log("THE JSON", spot.toJSON())

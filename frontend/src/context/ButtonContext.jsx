@@ -7,21 +7,8 @@ export function ButtonProvider(props) {
 	// dup profile button code, extrapolate what's necessary for sharing
 	const ulRef = useRef();
 	const [showMenu, setShowMenu] = useState(false);
-	const [hover, setHover] = useState(false);
+	const [hover, setHover] = useState("");
 
-	// const dispatch = useDispatch();
-
-	// const onHover = () => {
-	// 	setHover(true)
-	// };
-
-
-
-	// const hovering = (e) => {
-	// 	e.stopPropagation();
-
-	// 	setHover(!hover)
-	// }
 
 	const toggleMenuButton = (e) => {
 		e.stopPropagation();// Keep click from bubbling up to document and triggering closeMenu
@@ -46,25 +33,12 @@ export function ButtonProvider(props) {
 
 	const closeMenu = () => setShowMenu(false);
 
-	// const logout = (e) => {
-	// 	e.preventDefault();
-
-	// 	dispatch(sessionActions.logout());
-	// 	closeMenu();
-	// 	navigate('/')
-	// 	alert("You have logged out.")
-	// }
-
-	// const manageSpots = (e) => {
-	// 	e.preventDefault();
-
-
-	// 	navigate('/spots/current');
-	// 	closeMenu();
-	// }
+	const contextValue = {
+		showMenu, setShowMenu, hover, setHover, closeMenu, toggleMenuButton, ulRef
+	}
 
 	return (
-		<ButtonContext.Provider value={{ showMenu, setShowMenu, hover, setHover, closeMenu, toggleMenuButton, ulRef }}>
+		<ButtonContext.Provider value={contextValue}>
 			{props.children}
 		</ButtonContext.Provider>
 	)
