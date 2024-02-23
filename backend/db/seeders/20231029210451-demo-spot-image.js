@@ -12,57 +12,62 @@ module.exports = {
     await SpotImage.bulkCreate([
       {
         spotId: 1,
-        url: 'https://i.imgur.com/OJkgHbF.png',
+        url: 'https://imgur.com/0R32WpE.png',
         preview: true
       },
       {
         spotId: 1,
-        url: 'https://i.imgur.com/JI7YHkY.png',
+        url: 'https://imgur.com/vWO6l5q.png',
         preview: true
       },
       {
         spotId: 1,
-        url: 'https://i.imgur.com/A88bfyT.png',
+        url: 'https://imgur.com/DhpCfhb.png',
         preview: true
       },
       {
         spotId: 1,
-        url: 'https://i.imgur.com/XXe7q.png',
+        url: 'https://i.imgur.com/41ybMsE.png',
         preview: true
       },
       {
         spotId: 1,
-        url: 'https://i.imgur.com/Fol9IbU.png',
+        url: 'https://imgur.com/OpwzUIP.png',
         preview: true
       },
       {
         spotId: 2,
-        url: 'https://i.imgur.com/HCjamvj.png',
+        url: 'https://imgur.com/2wv4Ucx.png',
         preview: true
       },
       {
         spotId: 2,
-        url: 'https://i.imgur.com/NJs94rn.png',
+        url: 'https://imgur.com/44WzEsO.png',
         preview: true
       },
       {
         spotId: 2,
-        url: 'https://i.imgur.com/8rpGibn.png',
+        url: 'https://imgur.com/YIMOdsP.png',
         preview: true
       },
       {
         spotId: 2,
-        url: 'https://i.imgur.com/nEboj.png',
+        url: 'https://imgur.com/oFwUD9R.png',
         preview: true
       },
       {
         spotId: 2,
-        url: 'https://i.imgur.com/bUc5CnG.png',
+        url: 'https://imgur.com/rnrBzFU.png',
         preview: true
       },
       {
         spotId: 3,
-        url: 'https://imgur.com/gwhB2Wg.png',
+        url: 'https://imgur.com/FYo1VXM.png',
+        preview: true
+      },
+      {
+        spotId: 3,
+        url: 'https://imgur.com/R9cqk3T.png',
         preview: true
       },
       {
@@ -77,95 +82,134 @@ module.exports = {
       },
       {
         spotId: 3,
-        url: 'https://i.imgur.com/R5tfvOP.png',
-        preview: true
-      },
-      {
-        spotId: 3,
-        url: 'https://imgur.com/DFj4cTM.png',
+        url: 'https://imgur.com/YcHc1Rc.png',
         preview: true
       },
       {
         spotId: 4,
-        url: 'https://i.imgur.com/N5DIm78.png',
+        url: 'https://imgur.com/Kc2JIUD.png',
         preview: true
       },
       {
         spotId: 4,
-        url: 'https://i.imgur.com/Osc3728.png',
+        url: 'https://imgur.com/r9EKtYt.png',
         preview: true
       },
       {
         spotId: 4,
-        url: 'https://i.imgur.com/q70guJ9.png',
+        url: 'https://imgur.com/ExkrTid.png',
         preview: true
       },
       {
         spotId: 4,
-        url: 'https://i.imgur.com/F93jFut.png',
+        url: 'https://imgur.com/NZGtEIe.png',
         preview: true
       },
       {
         spotId: 4,
-        url: 'https://i.imgur.com/nxOngak.png',
+        url: 'https://imgur.com/QyVK9Ci.png',
         preview: true
       },
       {
         spotId: 5,
-        url: 'https://imgur.com/6jE1tvN.png',
+        url: 'https://imgur.com/bl7cAVf.png',
         preview: true
       },
       {
         spotId: 5,
-        url: 'https://imgur.com/NdYldeJ.png',
+        url: 'https://imgur.com/hbtTFWm.png',
         preview: true
       },
       {
         spotId: 5,
-        url: 'https://imgur.com/IEkw2ap.png',
+        url: 'https://imgur.com/FdnjM6n.png',
         preview: true
       },
       {
         spotId: 5,
-        url: 'https://imgur.com/68smVXz.png',
+        url: 'https://imgur.com/EnCqyHA.png',
         preview: true
       },
       {
         spotId: 5,
-        url: 'https://imgur.com/GhRbVPK.png',
-        preview: true
-      },
-
-      {
-        spotId: 6,
-        url: 'https://imgur.com/igpIFvq.png',
+        url: 'https://imgur.com/m6XJlD6.png',
         preview: true
       },
       {
         spotId: 6,
-        url: 'https://imgur.com/ox0Lszh.png',
+        url: 'https://imgur.com/ZMnEK4G.png',
+        preview: true
+      },
+      {
+        spotId: 6,
+        url: 'https://imgur.com/ccTiQmJ.png',
+        preview: true
+      },
+      {
+        spotId: 6,
+        url: 'https://imgur.com/sJL6EDG.png',
+        preview: true
+      },
+      {
+        spotId: 6,
+        url: 'https://imgur.com/BrqVjUc.png',
+        preview: true
+      },
+      {
+        spotId: 6,
+        url: 'https://imgur.com/mq24SUN.png',
         preview: true
       },
       {
         spotId: 7,
-        url: 'https://imgur.com/buFOFNY.png',
+        url: 'https://imgur.com/TOebfxg.png',
         preview: true
       },
       {
         spotId: 7,
-        url: 'https://imgur.com/4JgGgwJ.png',
+        url: 'https://imgur.com/mi1kb7C.png',
+        preview: true
+      },
+      {
+        spotId: 7,
+        url: 'https://imgur.com/npMKLRn.png',
+        preview: true
+      },
+      {
+        spotId: 7,
+        url: 'https://imgur.com/5PJiGf0.png',
+        preview: true
+      },
+      {
+        spotId: 7,
+        url: 'https://imgur.com/Kw2RCkP.png',
         preview: true
       },
       {
         spotId: 8,
-        url: 'https://imgur.com/70w5MbG.png',
+        url: 'https://imgur.com/T1ueHq2.png',
         preview: true
       },
       {
         spotId: 8,
-        url: 'https://imgur.com/7PTrs9t.png',
+        url: 'https://imgur.com/DjMpqK9.png',
         preview: true
-      }
+      },
+      {
+        spotId: 8,
+        url: 'https://imgur.com/ml08zUq.png',
+        preview: true
+      },
+      {
+        spotId: 8,
+        url: 'https://imgur.com/kpBKXfg.png',
+        preview: true
+      },
+      {
+        spotId: 8,
+        url: 'https://imgur.com/7MgBgdS.png',
+        preview: true
+      },
 
     ], { validate: true })
   },

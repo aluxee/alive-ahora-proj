@@ -1,0 +1,12 @@
+.house-icon {
+	color: black;
+	font-size: 16px;
+}
+
+.house-icon:hover {
+
+	color: red;
+	border-style: none;
+
+
+}

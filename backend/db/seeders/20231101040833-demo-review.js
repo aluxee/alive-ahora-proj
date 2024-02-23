@@ -17,13 +17,13 @@ module.exports = {
       {
         spotId: 1,
         userId: 2,
-        review: 'Definition of perfection!',
-        stars: 5
+        review: 'Remove this place, it sucks. I got attacked by a Hutt`s guardsmen.',
+        stars: 2
       },
       {
         spotId: 1,
         userId: 3,
-        review: 'Absolutely outstanding! This french home-like resort exceeded all my expectations. From the exceptional quality to the impeccable customer service, I couldn`t be happier.Five stars all the way!',
+        review: 'Absolutely outstanding! This  home-like resort exceeded all my expectations. From the exceptional quality to the impeccable customer service, I couldn`t be happier. Five stars all the way! And P.S., the Jawas are awesome and friendlier than one could imagine!',
         stars: 5
       },
       {
@@ -47,14 +47,14 @@ module.exports = {
       {
         spotId: 2,
         userId: 3,
-        review: 'I had high hopes, but it fell short in several key ways. There are definite improvements needed to make it worth the investment. Two stars for effort and much needed room for enhancement.',
-        stars: 2
+        review: 'I had high hopes, but it fell short in several key ways. Maybe this place just wasn`t for me.',
+        stars: 3
       },
       {
         spotId: 2,
         userId: 3,
-        review: 'Remove this place from the app.',
-        stars: 1
+        review: 'Makes me feel like I`m part of the senate!.',
+        stars: 4
       },
       {
         spotId: 3,
@@ -65,7 +65,7 @@ module.exports = {
       {
         spotId: 3,
         userId: 1,
-        review: 'Absolutely outstanding! This french home-like resort exceeded all my expectations. From the exceptional quality to the impeccable customer service, I couldn`t be happier. Five stars all the way!',
+        review: 'Outstanding view of the sunset from the bedroom!',
         stars: 5
       },
       {
@@ -89,8 +89,8 @@ module.exports = {
       {
         spotId: 2,
         userId: 3,
-        review: 'Complete and utter trash.',
-        stars: 1
+        review: 'Fairly relaxing! I expected more trees than water though...and where did the Wookies go?! I CAME HERE FOR THE WOOKIES.',
+        stars: 3
       },
       {
         spotId: 2,
@@ -99,7 +99,7 @@ module.exports = {
         stars: 5
       },
       {
-        spotId: 1,
+        spotId: 2,
         userId: 2,
         review: 'Don`t waste your time.',
         stars: 2
@@ -119,7 +119,7 @@ module.exports = {
       {
         spotId: 4,
         userId: 1,
-        review: 'This place is perfect and everything I needed after such a stressful month!',
+        review: 'This place is perfect and everything I needed after such a stressful month! It is very comfortable.',
         stars: 5
       },
       {
@@ -137,8 +137,8 @@ module.exports = {
       {
         spotId: 5,
         userId: 1,
-        review: 'Completely home-love-struck!',
-        stars: 5
+        review: 'Completely home-love-struck! But I`m not sure about the price...',
+        stars: 3
       },
       {
         spotId: 6,
@@ -162,19 +162,19 @@ module.exports = {
         spotId: 7,
         userId: 1,
         review: 'Far too much open space for my liking...',
-        stars: 3
+        stars: 2
       },
       {
         spotId: 8,
         userId: 3,
-        review: 'There`s a perfect spot by the pool where you can see the sunset!',
+        review: 'Interior decor like a dream but could use more color.',
         stars: 4
       },
       {
         spotId: 6,
         userId: 3,
-        review: 'A truly marvellous spot!',
-        stars: 5
+        review: 'A truly amazing spot!',
+        stars: 4
       },
     ], { validate: true })
   },

@@ -7,6 +7,7 @@ import configureStore from './store';
 import { restoreCSRF, csrfFetch } from './store/csrf';
 import * as sessionActions from './store/session';
 import { Modal, ModalProvider } from './context/Modal';
+import { ButtonProvider } from './context/ButtonContext';
 
 
 const store = configureStore();
@@ -28,8 +29,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ModalProvider>
       <Provider store={store}>
-        <App />
-        <Modal />
+        <ButtonProvider >
+          <App />
+          <Modal />
+        </ButtonProvider>
       </Provider>
     </ModalProvider>
   </React.StrictMode>

@@ -11,6 +11,7 @@ const rootReducer = combineReducers({
   reviews: reviewsReducer,
   // bookings: bookingsReducer,
 
+
 });
 
 let enhancer;
