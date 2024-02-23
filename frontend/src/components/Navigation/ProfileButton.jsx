@@ -75,14 +75,15 @@ function ProfileButton({ user }) {
 				/>
 				{
 					hover === "profile" &&
-					<p className={hoverClassName + (showMenu ? (setHover("")) : "")}>Profile</p>
+					<p className={hoverClassName + (showMenu ? (setHover("")) : "")}
+					>Profile</p>
 				}
 			</button>
 			<ul className={ulClassName} ref={ulRef}>
 				{user ? (
 					<>
 
-						<li className="profile_dropdown_name" style={{ fontFamily: "cursive" }}>Hello, {user.firstName}! </li>
+						<li className="profile_dropdown_name" style={{ fontFamily: "Star Wars" }}>Hello, {user.firstName}! </li>
 						<li className="profile_dropdown_username">{user.username}</li>
 						<li className="profile_dropdown_email">{user.email}</li>
 						<hr className="hr-profile" />

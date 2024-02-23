@@ -1,0 +1,16 @@
+.light {
+	background-color: #FFFFFF;
+	color: black;
+
+}
+
+
+.dark {
+	background-color: black;
+	color: #FFFFFF;
+}
+
+.sleep {
+	background-color: burlywood;
+	color: black;
+}
