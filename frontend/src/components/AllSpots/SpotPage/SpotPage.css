@@ -50,7 +50,6 @@
 	display: flex;
 	flex-direction: column;
 	width: 40%;
-	/* margin-right: 20px; */
 	padding: 10px;
 	align-items: flex-start;
 	flex-wrap: wrap;
@@ -61,12 +60,8 @@
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	/* max-width: max-content; */
-	/* width: fit-content; */
-	/* margin: 10px; */
 	padding: 2px;
 	width: 60%;
-	/* align-content: flex-start; */
 	justify-content: flex-end;
 }
 
@@ -86,13 +81,13 @@
 
 .spot-name-rate {
 	display: inline-flex;
-	flex-wrap: nowrap;
+	flex-wrap: wrap;
 	justify-content: space-evenly;
 	align-items: baseline;
-	width: 220px;
+	width: 230px;
 	height: 40px;
 	padding: 5px;
-	font-family: Helvetica, sans-serif;
+	align-content: flex-start;
 }
 
 #spot-rating {
@@ -122,7 +117,7 @@
 
 .spot-price {
 	padding: 5px;
-	font-family: Helvetica, sans-serif;
+	/* font-family: Helvetica, sans-serif; */
 }
 
 /* ____________________________________________________________________________ */
