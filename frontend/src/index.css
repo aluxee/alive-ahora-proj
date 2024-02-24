@@ -3,14 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
 @import url('https://fonts.cdnfonts.com/css/star-wars');
 
-/* theme toggle */
-.clone-logo {
-	font-family: 'Star Wars', 'Space Grotesk', sans-serif;
-}
-.hoverClassName {
-	font-family: 'Star Wars', 'Space Grotesk', sans-serif;
-}
-
+/* for theme toggle see ThemeState */
 
 body {
 	margin: 0 auto;
@@ -126,8 +119,6 @@ button {
 }
 
 
-
-
 button:hover {
 	background-color: #ff0000;
 	box-shadow: 7px 3px 4px 3px #f28585d2;
@@ -157,6 +148,29 @@ button:active {
 	box-shadow: none;
 	color: linen;
 }
+
+/* ____________________________________________________________________________ */
+/* other elements */
+
+.clone-logo {
+	font-family: 'Star Wars', 'Space Grotesk', sans-serif;
+}
+
+.hoverClassName {
+	font-family: 'Star Wars', 'Space Grotesk', sans-serif;
+}
+
+video {
+
+	object-fit: cover;
+	margin-top: 15px;
+	border-radius: 15%;
+	overflow: hidden;
+}
+
+
+
+
 
 
 

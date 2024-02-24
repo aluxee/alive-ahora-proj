@@ -17,8 +17,8 @@ function Navigation({ isLoaded }) {
 	return (
 		<>
 			<ul className='nav_bnb'>
-				<h2>The Best BnB</h2>
-				<h2>The Best BnB</h2>
+				<h2>Alive Ahora</h2>
+				<h2>Alive Ahora</h2>
 			</ul>
 			<ul className='nav_bar'>
 				<div className='nav_name'

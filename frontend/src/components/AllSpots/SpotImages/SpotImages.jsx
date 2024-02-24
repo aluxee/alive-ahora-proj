@@ -44,14 +44,6 @@ function SpotImages({ spot }) {
 		objectFit: "cover",
 		overflowClipMargin: "content-box",
 		borderRadius: '15%'
-		// 	  height: 225px;
-		// 	width: 225px;
-		// 	margin- top: 15px;
-		// /* padding-top: 31px; */
-		// overflow: hidden;
-		// object - fit: cover;
-		// overflow - clip - margin: content - box;
-		// border - radius: 15 %;
 	}
 
 	const thumbNailImg = () => {
@@ -75,7 +67,6 @@ function SpotImages({ spot }) {
 					/>
 					:
 					<img src={img} alt={spot.name} className="spot-image-box" style={imgStyle} />
-
 				}
 			</>
 		)
