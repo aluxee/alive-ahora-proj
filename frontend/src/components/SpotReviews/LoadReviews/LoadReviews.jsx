@@ -28,7 +28,7 @@ function LoadReviews({ ownerId }) {
 
 
 	const currReview = reviews.find(review => review.userId === recurredUserId);
-	// console.log("%c 🚀 ~ file: LoadReviews.jsx:32 ~ LoadReviews ~ currReview: ", "color: cyan; font-size: 25px", currReview)
+	console.log("%c 🚀 ~ file: LoadReviews.jsx:32 ~ LoadReviews ~ currReview: ", "color: cyan; font-size: 25px", currReview)
 
 
 
@@ -73,7 +73,6 @@ function LoadReviews({ ownerId }) {
 					<div className="loaded-reviews" key={spotId} >
 
 						{(
-
 							currReview === undefined &&
 							ownerId !== recurredUserId
 							&& recurredUserId !== undefined
@@ -97,20 +96,30 @@ function LoadReviews({ ownerId }) {
 							<div key={currReview.id} className="key-review">
 
 								<div className="review-post_section-one">
-									<h3>
-										{console.log("inside LoadReviews render...", currReview)}
-										{currReview.User.firstName + " " + currReview.User.lastName}
-									</h3>
-									<h4>
-										{month(currReview.createdAt) + " " + year(currReview.createdAt)}
-									</h4>
+									<div className="user-rating">
+
+										<h3>
+											{/* {console.log("inside LoadReviews render...", currReview)} */}
+											{currReview.User.firstName + " " + currReview.User.lastName}
+										</h3>
+										<div className="user-rating_stars">
+											<i className="fa-solid fa-star" style={{ color: "gold" }}></i>
+											{parseFloat(currReview.stars).toFixed(1)}
+										</div>
+									</div>
+									<div className="user-date">
+										<h4>
+											{month(currReview.createdAt) + " " + year(currReview.createdAt)}
+										</h4>
+									</div>
 								</div>
 								<div id="review-commentary">
 									{currReview.review}
 								</div>
+								<hr />
 								{
 									currReview.userId === recurredUserId ?
-									<button className="curr-review-delete">
+										<button className="curr-review-delete">
 											<OpenModalMenuItem
 												itemText='Delete'
 												className='direct-delete-review-button'
@@ -118,7 +127,7 @@ function LoadReviews({ ownerId }) {
 												onItemClick={closeMenu}
 												modalComponent={<DeleteReview review={currReview} />}
 											/>
-									</button> : null
+										</button> : null
 								}
 							</div>
 						))

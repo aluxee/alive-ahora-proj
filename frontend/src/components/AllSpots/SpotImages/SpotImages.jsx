@@ -86,17 +86,7 @@ function SpotImages({ spot }) {
 						<>
 							{thumbNailImg()}
 						</>
-						{/* {hover ? <>{thumbNailImg()}</>
-							:
-							<img src={img} alt={spot.name} className="spot-image-box"
 
-
-								style={
-									imgStyle
-								}
-
-							/>
-						} */}
 					</Link>
 				</div>
 			</div>

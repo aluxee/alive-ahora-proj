@@ -1,4 +1,7 @@
 /* general */
+.review-post_section-one {
+	padding: 2px;
+}
 
 .key-review {
 	display: flex;
@@ -9,6 +12,21 @@
 	justify-content: center;
 	flex-wrap: wrap;
 	align-content: flex-start;
+}
+
+.user-rating {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+}
+
+/* .user-rating:first-child {
+	font-size: 20px;
+	padding: 0px 10px;
+} */
+
+.user-rating_stars {
+	padding-left: 5px;
 }
 
 div#review-commentary {
