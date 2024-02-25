@@ -28,7 +28,7 @@ function LoadReviews({ ownerId }) {
 
 
 	const currReview = reviews.find(review => review.userId === recurredUserId);
-	// console.log("%c 🚀 ~ file: LoadReviews.jsx:32 ~ LoadReviews ~ currReview: ", "color: cyan; font-size: 25px", currReview)
+	console.log("%c 🚀 ~ file: LoadReviews.jsx:32 ~ LoadReviews ~ currReview: ", "color: cyan; font-size: 25px", currReview)
 
 
 
@@ -51,17 +51,49 @@ function LoadReviews({ ownerId }) {
 	}
 
 	const year = date => {
-		const newYrDate = new Date(date)
+		const newYrDate = new Date(date);
+
+		// console.log("%c 🚀 ~ year ~ Date: ", "color: green; font-size: 25px", Date)
+
+		// console.log("%c 🚀 ~ year ~ newYrDate: ", "color: green; font-size: 25px", newYrDate)
 
 		return newYrDate.getFullYear();
 	};
 
 	const month = date => {
-		const newMthDate = Date(date)
-		const newDate = newMthDate.split(' ')
-		// console.log("%c 🚀 ~ file: LoadReviews.jsx:44 ~ month ~ newDate: ", "color: red; font-size: 25px", newDate)
-		return newDate[1]
+		const fullDate = Date(date);
+		const newDate = fullDate.split(' ')
+		// console.log("%c 🚀 ~ file: LoadReviews.jsx:44 ~ month ~ newDate: ", "color: red; font-size: 25px", newDate, newDate[1], newDate[2], newDate[3])
+		return newDate[1];
 	};
+
+
+	const currDay = date => {
+
+		const newYrDate = new Date(date);
+
+		// console.log("%c 🚀 ~ year ~ Date: ", "color: orange; font-size: 25px", Date)
+
+		// console.log("%c 🚀 ~ year ~ newYrDate: ", "color: blue; font-size: 25px", newYrDate.getDate(date))
+
+		return newYrDate.getDate();
+	};
+
+	// console.log("%c 🚀 ~ currDay ~ currDay: ", "color: red; font-size: 25px", currDay)
+	const timeHours = date => {
+		const newYrDate = new Date(date);
+
+		return newYrDate.getHours();
+	}
+	const timeMinutes = date => {
+		const newYrDate = new Date(date);
+
+		return newYrDate.getMinutes();
+	}
+
+	const timeLocale = () => Intl.DateTimeFormat().resolvedOptions().timeZone
+
+
 	const closeMenu = () => setShowCreateReview(false);
 
 	return (
@@ -73,7 +105,6 @@ function LoadReviews({ ownerId }) {
 					<div className="loaded-reviews" key={spotId} >
 
 						{(
-
 							currReview === undefined &&
 							ownerId !== recurredUserId
 							&& recurredUserId !== undefined
@@ -97,20 +128,30 @@ function LoadReviews({ ownerId }) {
 							<div key={currReview.id} className="key-review">
 
 								<div className="review-post_section-one">
-									<h3>
-										{console.log("inside LoadReviews render...", currReview)}
-										{currReview.User.firstName + " " + currReview.User.lastName}
-									</h3>
-									<h4>
-										{month(currReview.createdAt) + " " + year(currReview.createdAt)}
-									</h4>
+									<div className="user-rating">
+
+										<h3>
+											{currReview.User.firstName + " " + currReview.User.lastName}
+										</h3>
+										<div className="user-rating_stars">
+											<i className="fa-solid fa-star" style={{ color: "gold" }}></i>
+											{parseFloat(currReview.stars).toFixed(1)}
+										</div>
+									</div>
+									<div className="user-date">
+										<h4>
+											{month(currReview.createdAt) + " " + currDay(currReview.createdAt) + ", " + year(currReview.createdAt) + " " + timeHours(currReview.createdAt) + ":" + timeMinutes(currReview.createdAt) + " in " + timeLocale()}
+
+										</h4>
+									</div>
 								</div>
 								<div id="review-commentary">
 									{currReview.review}
 								</div>
+								<hr />
 								{
 									currReview.userId === recurredUserId ?
-									<button className="curr-review-delete">
+										<button className="curr-review-delete">
 											<OpenModalMenuItem
 												itemText='Delete'
 												className='direct-delete-review-button'
@@ -118,7 +159,7 @@ function LoadReviews({ ownerId }) {
 												onItemClick={closeMenu}
 												modalComponent={<DeleteReview review={currReview} />}
 											/>
-									</button> : null
+										</button> : null
 								}
 							</div>
 						))

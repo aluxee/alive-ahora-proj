@@ -110,13 +110,41 @@ function CreateSpotForm({ spot, formType }) {
 
 		}
 	}
-	let stylishComma;
-	if (errors.city || errors.state) {
-		stylishComma = 'center'
-	} else {
-		stylishComma = 'end'
-	}
+	const stylishComma = () => {
 
+		if (errors.city || errors.state) {
+			return <div id="comma"
+				style={{
+					alignSelf: 'center',
+					marginInlineStart: "-7.5rem"
+
+				}}>
+				,
+			</div>
+		} else if (!errors.city && !errors.state) {
+			return <div id="comma"
+				style={{
+					alignSelf: "end",
+					marginBlockEnd: "0.6rem",
+					marginInlineStart: "-7.0rem"
+				}}>
+				,
+			</div>
+
+		} else {
+			return <div id="comma"
+				style={{
+					alignSelf: 'end',
+					marginBlockEnd: 10,
+					marginInlineEnd: 60
+
+				}}
+			>
+				,
+			</div>
+		}
+
+	}
 	return (
 		<>
 			<div className="form-outer-container">
@@ -146,7 +174,7 @@ function CreateSpotForm({ spot, formType }) {
 											required />
 									</label>
 									{/* {"country" in errors && <p className="p-error">{errors.country}</p>} */}
-									<p>{errors?.country}</p>
+									<p className="p-error">{errors?.country}</p>
 								</div>
 
 								<div className="form-locale form-address" id="form-address">
@@ -158,7 +186,7 @@ function CreateSpotForm({ spot, formType }) {
 											required />
 									</label>
 									{/* {"address" in errors && <p className="p-error">{errors.address}</p>} */}
-									<p>{errors?.address}</p>
+									<p className="p-error">{errors?.address}</p>
 								</div>
 
 								<div className="form-locale form-city-state">
@@ -171,11 +199,10 @@ function CreateSpotForm({ spot, formType }) {
 											onChange={(e) => setCity(e.target.value)}
 											required />
 										{/* {"city" in errors && <p className="p-error">{errors.city}</p>} */}
-										<p>{errors?.city}</p>
+										<p className="p-error">{errors?.city}</p>
 
 									</div>
-
-									<span id="comma" style={{ alignSelf: stylishComma }}>,</span>
+									{stylishComma()}
 
 									<div className="form-city-state-container" id="state-container">
 										<label htmlFor="state">
@@ -186,7 +213,7 @@ function CreateSpotForm({ spot, formType }) {
 											onChange={(e) => setState(e.target.value)}
 											required />
 										{/* {"state" in errors && <p className="p-error">{errors.state}</p>} */}
-										<p>{errors?.state}</p>
+										<p className="p-error">{errors?.state}</p>
 									</div>
 
 								</div>
@@ -204,12 +231,11 @@ function CreateSpotForm({ spot, formType }) {
 										fast wifi or parking, and what you love about the neighborhood.
 									</div>
 								</div>
-								<textarea name="" id="" cols="50" rows="10" placeholder="Please write at least 30 characters"
+								<textarea name="" id="" cols="80" rows="10" placeholder="Please write at least 30 characters"
 									value={describeText}
 									onChange={(e) => setDescribeText(e.target.value)}
 								></textarea>
-								{"describeText" in errors && <p className="p-error">{errors.describeText}</p>}
-								{/* <p>{errors?.describeText}</p> */}
+								<p className="p-error">{errors?.describeText}</p>
 							</div>
 
 							<hr />
@@ -226,8 +252,8 @@ function CreateSpotForm({ spot, formType }) {
 									value={title}
 									onChange={(e) => setTitle(e.target.value)}
 								/>
-								{"title" in errors && <p className="p-error">{errors.title}</p>}
-								{/* <p>{errors?.title}</p> */}
+
+								<p className="p-error">{errors?.title}</p>
 							</div>
 
 							<hr />
@@ -246,8 +272,8 @@ function CreateSpotForm({ spot, formType }) {
 										value={price}
 										onChange={(e) => setPrice(e.target.value)}
 									/>
-									{"price" in errors && <p className="p-error">{errors.price}</p>}
-									<p>{errors?.price}</p>
+
+									<p className="p-error">{errors?.price}</p>
 
 								</div>
 							</div>
@@ -264,15 +290,15 @@ function CreateSpotForm({ spot, formType }) {
 									onChange={(e) => setPrevMainImage(e.target.value)}
 
 								/>
-								{"prevMainImage" in errors && <p className="p-error">{errors.prevMainImage}</p>}
-								{/* <p>{errors?.prevMainImage}</p> */}
+
+								<p className="p-error">{errors?.prevMainImage}</p>
 
 								<input type="text" name="img-one" className="spot-form-img" id="img-one" placeholder="Image URL"
 									value={otherImage}
 									onChange={(e) => setOtherImage(e.target.value)}
 								/>
-								{"otherImage" in errors && <p className="p-error">{errors.otherImage}</p>}
-								{/* <p>{errors?.otherImage}</p> */}
+
+								<p className="p-error">{errors?.otherImage}</p>
 
 								<input type="text" name="img-two" className="spot-form-img" id="img-two" placeholder="Image URL"
 									value={otherImage2}

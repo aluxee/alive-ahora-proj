@@ -7,7 +7,7 @@ Login section:
 	display: flex;
 	justify-items: end;
 	flex-wrap: wrap;
-	align-content: space-between;
+	align-content: center;
 	align-items: stretch;
 	flex-direction: column;
 	justify-content: flex-start;

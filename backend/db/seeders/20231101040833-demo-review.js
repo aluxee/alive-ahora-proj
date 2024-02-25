@@ -53,7 +53,7 @@ module.exports = {
       {
         spotId: 2,
         userId: 3,
-        review: 'Makes me feel like I`m part of the senate!.',
+        review: 'Makes me feel like I`m part of the senate!',
         stars: 4
       },
       {
@@ -77,19 +77,19 @@ module.exports = {
       {
         spotId: 4,
         userId: 3,
-        review: 'Just right!',
+        review: 'Just right.',
         stars: 4
       },
       {
         spotId: 3,
         userId: 3,
-        review: 'Quite impressive! There are a couple of areas where it could be even better',
+        review: 'Quite impressive! There are a couple of areas where it could be even better though.',
         stars: 4
       },
       {
         spotId: 2,
         userId: 3,
-        review: 'Fairly relaxing! I expected more trees than water though...and where did the Wookies go?! I CAME HERE FOR THE WOOKIES.',
+        review: 'Fairly relaxing! I expected more trees than water though... and where did the Wookies go?! I CAME HERE FOR THE WOOKIES.',
         stars: 3
       },
       {
