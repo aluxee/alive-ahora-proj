@@ -3,6 +3,7 @@
 
 .outer-post-review {
 	display: flex;
+	flex-wrap: wrap;
 }
 
 .inner-post-review {
@@ -12,13 +13,15 @@
 	flex-direction: column;
 	align-items: center;
 	flex-wrap: wrap;
+	width: 100%;
 }
 
 .review-form {
 	display: flex;
 	flex-direction: column;
-	align-items: center;
 	flex-wrap: wrap;
+	align-items: center;
+	width: 100%;
 }
 
 .star-reviews-container>li {
@@ -78,4 +81,9 @@ div#star-ratings-reviews {
 	background-color: #1c30e7d0;
 	border: 2px solid #eeeef4;
 
+}
+
+.user-spot-review-submit:hover {
+	transform: none;
+	border-color: none;
 }

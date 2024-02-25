@@ -24,7 +24,6 @@ function CreateReview({ spotId }) {
 	// console.log("%c 🚀 ~ file: CreateReview.jsx:26 ~ CreateReview ~ review: ", "color: red; font-size: 25px", review)
 
 	const [errors, setErrors] = useState({});
-	const [errorMessage, setErrorMessage] = useState({});
 	const [allow, setAllow] = useState(true);
 	const [modalPop, setModalPop] = useState(false);
 
@@ -49,9 +48,9 @@ function CreateReview({ spotId }) {
 		currUser.id === spot.ownerId ? errorsObject.errMessage = "Invalid post, same user" : currUser.id;
 
 		setErrors(errorsObject);
-		setErrorMessage(errorsObject.review);
 
-	}, [currUser.id, review.length, stars, setErrors, setErrorMessage, spot.ownerId])
+
+	}, [currUser.id, review.length, stars, setErrors, spot.ownerId])
 
 	const onChange = num => {
 		setStars(parseInt(num))
@@ -63,28 +62,18 @@ function CreateReview({ spotId }) {
 
 
 		const createReview = {
-			// review: currReview,
 			userId: user.id,
 			spotId,
 			review,
 			stars
 		}
 
-		// const submissionReview = await dispatch(thunkCreateReview(spotId, user, createReview));
 
 		// console.log("%c 🚀 ~ file: CreateReview.jsx:56 ~ handleSubmit ~ spotId: ", "color: gold; font-size: 25px", spotId, "versus spot.id: ", spot.id); //spot.id does not function well
 		// if (!submissionReview.errors) {
 		setReview("")
 		setStars(0)
 		closeModal()
-		// 	// navigate(`/spots/${submissionReview.id}`);
-		// } else {
-		// 	return submissionReview.errors
-		// }
-
-		// closeModal
-		// await dispatch(thunkReceiveSpot(spotId))
-		// await dispatch(thunkLoadAllReviews(spotId)) ; // commenting this out does not solve the issue of all the reviews stack loading upon eachother
 
 
 		await dispatch(thunkCreateReview(spotId, user, createReview))
@@ -96,13 +85,12 @@ function CreateReview({ spotId }) {
 					setErrors(data.errors)
 					closeModal()
 				} else if (data?.errorMessage) {
-					setErrorMessage(data)
+					setErrors(data)
 					closeModal()
 				}
 			})
 		setReview("")
 		setStars(0)
-		// closeModal
 
 		await dispatch(thunkReceiveSpot(spotId))
 		await dispatch(thunkLoadAllReviews(spotId));
@@ -133,11 +121,7 @@ function CreateReview({ spotId }) {
 								onChange={(e) => setReview(e.target.value)}
 
 							></textarea>
-							{"review" in errors && <p className="p-error">{
-								errorMessage.review
-								// errors.review
-							}
-							</p>}
+							<p className="p-error">{errors.review}</p>
 						</div>
 
 						<div id="star-ratings-reviews">

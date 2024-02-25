@@ -37,13 +37,15 @@ div#review-commentary {
 #review-button-loaded {
 	display: flex;
 	color: white;
-	padding: 5px;
+	border-radius: 10px;
+	/* padding: 5px;
 	margin: 15px;
 	box-shadow: 7px 3px 4px 3px #869dc9;
 	background-color: #1c30e7d0;
-	border: 2px solid #eeeef4;
+	border: 2px solid #eeeef4; */
 }
 
+/*
 #review-button-loaded:hover {
 	background-color: #ff0000;
 	box-shadow: 7px 3px 4px 3px #f28585d2;
@@ -54,7 +56,7 @@ div#review-commentary {
 	background-color: #FFC0CC;
 	box-shadow: 7px 5px 8px 4px #f29585d2;
 	color: black;
-}
+} */
 
 #review-button-loaded>li {
 	width: max-content;

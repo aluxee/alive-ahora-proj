@@ -31,29 +31,11 @@ h1 {
 	padding: 5px;
 }
 
-.curr-button {
-	color: white;
-	padding: 5px;
-	margin: 15px;
-	box-shadow: 7px 3px 4px 3px #869dc9;
-	background-color: #1c30e7d0;
-	border: 2px solid #eeeef4;
-}
-
-.curr-button:hover {
-	background-color: #ff0000;
-	box-shadow: 7px 3px 4px 3px #f28585d2;
-}
-
-.curr-button:active {
-	background-color: #FFC0CC;
-	box-shadow: 7px 5px 8px 4px #f29585d2;
-	color: black;
-}
 
 img:hover {
 	cursor: pointer;
 }
+
 /* _________________________________________________________________________________ */
 /* current-spot list & item */
 .current-spot_list {
