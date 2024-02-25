@@ -4,6 +4,7 @@
 .outer-post-review {
 	display: flex;
 	flex-wrap: wrap;
+	width: 100%;
 }
 
 .inner-post-review {
