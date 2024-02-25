@@ -119,7 +119,9 @@ function SpotPage() {
 													spot.ownerId !== userId && userId ?
 														<div>
 
-															<button className={'review-button'} id="review-button-loaded" >
+															<button className={'review-button'} id="review-button-loaded"
+		
+															>
 
 																<OpenModalMenuItem
 																	itemText='Post Your Review'

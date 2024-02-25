@@ -186,7 +186,7 @@ function EditSpotForm({ formType }) {
 											onChange={(e) => setCountry(e.target.value)}
 											required />
 									</label>
-									{"country" in errors && <p className="p-error">{errors.country}</p>}
+									<p className="p-error">{errors?.country}</p>
 								</div>
 
 								<div className="form-locale form-address" id="form-address">
@@ -197,7 +197,7 @@ function EditSpotForm({ formType }) {
 											onChange={(e) => setAddress(e.target.value)}
 											required />
 									</label>
-									{"address" in errors && <p className="p-error">{errors.address}</p>}
+									<p className="p-error">{errors?.address}</p>
 								</div>
 
 								<div className="form-locale form-city-state">
@@ -209,7 +209,7 @@ function EditSpotForm({ formType }) {
 											value={city}
 											onChange={(e) => setCity(e.target.value)}
 											required />
-										{"city" in errors && <p className="p-error">{errors.city}</p>}
+										<p className="p-error">{errors?.city}</p>
 									</div>
 
 									<span id="comma" style={{ alignSelf: stylishComma }}>,</span>
@@ -222,7 +222,7 @@ function EditSpotForm({ formType }) {
 											value={state}
 											onChange={(e) => setState(e.target.value)}
 											required />
-										{"state" in errors && <p className="p-error">{errors.state}</p>}
+										<p className="p-error">{errors?.state}</p>
 									</div>
 
 								</div>
@@ -244,7 +244,7 @@ function EditSpotForm({ formType }) {
 									value={description}
 									onChange={(e) => setDescription(e.target.value)}
 								></textarea>
-								{"description" in errors && <p className="p-error">{errors.description}</p>}
+								<p className="p-error">{errors?.description}</p>
 							</div>
 
 							<hr />
@@ -261,7 +261,7 @@ function EditSpotForm({ formType }) {
 									value={name}
 									onChange={(e) => setName(e.target.value)}
 								/>
-								{"name" in errors && <p className="p-error">{errors.name}</p>}
+								<p className="p-error">{errors?.name}</p>
 							</div>
 
 							<hr />
@@ -280,7 +280,7 @@ function EditSpotForm({ formType }) {
 										value={price}
 										onChange={(e) => setPrice(e.target.value)}
 									/>
-									{"price" in errors && <p className="p-error">{errors.price}</p>}
+									<p className="p-error">{errors?.price}</p>
 
 								</div>
 							</div>
@@ -297,13 +297,13 @@ function EditSpotForm({ formType }) {
 									onChange={(e) => setPrevMainImage(e.target.value)}
 
 								/>
-								{"prevMainImage" in errors && <p className="p-error">{errors.prevMainImage}</p>}
+								<p className="p-error">{errors?.prevMainImage}</p>
 
 								<input type="text" name="img-one" className="spot-form-img" id="img-one" placeholder="Image URL"
 									value={otherImage}
 									onChange={(e) => setOtherImage(e.target.value)}
 								/>
-								{"otherImage" in errors && <p className="p-error">{errors.otherImage}</p>}
+								<p className="p-error">{errors?.otherImage}</p>
 
 								<input type="text" name="img-two" className="spot-form-img" id="img-two" placeholder="Image URL"
 									value={otherImage2}
