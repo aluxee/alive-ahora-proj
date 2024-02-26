@@ -49,10 +49,20 @@
 .spot-page_host {
 	display: flex;
 	flex-direction: column;
-	width: 40%;
+	width: 50%;
 	padding: 10px;
 	align-items: flex-start;
 	flex-wrap: wrap;
+}
+
+.spot-page_description {
+	display: flex;
+	flex-direction: column;
+	width: fit-content;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+	align-items: baseline;
+	align-content: flex-start;
 }
 
 /* ____________________________________________________________________________ */
