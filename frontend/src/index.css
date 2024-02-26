@@ -4,6 +4,11 @@
 @import url('https://fonts.cdnfonts.com/css/star-wars');
 
 /* for theme toggle see ThemeState */
+.theme {
+	position: absolute;
+	top: 9rem;
+	right: 4rem;
+}
 
 body {
 	margin: 0 auto;

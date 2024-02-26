@@ -20,7 +20,7 @@ function EditSpotForm({ formType }) {
 	// console.log("%c 🚀 ~ file: EditSpotForm.jsx:17 ~ EditSpotForm ~ spotId: ", "color: yellow; font-size: 25px", spotId)
 
 	// console.log("%c 🚀 ~ file: EditSpotForm.jsx:20 ~ EditSpotForm ~ id: ", "color: yellow; font-size: 25px", id)
-	const spot = useSelector(state => state.spots[spotId]); //ensure for testing spot is good in form front and check to see that spots appears before giving an id; cannot appropriately load all spots without first coming from currentSpots
+	const spot = useSelector(state => state.spots[spotId]);
 	// console.log("%c 🚀 ~ file: EditSpotForm.jsx:21 ~ EditSpotForm ~ spot:(only off currentSpots route to update button) ", "color: orange; font-size: 25px", spot)
 
 
@@ -34,9 +34,6 @@ function EditSpotForm({ formType }) {
 	const [city, setCity] = useState('');
 	const [state, setState] = useState('');
 	const [description, setDescription] = useState('');
-
-
-	// console.log("%c 🚀 ~ file: EditSpotForm.jsx:39 ~ EditSpotForm ~ description: ", "color: red; font-size: 25px", description)
 	const [name, setName] = useState('');
 	const [price, setPrice] = useState('');
 	const [prevMainImage, setPrevMainImage] = useState('');
@@ -45,19 +42,7 @@ function EditSpotForm({ formType }) {
 	const [otherImage3, setOtherImage3] = useState('');
 	const [otherImage4, setOtherImage4] = useState('');
 	const [errors, setErrors] = useState({});
-	// const [updatedSpot, setUpdatedSpot] = useState(
-	// 	{
-	// 		spot: prevSpot
-	// 	// 	Spot: {
-	// 	// 		country, address, city, state,
-	// 	// 		lat: 0,
-	// 	// 		lng: 0,
-	// 	// 		name,
-	// 	// 		price,
-	// 	// 		description
-	// 	// 	},
-	// 	}
-	// );
+
 
 
 	useEffect(() => {
@@ -70,7 +55,10 @@ function EditSpotForm({ formType }) {
 		description.length < 30 ? errorsObject.description = "Description needs a minimum of 30 characters" : description;
 		name.length < 5 ? errorsObject.name = "Name is required" : name;
 		price.length === 0 ? errorsObject.price = "Price is required" : price;
-		if (prevMainImage.length === 0 || otherImage.length === 0) {
+		if (isNaN(Number(price))) errorsObject.price = "Valid price is required";
+
+
+		if (prevMainImage?.length === 0 || otherImage?.length === 0) {
 
 			prevMainImage.length === 0 || !prevMainImage.includes(".jpg") || !prevMainImage.includes(".png") || !prevMainImage.includes(".jpeg") ? errorsObject.prevMainImage = "Preview image is required." : prevMainImage;
 			otherImage.length === 0 || !otherImage.includes(".jpg") || !otherImage.includes(".png") || !otherImage.includes(".jpeg") ? errorsObject.otherImage = "Image URL must end in .png, .jpg, or .jpeg" : otherImage;
@@ -98,19 +86,22 @@ function EditSpotForm({ formType }) {
 			setPrice(prevSpot.price);
 
 			// console.log("inside of the EDITS: prevSpot =====>", prevSpot, "this is prior to the edits to the images and their url");
-			let mainImage = prevSpot.SpotImages.find(img => img.preview === true);
+			let mainImage = prevSpot.SpotImages?.find(img => img.preview === true);
 
 			// console.log("%c 🚀 ~ file: EditSpotForm.jsx:98 ~ useEffect ~ mainImage: ", "color: red; font-size: 25px", mainImage)
-			let otherImages = prevSpot.SpotImages.filter(img => img.preview === false);
+			let otherImages = prevSpot.SpotImages?.filter(img => img.preview === false);
 
 			// console.log("%c 🚀 ~ file: EditSpotForm.jsx:101 ~ useEffect ~ otherImages: ", "color: red; font-size: 25px", otherImages)
 
-
+			//* will need some fixing, does not update but update of pics is not required
 			setPrevMainImage(mainImage ? mainImage.url : "");
-			setOtherImage(otherImages[0] ? otherImages[0].url : "");
-			setOtherImage2(otherImages[1] ? otherImages[1].url : "");
-			setOtherImage3(otherImages[2] ? otherImages[2].url : "");
-			setOtherImage4(otherImages[3] ? otherImages[3].url : "");
+			if (otherImages) {
+
+				setOtherImage(otherImages ? otherImages.url : "");
+			}
+			// setOtherImage2(otherImages[1] ? otherImages[1].url : "");
+			// setOtherImage3(otherImages[2] ? otherImages[2].url : "");
+			// setOtherImage4(otherImages[3] ? otherImages[3].url : "");
 		}
 	}, [prevSpot])
 
@@ -125,9 +116,9 @@ function EditSpotForm({ formType }) {
 				country, address, city, state,
 				lat: 0,
 				lng: 0,
-				name: name,
+				name,
 				price,
-				description: description,
+				description
 
 			}
 
@@ -147,12 +138,41 @@ function EditSpotForm({ formType }) {
 	}
 
 
-	let stylishComma;
-	if (errors.city || errors.state) {
-		stylishComma = 'center'
-	} else {
-		stylishComma = 'end'
+	const stylishComma = () => {
+
+		if (errors.city || errors.state) {
+			return <div id="comma"
+				style={{
+					alignSelf: 'center',
+					marginInlineStart: "-4.5rem"
+
+				}}>
+				,
+			</div>
+		} else if (!errors.city && !errors.state) {
+			return <div id="comma"
+				style={{
+					alignSelf: "end",
+					marginBlockEnd: "0.6rem",
+					marginInlineStart: "-5.0rem"
+				}}>
+				,
+			</div>
+
+		} else {
+			return <div id="comma"
+				style={{
+					alignSelf: 'end',
+					marginBlockEnd: 10,
+					marginInlineEnd: 60
+
+				}}
+			>
+				,
+			</div>
+		}
 	}
+
 
 
 	if (!prevSpot || !Object.values(prevSpot).length) return null;
@@ -212,7 +232,7 @@ function EditSpotForm({ formType }) {
 										<p className="p-error">{errors?.city}</p>
 									</div>
 
-									<span id="comma" style={{ alignSelf: stylishComma }}>,</span>
+									{stylishComma()}
 
 									<div className="form-city-state-container" id="state-container">
 										<label htmlFor="state">

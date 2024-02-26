@@ -39,6 +39,8 @@ function CreateSpotForm({ spot, formType }) {
 		describeText.length < 30 ? errorsObject.describeText = "Description needs a minimum of 30 characters" : describeText;
 		title.length < 5 ? errorsObject.title = "Name is required" : title;
 		price.length === 0 ? errorsObject.price = "Price is required" : price;
+		if (isNaN(Number(price))) errorsObject.price = "Valid price is required";
+
 		if (prevMainImage.length === 0 || otherImage.length === 0) {
 
 			prevMainImage.length === 0 || !prevMainImage.includes(".jpg") || !prevMainImage.includes(".png") || !prevMainImage.includes(".jpeg") ? errorsObject.prevMainImage = "Preview image is required." : prevMainImage;
@@ -62,7 +64,7 @@ function CreateSpotForm({ spot, formType }) {
 			const newPrevImage = {
 				url: prevMainImage,
 				preview: true
-			}; // return edits: what about having this as a useRef?
+			};
 
 
 			if (otherImage) {
@@ -82,7 +84,8 @@ function CreateSpotForm({ spot, formType }) {
 
 			images.push(newPrevImage);
 
-			setImages(images)
+			setImages(images);
+
 			spot = {
 				Spot: {
 					country, address, city, state,
@@ -97,9 +100,12 @@ function CreateSpotForm({ spot, formType }) {
 			}
 
 			const submissionResults = await dispatch(thunkCreateSpot(spot, images));
-			// console.log("🚀 ~ file: CreateSpotForm.jsx:141 ~ handleSubmit ~ images INSIDE createSpotForm:", images)
 
-			// console.log("🚀 ~ file: CreateSpotForm.jsx:141 ~ handleSubmit ~ submissionResults:", submissionResults)
+
+			console.log("🚀 ~ file: CreateSpotForm.jsx:141 ~ handleSubmit ~ images INSIDE createSpotForm:", "color: red", images)
+			console.log("%c 🚀 ~ handleSubmit ~ images: ", "color: red; font-size: 25px", images)
+
+			console.log("🚀 ~ file: CreateSpotForm.jsx:141 ~ handleSubmit ~ submissionResults:", submissionResults)
 
 			if (!submissionResults.errors) {
 				console.log("SUBMISSION ID: ", submissionResults.id)
@@ -109,7 +115,10 @@ function CreateSpotForm({ spot, formType }) {
 			}
 
 		}
+
 	}
+
+
 	const stylishComma = () => {
 
 		if (errors.city || errors.state) {
@@ -143,8 +152,9 @@ function CreateSpotForm({ spot, formType }) {
 				,
 			</div>
 		}
-
 	}
+
+
 	return (
 		<>
 			<div className="form-outer-container">
