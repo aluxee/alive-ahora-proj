@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
 import MenuButton from './MenuButton';
+// import ThemeState from '../ThemeState/ThemeState';
 
 
 
@@ -71,6 +72,7 @@ function Navigation({ isLoaded }) {
 					</div>
 				</div>
 			</ul >
+			{/* <div className='theme'><ThemeState /></div> */}
 		</>
 
 	);

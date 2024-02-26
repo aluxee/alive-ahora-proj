@@ -165,8 +165,8 @@ export const thunkReceiveSpot = (spotId) => async (dispatch) => {
 
 //* create / post a spot
 export const thunkCreateSpot = (spotData, images) => async (dispatch) => {
-	// console.log("🚀 %c ~ file: spot.js:178 ~ thunkCreateSpot ~ images:", "color: yellow; font-size: 32px", images)
-	// console.log("🚀 %c ~ file: spot.js:178 ~ thunkCreateSpot ~ spotData:", "color: yellow; font-size: 32px", spotData)
+	console.log("🚀 %c ~ file: spot.js:178 ~ thunkCreateSpot ~ images:", "color: yellow; font-size: 32px", images)
+	console.log("🚀 %c ~ file: spot.js:178 ~ thunkCreateSpot ~ spotData:", "color: yellow; font-size: 32px", spotData)
 
 	const response = await csrfFetch('/api/spots', {
 		method: 'POST',
@@ -186,6 +186,8 @@ export const thunkCreateSpot = (spotData, images) => async (dispatch) => {
 		// dispatch the images with it's given data, use param of spotData's images key (used SpotImages, may need to be Images?), which is an empty array; use the id that will be made from this thunk
 		for (let image of images) {
 
+			// console.log("%c 🚀 ~ thunkCreateSpot ~ image: ", "color: magenta; font-size: 25px", image)
+
 			const response = await csrfFetch(`/api/spots/${spot.id}/images`, {
 				method: 'POST',
 				headers: {
@@ -199,10 +201,15 @@ export const thunkCreateSpot = (spotData, images) => async (dispatch) => {
 			// console.log("🚀 %c~ file: spot.js:217 ~ thunkCreateSpot ~ spot: PRIOR TO RETURN", "color: white; font-size: 32px", spot)
 
 			if (response.ok) {
-				await dispatch(createSpot(spot))
-				return spot
+				// const image = await response.json();
+
+				// console.log("%c 🚀 ~ thunkCreateSpot ~ (inside response of thunk) image: ", "color: red; font-size: 55px", image)
+				// await dispatch(createSpot(image))
+
 			}
 		}
+		await dispatch(createSpot(spot))
+		return spot
 
 	} else {
 		const errorResponse = await response.json()
@@ -227,16 +234,16 @@ export const thunkEditSpot = (id, spot) => async (dispatch) => {
 		},
 		body: JSON.stringify(spot)
 	})
-	if (response.ok) {
-		const data = await response.json();
 
-		if (data) {
-			dispatch(editSpot(data))
-		}
-		return data
+
+	if (response.ok) {
+		const updatedSpot = await response.json();
+
+		dispatch(editSpot(updatedSpot))
+		return updatedSpot
 
 	} else {
-		const errorResponse = await response.json()
+		const errorResponse = await response.json();
 
 		return errorResponse
 	}
@@ -315,17 +322,18 @@ const spotsReducer = (state = initialState, action) => {
 		case POST_SPOT: {
 			const newSpotState = { ...state }
 
-			// console.log("🚀 ~ file: spot.js:293 ~ spotsReducer ~ newSpotState:", newSpotState)
+			console.log("🚀 ~ file: spot.js:293 ~ spotsReducer ~ newSpotState:", newSpotState)
 
 			const newSpot = { ...action.spotData, SpotImages: [], Owner: {} }
 
-			// console.log("🚀 ~ file: spot.js:295 ~ spotsReducer ~ newSpot:", newSpot)
+			console.log("🚀 ~ file: spot.js:295 ~ spotsReducer ~ newSpot:", newSpot)
 
 			newSpotState[action.spotData.id] = {
 				...newSpot
 			}
 
 			return newSpotState;
+
 		}
 
 		case UPDATE_SPOT: {
@@ -334,11 +342,17 @@ const spotsReducer = (state = initialState, action) => {
 			// console.log("%c 🚀 ~ file: spot.js:321 ~ spotsReducer ~ updatedSpotState: ", "color: pink; font-size: 25px", updatedSpotState);
 			// console.log("INSIDE UPDATE_ SPOT: ", action)
 			const newSpot = { ...action.spot, SpotImages: [], Owner: {} }
+			// const newSpot = { ...action.spot }
+
+			// updatedSpotState[newSpot.id] = {
+			// 	...state, [action.spot.id]: {
+			// 		Owner: {}, SpotImages: [], ...newSpot
+			// 	}
+			// }
+
 
 			updatedSpotState[newSpot.id] = {
-				...state, [action.spot.id]: {
-					Owner: {}, SpotImages: [], ...newSpot
-				}
+				...state[action.spot.id], ...newSpot
 			}
 
 			return updatedSpotState;
