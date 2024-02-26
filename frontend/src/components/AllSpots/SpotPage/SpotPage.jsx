@@ -75,7 +75,7 @@ function SpotPage() {
 								<h2>
 									Hosted by {ownerObj.firstName} {ownerObj.lastName}
 								</h2>
-								<p>{spot.description}</p>
+								<div className="spot-page_description">{spot.description}</div>
 							</div>
 							<div className="spot-page_price_and_reserve">
 								<div className="price-reserve-inner">
@@ -120,7 +120,7 @@ function SpotPage() {
 														<div>
 
 															<button className={'review-button'} id="review-button-loaded"
-		
+
 															>
 
 																<OpenModalMenuItem
