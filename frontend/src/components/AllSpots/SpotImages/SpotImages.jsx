@@ -54,7 +54,6 @@ function SpotImages({ spot }) {
 
 		const videoThumbNail = videoThumbNails[spot.id] || null;
 
-		//! How can we fix the below videoThumbNail so that the size fits better into it's box? What about utilizing useEffect() for this section?
 		return (
 			<>
 				{hover && videoThumbNail ?
@@ -64,6 +63,7 @@ function SpotImages({ spot }) {
 						width={225}
 						height={225}
 						className="spot-video-box"
+						controls="true"
 					/>
 					:
 					<img src={img} alt={spot.name} className="spot-image-box" style={imgStyle} />
