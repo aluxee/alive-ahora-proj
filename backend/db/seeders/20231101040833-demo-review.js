@@ -23,7 +23,7 @@ module.exports = {
       {
         spotId: 1,
         userId: 3,
-        review: 'Absolutely outstanding! This  home-like resort exceeded all my expectations. From the exceptional quality to the impeccable customer service, I couldn`t be happier. Five stars all the way! And P.S., the Jawas are awesome and friendlier than one could imagine!',
+        review: 'Absolutely outstanding! This resort exceeded all my expectations! P.S., the Jawas are awesome and friendlier than one could imagine!',
         stars: 5
       },
       {
@@ -107,7 +107,7 @@ module.exports = {
       {
         spotId: 2,
         userId: 3,
-        review: 'Disappointing experience.  The quality didn`t match the price, and there were several issues that left me dissatisfied.I wouldn`t recommend it, as there are better options available.',
+        review: 'Disappointing experience.  The quality didn`t match the price and there were several issues that left me dissatisfied.',
         stars: 2
       },
       {
