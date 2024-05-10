@@ -161,9 +161,9 @@ function handleUnauthorized(res) {
 			message: 'Authorization required',
 		};
 	}
-	err.status = 404;
+	err.status = 401;
 	return res
-		.status(404)
+		.status(401)
 		.json({
 			message: 'Permission denied',
 		});
