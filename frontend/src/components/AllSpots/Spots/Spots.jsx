@@ -34,7 +34,7 @@ function Spots() {
 								<div className="spot-name-rate">
 									<div id="spot-state-city">{spot.state}, {spot.city}</div>
 									<div id="spot-rating">
-										<i className="fa-solid fa-star" style={{color: "gold"}}></i>
+										<i className="fa-solid fa-star" style={{ color: "gold" }}></i>
 										{
 											spot.avgRating ?
 												<>

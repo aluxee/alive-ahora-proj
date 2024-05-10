@@ -104,11 +104,12 @@ function CurrentSpots() {
 												</div>
 												<div className="current-spot-management-buttons">
 													<button className="curr-button" id="current-spot-update" onClick={() => navigate(`/spots/${spot.id}/edit`)}>Update</button>
+													
 													<button className="curr-button"
 														ref={ulRef}
 														id="current-spot-delete">
 														<OpenModalMenuItem itemText="Delete"
-															onItemClick={closeMenu}
+															onItemClick={ closeMenu }
 															modalComponent={
 																<RemoveSpot
 																	id={spot.id}
